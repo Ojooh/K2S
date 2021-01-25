@@ -9,7 +9,7 @@ var expressSession    = require('express-session');
 var indexRouter     = require('./routes/index');
 var usersRouter     = require('./routes/users');
 var loginRouter     = require('./routes/login');
-// var logoutRouter    = require('./routes/logout');
+var logoutRouter    = require('./routes/logout');
 var adminRouter     = require('./routes/admin');
 
 var app = express();
@@ -32,7 +32,7 @@ app.use(expressSession({
 app.use('/',        indexRouter);
 app.use('/users',   usersRouter);
 app.use('/login',   loginRouter);
-// app.use('/logout',  logoutRouter);
+app.use('/logout',  logoutRouter);
 app.use('/admin',   adminRouter);
 
 // catch 404 and forward to error handler

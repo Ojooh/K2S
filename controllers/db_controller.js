@@ -56,3 +56,19 @@ module.exports.getUserByUserId = (user_id) => {
         });
     });
 }
+
+//UPDATE USER LAST LOGIN
+module.exports.updateLastLogin = (id, last_login) => {
+    const query = "UPDATE users SET last_login = '" + last_login + "'WHERE id = '" + id + "';";
+    
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}

@@ -1,5 +1,6 @@
 const User      = require('./db_controller');
 const bcrypt    = require('bcrypt');
+const moment    = require( 'moment' );
 
 
 //Function To Render Login Page
@@ -14,9 +15,11 @@ module.exports.logIn = async (req, res, next) => {
     var url     = "/login";
 
     if (user.length > 0 && user[0].is_active == '1'){
-        bcrypt.compare(password, user[0].password, (err, reslt) => {
+        bcrypt.compare(password, user[0].password, async (err, reslt) => {
             if (err) return done(err);
             if (reslt == true) {
+                let datetime = moment().format( 'YYYY-MM-DD  HH:mm:ss.000' );
+                await User.updateLastLogin(user[0].id, datetime);
                 if (user[0].user_type  == "ADMS" || user[0].user_type  == "ADM"){
                     url = "/admin";
                 } else if (user[0].user_type == "SPN" ){
@@ -35,4 +38,11 @@ module.exports.logIn = async (req, res, next) => {
         res.json({error: 'Invalid Credentials! Please try again.', url : url});
     }
 
+}
+
+//Function to Handle Log Out
+module.exports.logOut = (req, res, next) => {
+    req.session.loggedin = false;
+    req.session.username = "";
+    res.redirect("/login");
 }

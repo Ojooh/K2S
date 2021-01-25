@@ -37,6 +37,16 @@ jQuery(document).ready(function( $ ) {
                 url: url,
                 data: data,
                 type : "post",
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Auto close alert!',
+                        html: 'Please Hold on as your details are being confirmed',
+                        timer: 40000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                    });
+                },
                 success: function (data) {
                     if (data.success){
                         Swal.fire(data.success, "Click OK to proceed to Dashoboard", "success").then(
