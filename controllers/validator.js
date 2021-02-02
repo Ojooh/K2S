@@ -3,7 +3,8 @@ var helper              = require("./helper");
 
 
 module.exports.validAdministrator = async (req, type) => {
-    var exist = await helper.emailExist(req.body.email);
+    var exist =  await helper.emailExist(req.body.email);
+
     if (helper.isEmpty(req.body.fname) || !helper.validateName(req.body.fname)){
         return [null, false, { message: 'First Name Input is not Valid' }]; 
     } else if (helper.isEmpty(req.body.fname) || !helper.validateName(req.body.fname)){
@@ -20,9 +21,9 @@ module.exports.validAdministrator = async (req, type) => {
         return [null, false, { message: 'Title Input is not Valid' }]; 
     } else if (helper.isEmpty(req.body.email) || !helper.validateEmail(req.body.email)){
         return [null, false, { message: 'Email Input is not Valid' }]; 
-    } else if (type == "add" && exist){
-        return [null, false, { message: 'Email Input already Used' }]; 
-    }else if (helper.isEmpty(req.body.tel) || !helper.validateTel(req.body.tel)){
+    } else if (type == "add" && exist){   
+        return [null, false, { message: 'Email Input already Exist In Database' }]; 
+    }else if (helper.isEmpty(req.body.telephone) || helper.validateTel(req.body.telephone) == false){
         return [null, false, { message: 'Telephone Input is not Valid' }]; 
     } else if ((type == "add") && (helper.isEmpty(req.body.password) || !helper.validatePass(req.body.password))){
         return [null, false, { message: 'Password Input is not Valid' }]; 

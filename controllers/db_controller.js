@@ -72,3 +72,65 @@ module.exports.updateLastLogin = (id, last_login) => {
         });
     });
 }
+
+//GET Admins
+module.exports.getAdministrators = () => {
+    const query = "SELECT * FROM users WHERE is_admin = 1;";
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+};
+
+//GET Last Id
+module.exports.getLastId = () => {
+    const query = "SELECT * FROM users ORDER BY id DESC LIMIT 1;";
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+};
+
+//INSERT new Admin Profile
+module.exports.insertAdminProfile = (user_id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, profile_photo, is_active, password, is_admin) => {
+    const query = "INSERT INTO users (`user_id`, `fname`, `lname`, `dob`, `age`, `gender`, `country`, `state`, `email`, `telephone`, `user_type`, `title`, `profile_photo`, `is_active`, `password`, `is_admin`) VALUES ('" + user_id + "', '" + fname + "', '"  + lname + "', '"  + dob + "', '"  + age + "', '"  + gender + "', '"  + country + "', '"  +  state + "', '"  + email + "', '"  + telephone + "', '"  + user_type + "', '"  + title + "', '"  + profile_photo + "', '"  + is_active + "', '"  + password + "', '"  + is_admin  + "');";
+    //console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//UPDATE Admin Status
+module.exports.updateAdminStatus = (id, status) => {
+    const query = "UPDATE users SET `is_active` = '" + status + "' WHERE id = '" + id + "';";
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+

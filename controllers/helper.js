@@ -2,7 +2,7 @@
 var nameRegex       = /^[A-Za-z.\s_-]*$/;
 var emailRegex      = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 var telRegex        = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
-var passRegex       = /^(?=.*\d)(?=.*[a-z])[0-9a-z]{8,}$/;
+var passRegex       = /^(?=.*\d)(?=.*[a-z])(?=.*[^a-zA-Z0-9])(?!.*\s).{7,15}$/
 const User          = require('./db_controller.js');
 
 
@@ -24,6 +24,7 @@ module.exports.validateName = (name) => {
 //Is Email Input Valid
 module.exports.validateEmail = (email) => {
     var bul     = emailRegex.test(email);
+    console.log(bul);
     return bul;
 };
 
@@ -56,9 +57,10 @@ module.exports.validateAge = (dob) => {
 
 //Is Email Input Exist
 module.exports.emailExist = async (email) => {
-    var user = await User.getUserByEmail(email);
-    console.log(user)
-    if (user.length > 0){
+    var user_e = await User.getUserByEmail(email)
+    // console.log("helpey");
+    // console.log(user_e)
+    if (user_e.length > 0){
         // console.log("helper" + true);
         return true
     } else {
@@ -75,7 +77,7 @@ module.exports.generateUserId = async (title, width) => {
         return false;
     } else {
         var t       = parseInt(user[0].id) + 1
-        n           = user[0].id + '';
+        n           = t.toString() + '';
         n           = n.toString();
         pad_id      = n.length >= width ? n : new Array(width - n.length + 1).join(0) + n;
         return title + "-" + pad_id;

@@ -6,7 +6,8 @@
 a:hover,
 a:active,
 a:focus {
-  color: #28a745;
+  //color: #28a745;
+  color: #631e9c;
   outline: none;
   text-decoration: none;
 }
@@ -22,14 +23,16 @@ a:focus {
   font-family: Poppins-Regular;
   font-size: 16px;
   line-height: 1.4;
-  color: #28a745;
+  //color: #28a745;
+  color: #631e9c;
 }
 
 .txt3 {
   font-family: Poppins-Regular;
   font-size: 15px;
   line-height: 1.4;
-  color: #28a745;
+  //color: #28a745;
+  color: #631e9c;
   text-transform: uppercase;
 }
 
@@ -155,12 +158,15 @@ li {
 
   .loginBtn {
     width: 100%;
-    border-color: #28a745;
-    color: #28a745;
+    // border-color: #28a745;
+    border-color: #631e9c;
+    // color: #28a745;
+    color: #631e9c;
 
     &:hover,
     &:focus {
-      background-color: #28a745;
+      // background-color: #28a745;
+      background-color: #631e9c;
       color: #fff;
     }
   }
@@ -173,7 +179,8 @@ li {
         font-size: 16px;
         text-align: center;
         line-height: 1.4;
-        color: #28a745;
+        //color: #28a745;
+        color: #631e9c;
       }
     }
   }

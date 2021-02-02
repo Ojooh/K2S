@@ -1,56 +1,152 @@
-<% include includes/head %>
-    <% include includes/sidebar %>
-    <div class="main-panel">
-        <% include includes/navbar %>
+<div id="addAdminModalForm" class="modal">
+<div class="close-modal">
+    <i class="fas fa-times"></i>
+</div>
+<div class="admin-form-modal card-modal card-stats mt-5">
+    <div class="card-modal-header bg-success">
+        <h4 class="card-modal-title ">Administrators Form</h4>
+        <p class="card-modal-description"> Add an administrators for the Kids To school Foundation.</p>
 
-        <div class="content">
-            <div class="container-fluid">
-                <!-- BreadCrumb -->
-                <div class="row">
-                    <div class="col-12">
-                        <ol class="breadcrumb bg-light-mode">
-                            <li class="breadcrumb-item"><a href="">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                <i class="fas fa-calendar-check"></i> Appointments
-                            </li>
-                        </ol>
+    </div>
+    <div class="card-body mt-5">
+        <form class=" mt-4" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">User ID</label>
+                        <input type="text" class="form-control" id="userID" name="userID" placeholder="User ID....."
+                            disabled="">
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">First Name</label>
+                        <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name.....">
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Last Name</label>
+                        <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name.....">
                     </div>
                 </div>
-                <!-- BreadCrumb End -->
-                <div class="row">
-                    <div class="col-lg-9 col-md-9 col-sm-9">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card card-stats">
-                                    <div class="card-header card-header-info card-header-icon">
-                                        <div class="card-icon">
-                                            <i class="fas fa-child"></i>
-                                        </div>
-                                        <p class="card-category">Revenue</p>
-                                        <h3 class="card-title">$34,245</h3>
-                                    </div>
-                                    <!-- <div class="card-footer">
-                                        <div class="stats">
-                                            <i class="material-icons">date_range</i> Last 24 Hours
-                                        </div>
-                                    </div> -->
-                                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">DOB</label>
+                        <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of Birth">
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Age</label>
+                        <input type="text" class="form-control" id="age" name="age" placeholder="Age....." disabled>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Gender</label>
+                        <select class="form-control" id="gender">
+                            <option value="">Select a Gender .....</option>
+                            <option value="Male"> Male </option>
+                            <option value="Female"> Female </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Country</label>
+                        <select class="form-control" id="country">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">State</label>
+                        <select class="form-control" id="state">
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email....">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <div class="col-4">
+                            <div class="form-group bmd-form-group">
+                                <label class="bmd-label-floating">Code</label>
+                                <input type="text" class="form-control" id="countryCode" disabled="">
                             </div>
                         </div>
-                    
+                        <div class="col-8">
+                            <div class="form-group bmd-form-group">
+                                <label class="bmd-label-floating">Telephone</label>
+                                <input type="tel" class="form-control" id="telephone" placeholder="Phone Number....">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                    
-                </div>
-                </div>
-                
-
-
-
             </div>
-        </div>
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">User Type</label>
+                        <select class="form-control" id="country">
+                            <option value="">Select a Gender .....</option>
+                            <option value="ADMS">Super Admin</option>
+                            <option value="ADM">Administrator Editor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password....">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Profile Picture</label>
+                        <input type="file" class="form-control" id="profilePic" placeholder="upload an image.....">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group bmd-form-group">
+                        <label class="bmd-label-floating">Picture Preview</label><br>
+                        <img id="frame" class="img-fluid border float-right" width="200px" height="150px">
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
     </div>
+
 
 </div>
 
-<% include includes/foot.ejs%>
+
+<script src="/javascripts/personal/country_state.js"></script>
+<script src="/javascripts/personal/country_code.js"></script>
+</div>

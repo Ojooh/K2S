@@ -1,0 +1,108 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar %>
+            <div class="main-content">
+                <% include includes/navbar %>
+                    <div class="content">
+                        <div class="container-fluid">
+
+                            <!-- BreadCrumb -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb bg-light-mode">
+                                        <li class="breadcrumb-item">
+                                            <a href="">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="/admin/Administrators">
+                                                <i class='fas fa-user-shield'></i> 
+                                                Administrators
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <i class="fas fa-plus"></i>
+                                            Add Administrator
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <!-- BreadCrumb End -->
+
+                            <!-- Administrator Form -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card card-stats mt-5">
+                                        <div class="card-table-title bg-success">
+                                            <h4 class="card-title ">Administrators Form</h4>
+                                            <p class="card-description"> Add an administrators for the Kids To school Foundation.</p>
+                            
+                                        </div>
+                                        <div class="card-body mt-5">
+                                            <form class=" mt-4" method="POST" enctype="multipart/form-data">
+                                                <div class="form-row">
+                                                    <div class="col-md-2">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">User ID</label>
+                                                            <input type="text" class="form-control" placeholder="User ID....." disabled="">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">First Name</label>
+                                                            <input type="text" class="form-control" placeholder="First Name....." >
+                                                        </div>
+                                                    
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Last Name</label>
+                                                            <input type="text" class="form-control" placeholder="Last Name.....">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">DOB</label>
+                                                            <input type="date" class="form-control" placeholder="Date of Birth">
+                                                        </div>
+                                                
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Age</label>
+                                                            <input type="text" class="form-control" placeholder="Age....." disabled>
+                                                        </div>
+                                                
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Gender</label>
+                                                            <select class="form-control">
+                                                                <option value="">Select a Gender</option>
+                                                                <option value="Male">Male</option>
+                                                                <option value="Female">Female</option>
+                                                            </select>
+                                                            <!-- <input type="text" class="form-control" placeholder="First Name....."> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Administrator Form End -->
+
+                        </div>
+                    </div>
+                        
+            </div>
+    </div>
+                        
+<% include includes/foot.ejs%>

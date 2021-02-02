@@ -4,6 +4,8 @@ var path              = require('path');
 var cookieParser      = require('cookie-parser');
 var logger            = require('morgan');
 var expressSession    = require('express-session');
+var fileUpload        = require('express-fileupload');
+var bodyParser        =require("body-parser");
 
 
 var indexRouter     = require('./routes/index');
@@ -18,6 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +31,9 @@ app.use(expressSession({
      saveUninitialized: true,
      secret: "secret",
  }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(fileUpload());
 
 app.use('/',        indexRouter);
 app.use('/users',   usersRouter);

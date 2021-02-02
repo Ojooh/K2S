@@ -2,14 +2,14 @@
 <nav class="navbar navbar-expand-lg navbar-transparent">
     <!-- Navbar content -->
     <!-- Side Menu Toggle Btn -->
-    <div class="toggle-nav">
+    <div id="sideBarToggler" class="toggle-nav">
         <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom">
             <i class="fas fa-bars"></i>
         </div>
     </div>
 
     <div class="navbar-brand logo">
-        <i class="fas fa-th-large"></i>
+        <i class="<%= icon %>"></i>
         <%= title %>
     </div>
 
@@ -32,15 +32,27 @@
                 <a class="nav-link dropdown-toggle not-caret" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <i class="far fa-bell"></i>
-                    <!-- <span class="info-count"> 6 </span> -->
+                    <span class="info-count"> 6 </span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Mike John responded to your email</a>
+                    <a class="dropdown-item" href="#">You have 5 new tasks</a>
+                    <a class="dropdown-item" href="#">You're now friend with Andrew</a>
+                    <a class="dropdown-item" href="#">Another Notification</a>
+                    <a class="dropdown-item" href="#">Another One</a>
+                </div>
             </li>
             <li class="nav-item dropdown dropdown-place">
-                <a class="nav-link dropdown-toggle not-caret" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle not-caret" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <i class="far fa-user"></i>
-                    <!-- <span class="info-count"> 6 </span> -->
                 </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/logout">Log out</a>
+                </div>
             </li>
 
         </ul>
