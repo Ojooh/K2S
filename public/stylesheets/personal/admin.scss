@@ -29,6 +29,11 @@ a {
   color: #631e9c;
 }
 
+form span {
+  width: 100%;
+  float: left !important;
+}
+
 .alert {
   width: 100%;
 }
@@ -539,6 +544,37 @@ a {
         text-overflow: ellipsis;
       }
 
+      .bmd-form-group {
+        label {
+          position: relative;
+          float: left;
+          font-size: 12px;
+          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        }
+
+        input,
+        select {
+          padding: 0 14px;
+          border-radius: 30px;
+          &:disabled {
+            background-color: #e9ecef;
+          }
+          // border: none;
+          // border: 1px solid ;
+          background: transparent;
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
+            0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+        }
+
+        span {
+          width: 100%;
+          text-align: center;
+          height: 10px;
+          line-height: 10px;
+          float: left !important;
+        }
+      }
+
       table {
         border-top: hidden !important;
 
@@ -633,6 +669,25 @@ a {
 
       @media (max-width: 991px) {
         padding: 20px;
+      }
+    }
+
+    .card-modal-img-header {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #fff;
+      background-color: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: -50px;
+      left: calc(50% - 50px);
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+        0 7px 10px -5px rgba(76, 175, 80, 0.4);
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
       }
     }
 

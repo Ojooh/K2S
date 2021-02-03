@@ -134,3 +134,49 @@ module.exports.updateAdminStatus = (id, status) => {
     });
 }
 
+//UPDATE Admin Profile
+module.exports.updateAdminProfile = (id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, profile_photo, password, editor, time) => {
+    const query = "UPDATE users SET `fname` = '" + fname + "', `lname` = '"  + lname + "', `dob` = '" + dob + "', `age` = '" + age + "',`gender` = '" + gender + "', `country` = '" + country + "', `state` = '" + state + "', `email` = '" + email + "', `telephone` = '" + telephone + "', `user_type` = '" + user_type + "', `title`  = '" + title + "', `profile_photo` =  '" + profile_photo + "', `password` = '" + password + "', `editted_by` = '" + editor + "', `last_editted` = '" + time + "' WHERE `id` = '" + id + "';";
+    console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//DELETE Admin Profile
+module.exports.deleteAdminProfile = (id) => {
+    const query = "DELETE FROM users WHERE id = '" + id + "';";
+    console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//GET Sponsors
+module.exports.getSponsors = () => {
+    const query = "SELECT * FROM users WHERE is_sponsor = 1;";
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+};
