@@ -16,27 +16,27 @@
                                             </a>
                                         </li>
                                         <li class="breadcrumb-item">
-                                            <a href="/admin/Administrators">
-                                                <i class='fas fa-user-shield'></i> 
-                                                Administrators
+                                            <a href="/admin/Sponsors">
+                                                <i class='fas fa-users'></i> 
+                                                Sponsors
                                             </a>
                                         </li>
                                         <li class="breadcrumb-item active" aria-current="page">
                                             <i class="fas fa-plus"></i>
-                                            Add Administrator
+                                            Add Sponsor
                                         </li>
                                     </ol>
                                 </div>
                             </div>
                             <!-- BreadCrumb End -->
 
-                            <!-- Administrator Form -->
+                            <!-- sponsor Form -->
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card card-stats mt-5">
                                         <div class="card-table-title bg-success">
-                                            <h4 class="card-title ">Administrators Form</h4>
-                                            <p class="card-description"> Add an administrators for the Kids To school Foundation.</p>
+                                            <h4 class="card-title ">Sponsor Form</h4>
+                                            <p class="card-description"> Add a sponsor for the Kids To school Foundation.</p>
                             
                                         </div>
                                         <div class="card-body mt-5">
@@ -157,12 +157,8 @@
                                                 <div class="form-row">
                                                     <div class="col-md-6">
                                                         <div class="form-group bmd-form-group">
-                                                            <label class="bmd-label-floating">Title</label>
-                                                            <select class="form-control" id="title">
-                                                                <option value="">Select a Title .....</option>
-                                                                <option value="ADMS">Super Admin</option>
-                                                                <option value="ADM">Administrator Editor</option>
-                                                            </select>
+                                                            <label class="bmd-label-floating">Profession</label>
+                                                            <input type="text" class="form-control" id="title" placeholder="Profession....">
                                                             <span class="text-danger title-error my-1"></span>
                                                         </div>
                                                     </div>
@@ -198,11 +194,11 @@
                                             
                                             </form>
                                             <div class="modal-footer">
-                                                <a href="/admin/Administrators" class="btn btn-secondary">
+                                                <a href="/admin/Sponsors" class="btn btn-secondary">
                                                     <i class="fas fa-long-arrow-alt-left"></i>
                                                     Back
                                                 </a>
-                                                <button type="button" id="submitAdmin" data-type="add" data-url="/admin/Administrators/add_admin" data-id=""
+                                                <button type="button" id="submitSponsor" data-type="add" data-url="/admin/Sponsors/add_sponsor" data-id=""
                                                     class="btn btn-outline-kts">
                                                     <i class="far fa-paper-plane"></i>
                                                     Submit
@@ -212,7 +208,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Administrator Form End -->
+                            <!-- Sponsor Form End -->
 
                         </div>
                     </div>
@@ -222,4 +218,7 @@
 <script src="/javascripts/personal/country_state.js"></script>
 <script src="/javascripts/personal/country_code.js"></script>
                         
-<% include includes/foot.ejs%>
+<script src="/javascripts/personal/script_2.js"></script>
+</body>
+
+</html>

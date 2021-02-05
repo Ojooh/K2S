@@ -11,7 +11,7 @@ jQuery(document).ready(function( $ ) {
         var password                   = $('#password').val();
         var emailRegex                 = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
         var usernameRegex              = /^[A-Z]+[-]+[0-9]+[0-9]$/i;
-        var passwordRegex              = /^(?=.*\d)(?=.*[a-z])[0-9a-z]{7,}$/
+        var passRegex                  = /^(?=.*\d)(?=.*[a-z])(?=.*[^a-zA-Z0-9])(?!.*\s).{7,15}$/;
         var msg                        = "";
 
         if (username == "" || password == ""){
@@ -22,7 +22,7 @@ jQuery(document).ready(function( $ ) {
             msg = "<span class='alert alert-success'>Enter a valid username</span>";
             error.html(msg);
         }
-        else if (passwordRegex.test(password) == false){
+        else if (passRegex.test(password) == false){
             msg = "<span class='alert alert-success'>Invalid Password</span>";
             error.html(msg);
         }
@@ -56,6 +56,7 @@ jQuery(document).ready(function( $ ) {
                         )
                     }
                     else{
+                        swal.close();
                         msg = "<span class='alert alert-success'>" + data.error + "</span>";
                         error.html(msg);
                     }

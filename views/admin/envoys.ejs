@@ -1,0 +1,161 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar %>
+            <div class="main-content">
+                <% include includes/navbar %>
+                    <div class="content">
+                        <div class="container-fluid">
+
+                            <!-- BreadCrumb -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb bg-light-mode">
+                                        <li class="breadcrumb-item">
+                                            <a href="">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <i class="fas fa-hands-helping"></i> Envoys
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <!-- BreadCrumb End -->
+
+                            <!-- Add Button -->
+                            <!-- Add Button Modal-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-left mdl-envoy-form mt-5">
+                                        <a href="/admin/Envoys/add_envoy" class="btn btn-outline-kts">
+                                            <i class="fas fa-plus"></i>
+                                            Add An Envoy
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Add Button Modal-->
+                            <!-- Add Button Form -->
+                            <!-- <div class="row">
+                                    <div class="col-12">
+                                        <div class="float-left mt-5">
+                                            <a href="/admin/Envoys/add_envoy" class="btn btn-outline-kts">
+                                                <i class="fas fa-plus"></i>
+                                                Add An Envoy
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>  -->
+                            <!-- End Add Button Form -->
+                            <!-- Add Button End -->
+
+                            <!-- Envoys Table -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card card-stats mt-5">
+                                        <div class="card-table-title bg-success">
+                                            <h4 class="card-title ">Envoys Table</h4>
+                                            <p class="card-description"> List of envoys for the Kids To school Foundation.</p>
+                            
+                                        </div>
+                                        <div class="card-body mt-5">
+                                            <% if (envs.length> 0) {%>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">S/N</th>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Proffession</th>
+                                                                <th scope="col">Kids</th>
+                                                                <th scope="col">Date Created</th>
+                                                                <th scope="col">Last Login</th>
+                                                                <th scope="col">Status</th>
+                                                                <th scope="col">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <% for (var i=0; i < envs.length; i++) { %>
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    <%= i + 1; %>
+                                                                </th>
+                                                                <td>
+                                                                    <%= envs[i].fname + " " + envs[i].lname %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= envs[i].proffession %>
+                                                                </td>
+                                                                <td>
+                                                                    0
+                                                                </td>
+                                                                <td class="pretty-date">
+                                                                    <%= envs[i].date_created %>
+                                                                </td>
+                                                                <td class="pretty-date">
+                                                                    <%= envs[i].last_login %>
+                                                                </td>
+                                                                <% if (envs[i].id !=user.id) { %>
+                                                                    <td>
+                                                                        <% if (envs[i].is_active) { %>
+                                                                            <div class="custom-control custom-switch">
+                                                                                <input type="checkbox" class="custom-control-input" id="customSwitch-<%= envs[i].id %>"
+                                                                                    value="False" checked>
+                                                                                <label class="custom-control-label" for="customSwitch-<%= envs[i].id %>"> Active</label>
+                                                                            </div>
+                                                                        <% } else { %>
+                                                                            <div class="custom-control custom-switch">
+                                                                                <input type="checkbox" class="custom-control-input" id="customSwitch-<%= envs[i].id %>"
+                                                                                    value="True">
+                                                                                <label class="custom-control-label" for="customSwitch-<%= envs[i].id %>"> In-Active</label>
+                                                                            </div>
+                                                                        <% } %>
+                                                                    </td>
+                                                                <% } else { %>
+                                                                    <td></td>
+                                                                <% } %>
+                                                                    <td class="td-actions">
+                                                                        <a href="#" class="profile text-info mr-4" data-id="<%= envs[i].id %>"
+                                                                            data-url="/admin/User/get_profile" data-type="edit-modal" data-toggle="tooltip"
+                                                                            data-placement="top" title="Sponsor Details">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </a>
+                                                                        <a href="#" class="edit-sponsor text-primary mr-4" data-id="<%= envs[i].id %>"
+                                                                            data-url="/admin/User/get_profile" data-type="edit-modal" data-toggle="tooltip"
+                                                                            data-placement="top" title="Edit Sponsor">
+                                                                            <i class="fas fa-pencil-alt"></i>
+                                                                        </a>
+                                                                        <% if (user.user_type=="ADMS" ) { %>
+                                                                            <a href="#" class="delete-sponsor text-danger" data-id="<%= envs[i].id %>"
+                                                                                data-url="/admin/User/delete_profile" data-toggle="tooltip" data-placement="top"
+                                                                                title="Remove Sponsor">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </a>
+                                                                        <% } %>
+                                                                    </td>
+                                                                </tr>
+                                                            <% } %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            <% } else { %>
+                                                <div class="my-5">
+                                                    <h6 class="text-center text-danger">No Envoys Available</h6>
+                                                </div>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Envoys Table End -->
+                        </div>
+                    </div>
+                                                    
+            </div>
+    </div>
+<% include includes/modal_3.ejs %>
+<script src="/javascripts/personal/script_3.js"></script>
+</body>
+
+</html>

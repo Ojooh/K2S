@@ -119,8 +119,8 @@ module.exports.insertAdminProfile = (user_id, fname, lname, dob, age, gender, co
     });
 }
 
-//UPDATE Admin Status
-module.exports.updateAdminStatus = (id, status) => {
+//UPDATE User Status
+module.exports.updateUserStatus = (id, status) => {
     const query = "UPDATE users SET `is_active` = '" + status + "' WHERE id = '" + id + "';";
     return new Promise( ( resolve, reject ) => {
         con.query(query, (err, result) => {
@@ -150,8 +150,8 @@ module.exports.updateAdminProfile = (id, fname, lname, dob, age, gender, country
     });
 }
 
-//DELETE Admin Profile
-module.exports.deleteAdminProfile = (id) => {
+//DELETE User Profile
+module.exports.deleteUserProfile = (id) => {
     const query = "DELETE FROM users WHERE id = '" + id + "';";
     console.log(query);
     return new Promise( ( resolve, reject ) => {
@@ -180,3 +180,68 @@ module.exports.getSponsors = () => {
         });
     });
 };
+
+//INSERT new Sponsor Profile
+module.exports.insertSponsorProfile = (user_id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, proffession, profile_photo, is_active, password, is_sponsor) => {
+    const query = "INSERT INTO users (`user_id`, `fname`, `lname`, `dob`, `age`, `gender`, `country`, `state`, `email`, `telephone`, `user_type`, `title`, `proffession`, `profile_photo`, `is_active`, `password`, `is_sponsor`) VALUES ('" + user_id + "', '" + fname + "', '"  + lname + "', '"  + dob + "', '"  + age + "', '"  + gender + "', '"  + country + "', '"  +  state + "', '"  + email + "', '"  + telephone + "', '"  + user_type + "', '"  + title + "', '"  + proffession + "', '"  + profile_photo + "', '"  + is_active + "', '"  + password + "', '"  + is_sponsor  + "');";
+    //console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//UPDATE User Profile
+module.exports.updateUserProfile = (id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, proffession, profile_photo, password, editor, time) => {
+    const query = "UPDATE users SET `fname` = '" + fname + "', `lname` = '"  + lname + "', `dob` = '" + dob + "', `age` = '" + age + "',`gender` = '" + gender + "', `country` = '" + country + "', `state` = '" + state + "', `email` = '" + email + "', `telephone` = '" + telephone + "', `user_type` = '" + user_type + "', `title`  = '" + title + "', `proffession`  = '" + proffession + "', `profile_photo` =  '" + profile_photo + "', `password` = '" + password + "', `editted_by` = '" + editor + "', `last_editted` = '" + time + "' WHERE `id` = '" + id + "';";
+    console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//GET Envoys
+module.exports.getEnvoys = () => {
+    const query = "SELECT * FROM users WHERE is_envoy = 1;";
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+};
+
+//INSERT new Envoy Profile
+module.exports.insertEnvoyProfile = (user_id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, proffession, profile_photo, is_active, password, is_envoy) => {
+    const query = "INSERT INTO users (`user_id`, `fname`, `lname`, `dob`, `age`, `gender`, `country`, `state`, `email`, `telephone`, `user_type`, `title`, `proffession`, `profile_photo`, `is_active`, `password`, `is_envoy`) VALUES ('" + user_id + "', '" + fname + "', '"  + lname + "', '"  + dob + "', '"  + age + "', '"  + gender + "', '"  + country + "', '"  +  state + "', '"  + email + "', '"  + telephone + "', '"  + user_type + "', '"  + title + "', '"  + proffession + "', '"  + profile_photo + "', '"  + is_active + "', '"  + password + "', '"  + is_envoy  + "');";
+    //console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+

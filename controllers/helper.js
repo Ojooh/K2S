@@ -95,7 +95,9 @@ module.exports.generateUserType = (title) => {
     } else if (title == 'KDS') {
         return "Kid"
     }   else if (title == 'SPN') {
-        return 'sponsor';
+        return 'Sponsor';
+    } else if (title == 'ENV') {
+        return 'Envoy';
     }
 };
 

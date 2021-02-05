@@ -5,20 +5,21 @@ jQuery(document).ready(function( $ ) {
     var sideBar                 = $("#sideBar");
     var mainPanel               = $(".main-content");
     var dates                   = $(".pretty-date");
-    var openMdl_1               = $(".mdl-admin-form");
+    var openMdl_3               = $(".mdl-envoy-form");
     var modal                   = $(".modal");
     var closeModl               = $(".close-modal");
     var dob                     = $("#dob");
     var age                     = $("#age");
     var deleteImage             = $(".delete-image");
-    var submitAdmin             = $('#submitAdmin');
+    var submitEnvoy             = $('#submitEnvoy');
     var profilePic              = $("#profilePic");
     var status                  = $(".custom-control-input")
-    var editAdmin               = $(".edit-admin");
-    var deleteAdmin             = $(".delete-admin");
+    var editEnvoy               = $(".edit-envoy");
+    var deleteEnvoy             = $(".delete-envoy");
     var profile                 = $(".profile");
     const days                  = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames            = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 
     if (window_width <= 991 ){
             if ($(".side-nav li").length <= 6) {
@@ -153,14 +154,12 @@ jQuery(document).ready(function( $ ) {
     });
 
     //Function to Open Modal
-    openMdl_1.on("click", function(e){
+    openMdl_3.on("click", function(e){
         e.preventDefault();
         e.stopPropagation();
 
-        var mdl = $("#addAdminModalForm");
-        var content     = $(".admin-form-modal");
+        var mdl = $("#addEnvoyModalForm");
         mdl.modal("show");
-        //content.css({"position":"static", "top" : "none"});
     });
 
     //Function To calculate and display age
@@ -181,7 +180,7 @@ jQuery(document).ready(function( $ ) {
     });
 
     //Function To Submit Form
-    submitAdmin.on("click", function(e){
+    submitEnvoy.on("click", function(e){
         e.preventDefault();
         $(".form-group .text-danger").html("");
 
@@ -233,10 +232,10 @@ jQuery(document).ready(function( $ ) {
         } else if (tely == "" || telRegex.test(tely) == false){
             msg = "Invalid or No Value for Telephone Field.";
             $(".tely-error").html(msg);
-        } else if (title == ""){
+        } else if (title != "" && nameRegex.test(title) == false){
             msg = "Invalid or No Value for Title Field.";
             $(".title-error").html(msg);
-        } else if ((password == ""  || passRegex.test(password) == false) && submitAdmin.attr("data-type") == "add"){
+        } else if ((password == ""  || passRegex.test(password) == false) && submitEnvoy.attr("data-type") == "add"){
             msg = "Invalid or No Value for Password Field. must be 7 charcter long with at least one special charcter and number";
             $(".password-error").html(msg);
         } else if (pp !== undefined && validImageTypes.includes(pp.type) == false){
@@ -248,8 +247,8 @@ jQuery(document).ready(function( $ ) {
                     pp = "";
                 }
 
-                if (submitAdmin.attr("data-type") == "edit"){
-                    fd.append("id", submitAdmin.attr("data-id"));
+                if (submitEnvoy.attr("data-type") == "edit"){
+                    fd.append("id", submitEnvoy.attr("data-id"));
                 }
 
                 fd.append("fname", fname.charAt(0).toUpperCase() + fname.substr(1).toLowerCase());
@@ -262,7 +261,8 @@ jQuery(document).ready(function( $ ) {
                 fd.append("email", email);
                 fd.append("code", code);
                 fd.append("telephone", tely);
-                fd.append("title", title);
+                fd.append("prof", title);
+                fd.append("title", "ENV");
                 fd.append("password", password);
                 fd.append("pp", pp);
                 var url = $(this).attr("data-url");
@@ -284,30 +284,31 @@ jQuery(document).ready(function( $ ) {
                     });
                 },
                 success: function (data) {
-                    console.log(data.success);
+                    //console.log(data.success);
                     if (data.success){
+                        error.html("");
                         modal.modal("hide");
 
-                        if (submitSponsor.attr("data-type") == "add"){
+                        if (submitEnvoy.attr("data-type") == "add"){
                             Swal.fire({
                                 icon: "success",
                                 title: data.success,
-                                text: "Click OK to proceed to Dashboard or Add to Add Another Sponsor",
+                                text: "Click OK to proceed to Dashboard or Add to Add Another Envoy",
                                 showCancelButton: true,
                                 confirmButtonText: `OK`,
                                 cancelButtonText:   `Add`,
                                 allowOutsideClick: false,
                             }).then( (result) => {
                                 if(result.value){
-                                location.replace("/admin/Sponsors");
+                                    location.replace("/admin/Envoys");
                                 } else {
                                     if (modal != undefined){
-                                        $("#addSponsorModalForm").modal("show");
+                                        $("#addEnvoyModalForm").modal("show");
                                         $("input, textarea, select").val("");
                                         $("#frame").attr('src', "");
                                         $(".prev").addClass("deactivated");
                                     } else {
-                                        location.replace("/admin/Sponsors/add_sponsor");
+                                        location.replace("/admin/Envoys/add_envoy");
                                     }
                                 }
                             });
@@ -315,7 +316,7 @@ jQuery(document).ready(function( $ ) {
                             Swal.fire({
                                 icon: "success",
                                 title: data.success,
-                                text: "Click OK to proceed to Dashboard or Edit to Edit Sponsor",
+                                text: "Click OK to proceed to Dashboard or Edit to Edit Envoy",
                                 showCancelButton: true,
                                 confirmButtonText: `OK`,
                                 cancelButtonText:   `Add`,
@@ -328,7 +329,7 @@ jQuery(document).ready(function( $ ) {
                     }
                     else{
                         swal.close();
-                        error.html("");
+                        
                         msg = "<span class='alert alert-success text-center'>" + data.error + "</span>";
                         error.html(msg);
                     }
@@ -338,264 +339,5 @@ jQuery(document).ready(function( $ ) {
             }
         }
     });
-
-
-    //Function To Delete Image
-    deleteImage.on("click", function(e){
-        e.preventDefault();
-
-        if ($(this).attr("data-type") == "add"){
-            profilePic.val("");
-            $("#frame").attr("src", "");
-            $(".filly").removeClass("deactivated");
-            $(".prev").addClass("deactivated");
-        }
-    });
-
-    //Function To Change Status
-    status.on("change", function(e){
-        var ID      = $(this).attr("id").split("-")[1];
-        var value   = $(this).val();
-        var url     = "/admin/User/chnage_status";
-        var data    = {id : ID, status : value};
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: data,
-            beforeSend: function() {
-                Swal.fire({
-                    title: 'Auto close alert!',
-                    html: 'Please Hold on as your details are uploaded, do not refresh.',
-                    timer: 40000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                });
-            },
-            success: function (data) {
-                console.log(data.success);
-                if (data.success){
-                    modal.modal("hide");
-                    Swal.fire(data.success, "Click OK to Proceed", "success").then(
-                        function(){
-                            location.reload();
-                        }
-                    )
-                }
-                else{
-                    error.html("");
-                    msg = "<span class='alert alert-success'>" + data.error + "</span>";
-                    error.html(msg);
-                }
-                    
-            }
-        });
-    });
-
-    //Function to edit Admin
-    editAdmin.on("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        var mdl         = $("#addAdminModalForm");
-        var ID          = $(this).attr("data-id");
-        var url         = $(this).attr("data-url");
-        var type        = $(this).attr("data-type").split("-");
-        var data        = {id : ID, type : type[0], mode : type[1]};
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: data,
-            beforeSend: function() {
-                Swal.fire({
-                    title: 'Auto close alert!',
-                    html: 'Please Hold on as Details are being Fetched.',
-                    timer: 40000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                });
-            },
-            success: function (data) {
-                swal.close();
-                
-                //console.log(data.type);
-                if(data.success){
-                    
-                    if (type[1] == "modal"){
-                        $(".card-modal-title").html(data.success.fname + " Administrator Profile Form ");
-                        $(".card-modal-description").html("Edit " + data.success.fname + "'s Administrator Profile");
-                        $("#userID").val(data.success.user_id)
-                        $("#fname").val(data.success.fname);
-                        $("#lname").val(data.success.lname);
-                        $("#dob").val(data.success.dob.split("T")[0]);
-                        $("#age").val(data.success.age);
-                        $("#gender").val(data.success.gender);
-                        $("#country").val(data.success.country);
-                        var cix = $("#country").val().split("-");
-                        var states = countries[cix[1]].states;
-                        $("#state").empty();
-                        html_state = "<option value=''><!-----choose----></option>";
-                        for (var u = 0; u < states.length; u++){
-                            var ste = states[u];
-                            html_state += "<option value='" + ste + "'>" + ste + "</option>";
-                        }
-                        $("#state").append(html_state);
-                        $("#state").val(data.success.state);
-                        $("#email").val(data.success.email);
-                        $("#telephone").val(data.success.telephone.split("-")[1]);
-                        $("#countryCode").val(data.success.telephone.split("-")[0]);
-                        $("#title").val(data.success.user_type);
-                        $("#password").val("");
-                        if (data.success.profile_photo){
-                            profilePic.val("");
-                            $("#frame").attr("src", data.success.profile_photo);
-                            $(".filly").addClass("deactivated");
-                            $(".prev").removeClass("deactivated");
-                        }
-                        submitAdmin.attr("data-url", "/admin/Administrators/edit_profile");
-                        submitAdmin.attr("data-type", "edit");
-                        submitAdmin.attr("data-id", ID);
-                        mdl.modal("show");
-                    } else {
-                        var url = "/admin/Administrators/edit_admin/" + ID;
-                        location.replace(url);
-                    }
-                    
-                }
-                
-                    
-            }
-        });
-        
-    });
-
-    //Function to Delete Admin
-    deleteAdmin.on("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        var ID          = $(this).attr("data-id");
-        var url         = $(this).attr("data-url");
-        var data        = {id : ID};
-
-        Swal.fire({
-            icon: 'question',
-            title: 'Are you Sure you want to Delete ?',
-            text: 'This will permanently delete this profile, click yes to confirm',
-            showCancelButton: true,
-            confirmButtonText: `Yes`,
-            cancelButtonText:   `No`,
-            allowOutsideClick: false,
-        }).then( async (result) => {
-            if(result.value){
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: data,
-                    beforeSend: function() {
-                        Swal.fire({
-                            title: 'Auto close alert!',
-                            html: 'Please Hold on as Details are being Fetched.',
-                            timer: 40000,
-                            timerProgressBar: true,
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                        });
-                    },
-                    success: function (data) {
-                        swal.close();
-                        if(data.success){
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Delete Operation Successful',
-                                text: data.success,
-                            }).then(
-                                function(){
-                                    location.reload();
-                                }
-                            );
-                        }  else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Delete Operation Un-successful',
-                                text: data.error,
-                            });
-                        }   
-                    }
-                });
-            }
-        });
-
-    });
-
-    //Function to Open Profile Modal
-    profile.on("click", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        var ID          = $(this).attr("data-id");
-        var url         = $(this).attr("data-url");
-        var mdl         = $("#adminProfileModal");
-        var type        = $(this).attr("data-type").split("-");
-        var data        = {id : ID, type : type[0], mode : type[1]};
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: data,
-            beforeSend: function() {
-                Swal.fire({
-                    title: 'Auto close alert!',
-                    html: 'Please Hold on as Details are being Fetched.',
-                    timer: 40000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                });
-            },
-            success: function (data) {
-                swal.close();
-                if(data.success){
-                    
-                    if (data.type == "modal"){
-                        if (data.success.profile_photo != ""){
-                            $(".avatar").attr('src', data.success.profile_photo);
-                        } else {
-                            $(".avatar").attr('src','/images/profile/avatar/avatar.png');
-                        }
-                        $(".u-id").html("<strong>" + data.success.title.toUpperCase() + ": " + data.success.user_id + "</strong>")
-                        $(".f-name").html("<i class='fas fa-glasses'></i> First Name : " + "<span class='text-info'>" + data.success.fname + "</span>");
-                        $(".l-name").html("<i class='fab fa-lastfm'></i> Last Name : " + "<span class='text-info'>" + data.success.lname + "</span>");
-                        $(".dob").html("<i class='fas fa-calendar-week'></i> Date of Birth : " + "<span class='text-info'>" + prettyDateOnly(data.success.dob.split("T")[0]) + "</span>" );
-                        $(".age").html("<i class='fas fa-sort-numeric-down-alt'></i> Age : " + "<span class='text-info'>" + data.success.age + "</span>" );
-                        $(".gender").html("<i class='fas fa-user-check'></i> Gender : " + "<span class='text-info'>" + data.success.gender + "</span>" );
-                        $(".country").html("<i class='far fa-flag'></i> Country : " + "<span class='text-danger'>" + data.success.country.split("-")[0] + ", " + data.success.state + "</span>" );
-                        $(".email").html("<i class='far fa-envelope'></i> Email : " + "<a href='mailto:" + data.success.email + "'> " + data.success.email + "</a>");
-                        $(".telephone").html("<i class='fas fa-phone-alt'></i> Telephone : " +  "<span class='text-info'>" + data.success.telephone + "</span>" );
-                        $(".doj").html("<i class='far fa-clock'></i> Join Date : " + "<span class='text-info'>" + prettyDate(data.success.date_created) + "</span>" );
-                        $(".ll").html("<i class='far fa-clock'></i> Last Login : " + "<span class='text-info'>" + prettyDate(data.success.last_login) + "</span>" );
-                        $(".eb").html("<i class='far fa-user'></i> Last Editted By : " + "<span class='text-info'>" + data.success.editted_by + "</span>" );
-                        $(".le").html("<i class='far fa-calendar-check'></i> Last Editted : " + "<span class='text-info'>" + prettyDate(data.success.last_editted) + "</span>" );
-                        mdl.modal("show");
-                    } else {
-                        location.replace(data.success);
-                    }
-                    
-                }
-                
-                    
-            }
-        });
-    });
-
-
-
-
-
-
 
 });

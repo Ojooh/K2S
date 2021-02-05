@@ -18,21 +18,45 @@ router.get('/Administrators/edit_admin/:id', adminHandler.getEditAdministratorFo
 router.post('/Administrators/add_admin', adminHandler.createAdminProfile);
 
 /* POST change administrator status page. */
-router.post('/Administrators/chnage_status', adminHandler.updateAdminStatusProfile);
+router.post('/User/chnage_status', adminHandler.updateProfileStatus);
 
-/* GET administrator dETAILS. */
-router.post('/Administrators/get_profile', adminHandler.getEditAdmin);
+/* GET administrator Details. */
+router.post('/User/get_profile', adminHandler.getProfile);
 
 /* POST administrator updated Details. */
 router.post('/Administrators/edit_profile', adminHandler.updateAdminProfile);
 
-/* DELETE administrator Profile. */
-router.post('/Administrators/delete_profile', adminHandler.deleteAdminProfile);
+/* DELETE  Profile. */
+router.post('/User/delete_profile', adminHandler.deleteProfile);
 
-/* GET administrators page. */
+/* GET Sponsors page. */
 router.get('/Sponsors', adminHandler.getSponsors);
 
-// /* POST to login page. */
-// router.post('/', loginHandler.logIn);
+/* GET Sponsor Form. */
+router.get('/Sponsors/add_sponsor', adminHandler.getAddSponsorForm);
+
+/* GET Sponsor Edit Form. */
+router.get('/Sponsors/edit_sponsor/:id', adminHandler.getEditSponsorForm);
+
+/* POST add Sponsor Profile. */
+router.post('/Sponsors/add_sponsor', adminHandler.createSponsorProfile);
+
+/* POST sponsor updated Details. */
+router.post('/Sponsors/edit_profile', adminHandler.updateSponsorProfile);
+
+/* GET Envoys page. */
+router.get('/Envoys', adminHandler.getEnvoys);
+
+/* GET Enyoys Form. */
+router.get('/Envoys/add_envoy', adminHandler.getAddEnvoyForm);
+
+/* GET Enyoys Edit Form. */
+router.get('/Envoys/edit_envoy/:id', adminHandler.getEditEnvoyForm);
+
+/* POST add Enyoys Profile. */
+router.post('/Envoys/add_envoy', adminHandler.createEnvoyProfile);
+
+/* POST Enyoys updated Details. */
+router.post('/Envoys/edit_envoys', adminHandler.updateEnvoyProfile);
 
 module.exports = router;

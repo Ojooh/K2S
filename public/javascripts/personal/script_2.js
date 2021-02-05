@@ -5,20 +5,21 @@ jQuery(document).ready(function( $ ) {
     var sideBar                 = $("#sideBar");
     var mainPanel               = $(".main-content");
     var dates                   = $(".pretty-date");
-    var openMdl_1               = $(".mdl-admin-form");
+    var openMdl_2               = $(".mdl-sponsor-form");
     var modal                   = $(".modal");
     var closeModl               = $(".close-modal");
     var dob                     = $("#dob");
     var age                     = $("#age");
     var deleteImage             = $(".delete-image");
-    var submitAdmin             = $('#submitAdmin');
+    var submitSponsor           = $('#submitSponsor');
     var profilePic              = $("#profilePic");
     var status                  = $(".custom-control-input")
-    var editAdmin               = $(".edit-admin");
-    var deleteAdmin             = $(".delete-admin");
+    var editSponsor             = $(".edit-sponsor");
+    var deleteSponsor           = $(".delete-sponsor");
     var profile                 = $(".profile");
     const days                  = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames            = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 
     if (window_width <= 991 ){
             if ($(".side-nav li").length <= 6) {
@@ -153,14 +154,12 @@ jQuery(document).ready(function( $ ) {
     });
 
     //Function to Open Modal
-    openMdl_1.on("click", function(e){
+    openMdl_2.on("click", function(e){
         e.preventDefault();
         e.stopPropagation();
 
-        var mdl = $("#addAdminModalForm");
-        var content     = $(".admin-form-modal");
+        var mdl = $("#addSponsorModalForm");
         mdl.modal("show");
-        //content.css({"position":"static", "top" : "none"});
     });
 
     //Function To calculate and display age
@@ -181,7 +180,7 @@ jQuery(document).ready(function( $ ) {
     });
 
     //Function To Submit Form
-    submitAdmin.on("click", function(e){
+    submitSponsor.on("click", function(e){
         e.preventDefault();
         $(".form-group .text-danger").html("");
 
@@ -233,10 +232,10 @@ jQuery(document).ready(function( $ ) {
         } else if (tely == "" || telRegex.test(tely) == false){
             msg = "Invalid or No Value for Telephone Field.";
             $(".tely-error").html(msg);
-        } else if (title == ""){
+        } else if (title != "" && nameRegex.test(title) == false){
             msg = "Invalid or No Value for Title Field.";
             $(".title-error").html(msg);
-        } else if ((password == ""  || passRegex.test(password) == false) && submitAdmin.attr("data-type") == "add"){
+        } else if ((password == ""  || passRegex.test(password) == false) && submitSponsor.attr("data-type") == "add"){
             msg = "Invalid or No Value for Password Field. must be 7 charcter long with at least one special charcter and number";
             $(".password-error").html(msg);
         } else if (pp !== undefined && validImageTypes.includes(pp.type) == false){
@@ -248,8 +247,8 @@ jQuery(document).ready(function( $ ) {
                     pp = "";
                 }
 
-                if (submitAdmin.attr("data-type") == "edit"){
-                    fd.append("id", submitAdmin.attr("data-id"));
+                if (submitSponsor.attr("data-type") == "edit"){
+                    fd.append("id", submitSponsor.attr("data-id"));
                 }
 
                 fd.append("fname", fname.charAt(0).toUpperCase() + fname.substr(1).toLowerCase());
@@ -262,7 +261,8 @@ jQuery(document).ready(function( $ ) {
                 fd.append("email", email);
                 fd.append("code", code);
                 fd.append("telephone", tely);
-                fd.append("title", title);
+                fd.append("prof", title);
+                fd.append("title", "SPN");
                 fd.append("password", password);
                 fd.append("pp", pp);
                 var url = $(this).attr("data-url");
@@ -284,7 +284,7 @@ jQuery(document).ready(function( $ ) {
                     });
                 },
                 success: function (data) {
-                    console.log(data.success);
+                    //console.log(data.success);
                     if (data.success){
                         modal.modal("hide");
 
@@ -338,7 +338,6 @@ jQuery(document).ready(function( $ ) {
             }
         }
     });
-
 
     //Function To Delete Image
     deleteImage.on("click", function(e){
@@ -394,11 +393,11 @@ jQuery(document).ready(function( $ ) {
     });
 
     //Function to edit Admin
-    editAdmin.on("click", function(e){
+    editSponsor.on("click", function(e){
         e.preventDefault();
         e.stopPropagation();
 
-        var mdl         = $("#addAdminModalForm");
+        var mdl         = $("#addSponsorModalForm");
         var ID          = $(this).attr("data-id");
         var url         = $(this).attr("data-url");
         var type        = $(this).attr("data-type").split("-");
@@ -425,8 +424,8 @@ jQuery(document).ready(function( $ ) {
                 if(data.success){
                     
                     if (type[1] == "modal"){
-                        $(".card-modal-title").html(data.success.fname + " Administrator Profile Form ");
-                        $(".card-modal-description").html("Edit " + data.success.fname + "'s Administrator Profile");
+                        $(".card-modal-title").html(data.success.fname + " Sponsor Profile Form ");
+                        $(".card-modal-description").html("Edit " + data.success.fname + "'s sponsor Profile");
                         $("#userID").val(data.success.user_id)
                         $("#fname").val(data.success.fname);
                         $("#lname").val(data.success.lname);
@@ -447,7 +446,7 @@ jQuery(document).ready(function( $ ) {
                         $("#email").val(data.success.email);
                         $("#telephone").val(data.success.telephone.split("-")[1]);
                         $("#countryCode").val(data.success.telephone.split("-")[0]);
-                        $("#title").val(data.success.user_type);
+                        $("#title").val(data.success.proffession);
                         $("#password").val("");
                         if (data.success.profile_photo){
                             profilePic.val("");
@@ -455,12 +454,12 @@ jQuery(document).ready(function( $ ) {
                             $(".filly").addClass("deactivated");
                             $(".prev").removeClass("deactivated");
                         }
-                        submitAdmin.attr("data-url", "/admin/Administrators/edit_profile");
-                        submitAdmin.attr("data-type", "edit");
-                        submitAdmin.attr("data-id", ID);
+                        submitSponsor.attr("data-url", "/admin/Sponsors/edit_profile");
+                        submitSponsor.attr("data-type", "edit");
+                        submitSponsor.attr("data-id", ID);
                         mdl.modal("show");
                     } else {
-                        var url = "/admin/Administrators/edit_admin/" + ID;
+                        var url = "/admin/Sponsors/edit_sponsor/" + ID;
                         location.replace(url);
                     }
                     
@@ -473,7 +472,7 @@ jQuery(document).ready(function( $ ) {
     });
 
     //Function to Delete Admin
-    deleteAdmin.on("click", function(e){
+    deleteSponsor.on("click", function(e){
         e.preventDefault();
         e.stopPropagation();
 
@@ -539,7 +538,7 @@ jQuery(document).ready(function( $ ) {
 
         var ID          = $(this).attr("data-id");
         var url         = $(this).attr("data-url");
-        var mdl         = $("#adminProfileModal");
+        var mdl         = $("#sponsorProfileModal");
         var type        = $(this).attr("data-type").split("-");
         var data        = {id : ID, type : type[0], mode : type[1]};
 
@@ -591,11 +590,4 @@ jQuery(document).ready(function( $ ) {
             }
         });
     });
-
-
-
-
-
-
-
 });

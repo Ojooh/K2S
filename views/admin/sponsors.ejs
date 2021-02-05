@@ -27,8 +27,8 @@
                             <!-- Add Button Modal-->
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="float-left mdl-admin-form mt-5">
-                                        <a href="/admin/Sponsors/add_admin" class="btn btn-outline-kts">
+                                    <div class="float-left mdl-sponsor-form mt-5">
+                                        <a href="/admin/Sponsors/add_sponsor" class="btn btn-outline-kts">
                                             <i class="fas fa-plus"></i>
                                             Add A Sponsor
                                         </a>
@@ -40,7 +40,7 @@
                             <!-- <div class="row">
                                 <div class="col-12">
                                     <div class="float-left mt-5">
-                                        <a href="/admin/Sponsors/add_admin" class="btn btn-outline-kts">
+                                        <a href="/admin/Sponsors/add_sponsor" class="btn btn-outline-kts">
                                             <i class="fas fa-plus"></i>
                                             Add A Sponsor
                                         </a>
@@ -68,6 +68,7 @@
                                                             <th scope="col">S/N</th>
                                                             <th scope="col">Name</th>
                                                             <th scope="col">Proffession</th>
+                                                            <th scope="col">Kids</th>
                                                             <th scope="col">Date Created</th>
                                                             <th scope="col">Last Login</th>
                                                             <th scope="col">Status</th>
@@ -84,7 +85,10 @@
                                                                 <%= spns[i].fname + " " + spns[i].lname %>
                                                             </td>
                                                             <td>
-                                                                <%= spns[i].title %>
+                                                                <%= spns[i].proffession %>
+                                                            </td>
+                                                            <td>
+                                                                0
                                                             </td>
                                                             <td class="pretty-date">
                                                                 <%= spns[i].date_created %>
@@ -110,14 +114,14 @@
                                                             <td></td>
                                                             <% } %>
                                                             <td class="td-actions">
-                                                                <a href="#" class="profile text-info mr-4" data-id="<%= spns[i].id %>" data-url="/admin/Sponsors/get_profile" data-toggle="tooltip" data-placement="top" title="Sponsor Details">
+                                                                <a href="#" class="profile text-info mr-4" data-id="<%= spns[i].id %>" data-url="/admin/User/get_profile" data-type="edit-modal" data-toggle="tooltip" data-placement="top" title="Sponsor Details">
                                                                     <i class="fas fa-info-circle"></i>
                                                                 </a>
-                                                                <a href="#" class="edit-admin text-primary mr-4" data-id="<%= spns[i].id %>" data-url="/admin/Sponsors/get_profile" data-type="modal" data-toggle="tooltip" data-placement="top" title="Edit Sponsor">
+                                                                <a href="#" class="edit-sponsor text-primary mr-4" data-id="<%= spns[i].id %>" data-url="/admin/User/get_profile" data-type="edit-modal" data-toggle="tooltip" data-placement="top" title="Edit Sponsor">
                                                                         <i class="fas fa-pencil-alt"></i>
                                                                 </a>
-                                                                <% if (spns[i].id != user.id) { %>
-                                                                <a href="#" class="delete-admin text-danger" data-id="<%= spns[i].id %>" data-url="/admin/Sponsors/delete_profile" data-toggle="tooltip" data-placement="top" title="Remove Sponsor">
+                                                                <% if (user.user_type == "ADMS") { %>
+                                                                <a href="#" class="delete-sponsor text-danger" data-id="<%= spns[i].id %>" data-url="/admin/User/delete_profile" data-toggle="tooltip" data-placement="top" title="Remove Sponsor">
                                                                     <i class="fas fa-times"></i>
                                                                 </a>
                                                                 <% } %>
@@ -148,5 +152,8 @@
             </div>
     </div>
     
-<% include includes/modal.ejs %>                    
-<% include includes/foot.ejs%>
+<% include includes/modal_2.ejs %>                    
+<script src="/javascripts/personal/script_2.js"></script>
+</body>
+
+</html>
