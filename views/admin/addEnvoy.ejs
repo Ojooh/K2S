@@ -162,13 +162,27 @@
                                                             <span class="text-danger title-error my-1"></span>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group bmd-form-group">
-                                                            <label class="bmd-label-floating">Password</label>
+                                                <div class="col-md-6">
+                                                    <div class="form-group bmd-form-group">
+                                                        <label class="bmd-label-floating mb-2">Password</label>
+                                                        <div class="input-group">
                                                             <input type="password" class="form-control" id="password" placeholder="Password....">
-                                                            <span class="text-danger password-error my-1"></span>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text" id="basic-addon12">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                
+                                                                <span class="input-group-text" id="basic-addon2">
+                                                                    <i class="fas fa-robot"></i>&nbsp;Generate Password
+                                                                </span>
+                                                            </div>
                                                         </div>
+                                                        <!-- <input type="password" class="form-control" id="password" placeholder="Password...."> -->
+                                                        <span class="text-danger password-error my-1"></span>
                                                     </div>
+                                                </div>
                                                 </div>
                                             
                                                 <div class="form-row">
@@ -216,6 +230,13 @@
 
             </div>
     </div>
+    <!-- Over Lay  -->
+    <div class="overlay deactivated">
+        <div class="close-sidebar">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    <!-- Over Lay End -->
     <script src="/javascripts/personal/country_state.js"></script>
     <script src="/javascripts/personal/country_code.js"></script>
 

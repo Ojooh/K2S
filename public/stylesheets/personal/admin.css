@@ -73,6 +73,33 @@ form span {
   background: linear-gradient(60deg, #ec407a, #d81b60);
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.65;
+  background-color: #19191b;
+  z-index: 1500;
+}
+
+.overlay .close-sidebar {
+  position: absolute;
+  top: 0;
+  left: calc(100% - 5%);
+  padding: 15px;
+  color: #fff;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .overlay .close-sidebar {
+    left: calc(100% - 20%);
+  }
+}
+
 .wrapper {
   position: absolute;
   top: 0;
@@ -128,6 +155,12 @@ form span {
   padding-bottom: 30px;
 }
 
+@media (max-width: 290px) {
+  .wrapper .sidebar .sidebar-wrapper {
+    width: 200px;
+  }
+}
+
 .wrapper .sidebar ul {
   margin-top: 10px;
 }
@@ -143,6 +176,12 @@ form span {
   font-size: 25px;
   height: auto;
   padding: 0;
+}
+
+@media (max-width: 290px) {
+  .wrapper .sidebar ul li .search-area {
+    width: 150px;
+  }
 }
 
 .wrapper .sidebar ul li .search-area .input-group-text {
@@ -189,6 +228,12 @@ form span {
   color: #fff;
   -webkit-box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
           box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
+}
+
+@media (max-width: 290px) {
+  .wrapper .sidebar {
+    width: 200px;
+  }
 }
 
 @media (max-width: 991px) {
@@ -592,6 +637,26 @@ form span {
   background-color: #e9ecef;
 }
 
+.wrapper .main-content .card .bmd-form-group input[type='password'] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.wrapper .main-content .card .bmd-form-group .input-group-append {
+  -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+  cursor: pointer;
+  background: transparent;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.wrapper .main-content .card .bmd-form-group .input-group-append .input-group-text {
+  height: 100% !important;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
 .wrapper .main-content .card .bmd-form-group span {
   width: 100%;
   text-align: center;
@@ -748,5 +813,33 @@ form span {
 .modal .card-modal-box .modal-body .bmd-form-group input:disabled,
 .modal .card-modal-box .modal-body .bmd-form-group select:disabled {
   background-color: #e9ecef;
+}
+
+.modal .card-modal-box .modal-body .bmd-form-group input[type='password'] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.modal .card-modal-box .modal-body .bmd-form-group .input-group-append {
+  -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+  cursor: pointer;
+  background: transparent;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.modal .card-modal-box .modal-body .bmd-form-group .input-group-append #basic-addon12 {
+  height: 100% !important;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 10px;
+}
+
+.modal .card-modal-box .modal-body .bmd-form-group .input-group-append #basic-addon2 {
+  height: 100% !important;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  font-size: 10px;
 }
 /*# sourceMappingURL=admin.css.map */

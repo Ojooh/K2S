@@ -57,6 +57,12 @@ router.get('/Envoys/edit_envoy/:id', adminHandler.getEditEnvoyForm);
 router.post('/Envoys/add_envoy', adminHandler.createEnvoyProfile);
 
 /* POST Enyoys updated Details. */
-router.post('/Envoys/edit_envoys', adminHandler.updateEnvoyProfile);
+router.post('/Envoys/edit_profile', adminHandler.updateEnvoyProfile);
+
+/* GET Kids page. */
+router.get('/Kids', adminHandler.getKids);
+
+/* GET Kid Form. */
+router.get('/Kids/add_kid', adminHandler.getAddKidForm);
 
 module.exports = router;

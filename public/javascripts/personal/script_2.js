@@ -1,6 +1,7 @@
 jQuery(document).ready(function( $ ) {
     var error                   = $(".error");
     var sidebarToggler          = $("#sideBarToggler");
+    var closeSidebar            = $(".close-sidebar");
     var window_width            = $(window).width();
     var sideBar                 = $("#sideBar");
     var mainPanel               = $(".main-content");
@@ -17,6 +18,8 @@ jQuery(document).ready(function( $ ) {
     var editSponsor             = $(".edit-sponsor");
     var deleteSponsor           = $(".delete-sponsor");
     var profile                 = $(".profile");
+    var viewPassword            = $("#basic-addon12");
+    var genPassword             = $("#basic-addon2");
     const days                  = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames            = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -135,9 +138,25 @@ jQuery(document).ready(function( $ ) {
     sidebarToggler.on("click", function (e){
         e.preventDefault();
         sideBar.toggleClass("show");
+        $(".overlay").removeClass("deactivated");
         if (sidebarToggler.hasClass("show")){
             $(".logo").css({"display": "none"})
         }
+    });
+
+    //Function To Close Sidebar Mobile VIEW
+    closeSidebar.on("click", function(e){
+        //console.log("yep");
+        e.preventDefault();
+        sideBar.removeClass("show");
+        $(".overlay").addClass("deactivated");
+    });
+
+    //If Over Lay is Clicked
+    $(".overlay").on("click", function(e){
+        e.preventDefault();
+        sideBar.removeClass("show");
+        $(".overlay").addClass("deactivated");
     });
 
     //
@@ -325,6 +344,8 @@ jQuery(document).ready(function( $ ) {
                             });
                         }
                         
+                    } else if (data.url){
+                        location.replace(data.url);
                     }
                     else{
                         swal.close();
@@ -381,6 +402,8 @@ jQuery(document).ready(function( $ ) {
                             location.reload();
                         }
                     )
+                } else if (data.url){
+                        location.replace(data.url);
                 }
                 else{
                     error.html("");
@@ -463,6 +486,8 @@ jQuery(document).ready(function( $ ) {
                         location.replace(url);
                     }
                     
+                } else if (data.url){
+                    location.replace(data.url);
                 }
                 
                     
@@ -517,7 +542,9 @@ jQuery(document).ready(function( $ ) {
                                     location.reload();
                                 }
                             );
-                        }  else {
+                        }  else if (data.url){
+                            location.replace(data.url);
+                        }else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Delete Operation Un-successful',
@@ -584,10 +611,41 @@ jQuery(document).ready(function( $ ) {
                         location.replace(data.success);
                     }
                     
+                } else if (data.url){
+                    location.replace(data.url);
                 }
                 
                     
             }
         });
+    });
+
+    //Function to view password
+    viewPassword.on("click", function(e){
+        console.log("yep");
+        e.preventDefault();
+        if($(this).hasClass("see")){
+            $(this).removeClass("see");
+            $($(this).children()[0]).addClass("fa-eye")
+            $($(this).children()[0]).removeClass("fa-eye-slash");
+            $("#password").attr("type", "password");
+        } else {
+            $(this).addClass("see");
+            $($(this).children()[0]).removeClass("fa-eye")
+            $($(this).children()[0]).addClass("fa-eye-slash");
+            $("#password").attr("type", "text");
+        }
+        
+    });
+
+    //Function to generate a random password
+    genPassword.on("click", function(e){
+        e.preventDefault();
+        var spec_char   = "*#?@<>!$%^&";
+        var rands       = "";
+        var gen         = Math.random().toString(36).slice(-8);
+        rands           = spec_char.charAt(Math.floor(Math.random() * spec_char.length));
+        rands           = gen + rands;
+        $("#password").val(rands);
     });
 });

@@ -57,6 +57,70 @@ module.exports.getUserByUserId = (user_id) => {
     });
 }
 
+//GET NUMBER OF ADMIS
+module.exports.getCountAdmins = () => {
+    const query = "SELECT COUNT(*) AS total FROM users WHERE is_admin = 1;";
+    console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//GET count for sponsors
+module.exports.getCountSponsors = () => {
+    const query = "SELECT COUNT(*) AS total FROM users WHERE is_sponsor = 1;";
+    console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//GET count for envoys
+module.exports.getCountEnvoys = () => {
+    const query = "SELECT COUNT(*) AS total FROM users WHERE is_envoy = 1;";
+    console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
+//GET count for kids
+module.exports.getCountKids = () => {
+    const query = "SELECT COUNT(*) AS total FROM kids WHERE is_kid = 1;";
+    console.log(query);
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+}
+
 //UPDATE USER LAST LOGIN
 module.exports.updateLastLogin = (id, last_login) => {
     const query = "UPDATE users SET last_login = '" + last_login + "'WHERE id = '" + id + "';";
@@ -243,5 +307,20 @@ module.exports.insertEnvoyProfile = (user_id, fname, lname, dob, age, gender, co
         });
     });
 }
+
+//GET Kids
+module.exports.getKids = () => {
+    const query = "SELECT * FROM kids WHERE is_kid = 1;";
+    return new Promise( ( resolve, reject ) => {
+        con.query(query, (err, result) => {
+            if (err){
+                return reject(err);
+            } else {
+                resolve(result);
+            } 
+
+        });
+    });
+};
 
 

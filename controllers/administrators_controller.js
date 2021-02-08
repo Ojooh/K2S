@@ -19,10 +19,12 @@ module.exports.getDash = async (req, res, next) => {
         var title       = "Dashboard";
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")){
-            var admins      = await User.getAdministrators();
-            var sponsors    = await User.getSponsors()
+            var admins      = await User.getCountAdmins();
+            var sponsors    = await User.getCountSponsors();
+            var envoys      = await User.getCountEnvoys();
+            var kids      = await User.getCountKids()
             var sidebar     = {dash : "active", usr : "", adm : "", kds : "", sps : "", env : "", ntf : ""};
-            var count       = {admins : admins.length, sponsors : sponsors.length}
+            var count       = {admins : admins[0].total, sponsors : sponsors[0].total, envoys : envoys[0].total, kids :kids.total};
             var context     = {title : title, icon : icon, user : user[0], active : sidebar, count : count};
              res.render('admin/Dashboard', context);
         } else {
@@ -117,10 +119,12 @@ module.exports.createAdminProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            res.redirect("/login");
+            var url = "/login"
+            res.json({url : url});
         }
      } else {
-        res.redirect("/login");
+        var url = "/login"
+        res.json({url : url});
     }
 }
 
@@ -146,10 +150,12 @@ module.exports.updateProfileStatus = async (req, res, next) => {
             var msg         = editted[0].fname + " Profile Is " + change;
             res.json({success : msg});
         } else {
-            res.redirect("/login");
+            var url = "/login"
+            res.json({url : url});
         }
     } else {
-        res.redirect("/login");
+        var url = "/login"
+        res.json({url : url});
     }
 
 }
@@ -162,9 +168,11 @@ module.exports.getProfile = async (req, res, next) => {
         var ID          = req.body.id;
         var type        = req.body.type;
         var mode        = req.body.mode;
+        console.log(type);
 
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID)){
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM" )){
             let edittee = await User.getUserById(ID);
+            //console.log(edittee);
 
             if (type == "edit"){
                 if (mode == "form"){
@@ -183,10 +191,12 @@ module.exports.getProfile = async (req, res, next) => {
             
         
         } else {
-            res.redirect("/login");
+            var url = "/login"
+            res.json({url : url});
         }
     } else {
-        res.redirect("/login");
+        var url = "/login"
+        res.json({url : url});
     }
 
 
@@ -249,10 +259,12 @@ module.exports.updateAdminProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            res.redirect("/login");
+            var url = "/login"
+            res.json({url : url});
         }
      } else {
-        res.redirect("/login");
+        var url = "/login"
+        res.json({url : url});
     }
 }
 
@@ -272,10 +284,12 @@ module.exports.getEditAdministratorForm = async (req, res, next) => {
             var context     = {title : title, icon : icon, user : user[0], active : sidebar, edity : edittee[0]};
             res.render('admin/editAdministrator', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.redirect(url);
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.redirect(url);
     }
 };
 
@@ -293,10 +307,12 @@ module.exports.deleteProfile = async (req, res, next) => {
             var msg         = editted[0].fname + " Profile Deleted Successfully";
             res.json({success : msg});
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.json({url : url});
         }
     } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.json({url : url});
     }
 
 };
@@ -316,10 +332,12 @@ module.exports.getSponsors = async (req, res, next) => {
             var context     = {title : title, icon : icon, user : user[0], active : sidebar, spns : sponsors};
             res.render('admin/sponsors', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.redirect(url);
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.redirect(url);
     }
 
     
@@ -339,10 +357,12 @@ module.exports.getAddSponsorForm = async (req, res, next) => {
             var context     = {title : title, icon : icon, user : user[0], active : sidebar};
             res.render('admin/addSponsor', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.redirect(url);
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.redirect(url);
     }
 };
 
@@ -384,10 +404,12 @@ module.exports.createSponsorProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.json({url : url});
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.json({url : url});
     }
 }
 
@@ -407,10 +429,12 @@ module.exports.getEditSponsorForm = async (req, res, next) => {
             var context     = {title : title, icon : icon, user : user[0], active : sidebar, edity : edittee[0]};
             res.render('admin/editSponsor', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.redirect(url);
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.redirect(url);
     }
 };
 
@@ -471,10 +495,12 @@ module.exports.updateSponsorProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.json({url : url});
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.json({url : url});
     }
 }
 
@@ -493,10 +519,12 @@ module.exports.getEnvoys = async (req, res, next) => {
             var context     = {title : title, icon : icon, user : user[0], active : sidebar, envs : envoys};
             res.render('admin/envoys', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.redirect(url);
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+            res.json(url);
     }
 
     
@@ -560,10 +588,12 @@ module.exports.createEnvoyProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.json({url : url});
         }
      } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.json({url : url});
     }
 }
 
@@ -647,10 +677,59 @@ module.exports.updateEnvoyProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
+            var url = "/login";
+            res.json({url : url});
+        }
+     } else {
+        var url = "/login";
+        res.json({url : url});
+    }
+}
+
+//Function To Render Envoys
+module.exports.getKids = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email       = req.session.username;
+        var user        = await User.getUserByEmail(email);
+        var icon        = "fas fa-child";
+        var title       = "Kids";
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")){
+            var kids      = await User.getKids();
+            var sidebar     = {dash : "", usr : "", adm : "", kds : "active", sps : "", env : "", ntf : ""};
+            var context     = {title : title, icon : icon, user : user[0], active : sidebar, kds : kids};
+            res.render('admin/kids', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+     } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+    
+};
+
+//Function To Render Envoy Add Form
+module.exports.getAddKidForm = async (req, res, next) => {
+     if (req.session.loggedin) {
+        var email       = req.session.username;
+        var user        = await User.getUserByEmail(email);
+        var icon        = "fas fa-hands-helping";
+        var title       = "Envoys";
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")){
+            var sidebar     = {dash : "", usr : "", adm : "", kds : "", sps : "", env : "active", ntf : ""};
+            var context     = {title : title, icon : icon, user : user[0], active : sidebar};
+            res.render('admin/addEnvoy', context);
+        } else {
             res.redirect("/login");
         }
      } else {
         res.redirect("/login");
     }
-}
+};
 

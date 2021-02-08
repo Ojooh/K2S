@@ -1,6 +1,7 @@
 jQuery(document).ready(function( $ ) {
     var error                   = $(".error");
     var sidebarToggler          = $("#sideBarToggler");
+    var closeSidebar            = $(".close-sidebar");
     var window_width            = $(window).width();
     var sideBar                 = $("#sideBar");
     var mainPanel               = $(".main-content");
@@ -17,6 +18,8 @@ jQuery(document).ready(function( $ ) {
     var editEnvoy               = $(".edit-envoy");
     var deleteEnvoy             = $(".delete-envoy");
     var profile                 = $(".profile");
+    var viewPassword            = $("#basic-addon12");
+    var genPassword             = $("#basic-addon2");
     const days                  = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames            = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -135,9 +138,25 @@ jQuery(document).ready(function( $ ) {
     sidebarToggler.on("click", function (e){
         e.preventDefault();
         sideBar.toggleClass("show");
+        $(".overlay").removeClass("deactivated");
         if (sidebarToggler.hasClass("show")){
             $(".logo").css({"display": "none"})
         }
+    });
+
+    //Function To Close Sidebar Mobile VIEW
+    closeSidebar.on("click", function(e){
+        //console.log("yep");
+        e.preventDefault();
+        sideBar.removeClass("show");
+        $(".overlay").addClass("deactivated");
+    });
+
+    //If Over Lay is Clicked
+    $(".overlay").on("click", function(e){
+        e.preventDefault();
+        sideBar.removeClass("show");
+        $(".overlay").addClass("deactivated");
     });
 
     //
@@ -312,7 +331,9 @@ jQuery(document).ready(function( $ ) {
                                     }
                                 }
                             });
-                        } else {
+                        } else if (data.url){
+                            location.replace(data.url);
+                        }else {
                             Swal.fire({
                                 icon: "success",
                                 title: data.success,
@@ -340,4 +361,292 @@ jQuery(document).ready(function( $ ) {
         }
     });
 
+    //Function To Delete Image
+    deleteImage.on("click", function(e){
+        e.preventDefault();
+
+        if ($(this).attr("data-type") == "add"){
+            profilePic.val("");
+            $("#frame").attr("src", "");
+            $(".filly").removeClass("deactivated");
+            $(".prev").addClass("deactivated");
+        }
+    });
+
+    //Function To Change Status
+    status.on("change", function(e){
+        var ID      = $(this).attr("id").split("-")[1];
+        var value   = $(this).val();
+        var url     = "/admin/User/chnage_status";
+        var data    = {id : ID, status : value};
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Auto close alert!',
+                    html: 'Please Hold on as your details are uploaded, do not refresh.',
+                    timer: 40000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+            },
+            success: function (data) {
+                console.log(data.success);
+                if (data.success){
+                    modal.modal("hide");
+                    Swal.fire(data.success, "Click OK to Proceed", "success").then(
+                        function(){
+                            location.reload();
+                        }
+                    )
+                } else if (data.url){
+                    location.replace(data.url);
+                }
+                else{
+                    error.html("");
+                    msg = "<span class='alert alert-success'>" + data.error + "</span>";
+                    error.html(msg);
+                }
+                    
+            }
+        });
+    });
+
+    //Function to edit Admin
+    editEnvoy.on("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        var mdl         = $("#addEnvoyModalForm");
+        var ID          = $(this).attr("data-id");
+        var url         = $(this).attr("data-url");
+        var type        = $(this).attr("data-type").split("-");
+        var data        = {id : ID, type : type[0], mode : type[1]};
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Auto close alert!',
+                    html: 'Please Hold on as Details are being Fetched.',
+                    timer: 40000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+            },
+            success: function (data) {
+                swal.close();
+                
+                //console.log(data.type);
+                if(data.success){
+                    
+                    if (type[1] == "modal"){
+                        $(".card-modal-title").html(data.success.fname + " Envoy Profile Form ");
+                        $(".card-modal-description").html("Edit " + data.success.fname + "'s envoy Profile");
+                        $("#userID").val(data.success.user_id)
+                        $("#fname").val(data.success.fname);
+                        $("#lname").val(data.success.lname);
+                        $("#dob").val(data.success.dob.split("T")[0]);
+                        $("#age").val(data.success.age);
+                        $("#gender").val(data.success.gender);
+                        $("#country").val(data.success.country);
+                        var cix = $("#country").val().split("-");
+                        var states = countries[cix[1]].states;
+                        $("#state").empty();
+                        html_state = "<option value=''><!-----choose----></option>";
+                        for (var u = 0; u < states.length; u++){
+                            var ste = states[u];
+                            html_state += "<option value='" + ste + "'>" + ste + "</option>";
+                        }
+                        $("#state").append(html_state);
+                        $("#state").val(data.success.state);
+                        $("#email").val(data.success.email);
+                        $("#telephone").val(data.success.telephone.split("-")[1]);
+                        $("#countryCode").val(data.success.telephone.split("-")[0]);
+                        $("#title").val(data.success.proffession);
+                        $("#password").val("");
+                        if (data.success.profile_photo){
+                            profilePic.val("");
+                            $("#frame").attr("src", data.success.profile_photo);
+                            $(".filly").addClass("deactivated");
+                            $(".prev").removeClass("deactivated");
+                        }
+                        submitEnvoy.attr("data-url", "/admin/Envoys/edit_profile");
+                        submitEnvoy.attr("data-type", "edit");
+                        submitEnvoy.attr("data-id", ID);
+                        mdl.modal("show");
+                    } else {
+                        var url = "/admin/Envoys/edit_sponsor/" + ID;
+                        location.replace(url);
+                    }
+                    
+                } else if (data.url){
+                        location.replace(data.url);
+                }
+                
+                    
+            }
+        });
+        
+    });
+
+    //Function to Delete Admin
+    deleteEnvoy.on("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        var ID          = $(this).attr("data-id");
+        var url         = $(this).attr("data-url");
+        var data        = {id : ID};
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Are you Sure you want to Delete ?',
+            text: 'This will permanently delete this profile, click yes to confirm',
+            showCancelButton: true,
+            confirmButtonText: `Yes`,
+            cancelButtonText:   `No`,
+            allowOutsideClick: false,
+        }).then( async (result) => {
+            if(result.value){
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    beforeSend: function() {
+                        Swal.fire({
+                            title: 'Auto close alert!',
+                            html: 'Please Hold on as Details are being Fetched.',
+                            timer: 40000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        });
+                    },
+                    success: function (data) {
+                        swal.close();
+                        if(data.success){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Delete Operation Successful',
+                                text: data.success,
+                            }).then(
+                                function(){
+                                    location.reload();
+                                }
+                            );
+                        } else if (data.url){
+                            location.replace(data.url);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Delete Operation Un-successful',
+                                text: data.error,
+                            });
+                        }   
+                    }
+                });
+            }
+        });
+
+    });
+
+    //Function to Open Profile Modal
+    profile.on("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        var ID          = $(this).attr("data-id");
+        var url         = $(this).attr("data-url");
+        var mdl         = $("#envoyProfileModal");
+        var type        = $(this).attr("data-type").split("-");
+        var data        = {id : ID, type : type[0], mode : type[1]};
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Auto close alert!',
+                    html: 'Please Hold on as Details are being Fetched.',
+                    timer: 40000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+            },
+            success: function (data) {
+                swal.close();
+                if(data.success){
+                    
+                    if (data.type == "modal"){
+                        if (data.success.profile_photo != ""){
+                            $(".avatar").attr('src', data.success.profile_photo);
+                        } else {
+                            $(".avatar").attr('src','/images/profile/avatar/avatar.png');
+                        }
+                        $(".u-id").html("<strong>" + data.success.title.toUpperCase() + ": " + data.success.user_id + "</strong>")
+                        $(".f-name").html("<i class='fas fa-glasses'></i> First Name : " + "<span class='text-info'>" + data.success.fname + "</span>");
+                        $(".l-name").html("<i class='fab fa-lastfm'></i> Last Name : " + "<span class='text-info'>" + data.success.lname + "</span>");
+                        $(".dob").html("<i class='fas fa-calendar-week'></i> Date of Birth : " + "<span class='text-info'>" + prettyDateOnly(data.success.dob.split("T")[0]) + "</span>" );
+                        $(".age").html("<i class='fas fa-sort-numeric-down-alt'></i> Age : " + "<span class='text-info'>" + data.success.age + "</span>" );
+                        $(".gender").html("<i class='fas fa-user-check'></i> Gender : " + "<span class='text-info'>" + data.success.gender + "</span>" );
+                        $(".country").html("<i class='far fa-flag'></i> Country : " + "<span class='text-danger'>" + data.success.country.split("-")[0] + ", " + data.success.state + "</span>" );
+                        $(".email").html("<i class='far fa-envelope'></i> Email : " + "<a href='mailto:" + data.success.email + "'> " + data.success.email + "</a>");
+                        $(".telephone").html("<i class='fas fa-phone-alt'></i> Telephone : " +  "<span class='text-info'>" + data.success.telephone + "</span>" );
+                        $(".doj").html("<i class='far fa-clock'></i> Join Date : " + "<span class='text-info'>" + prettyDate(data.success.date_created) + "</span>" );
+                        $(".ll").html("<i class='far fa-clock'></i> Last Login : " + "<span class='text-info'>" + prettyDate(data.success.last_login) + "</span>" );
+                        $(".eb").html("<i class='far fa-user'></i> Last Editted By : " + "<span class='text-info'>" + data.success.editted_by + "</span>" );
+                        $(".le").html("<i class='far fa-calendar-check'></i> Last Editted : " + "<span class='text-info'>" + prettyDate(data.success.last_editted) + "</span>" );
+                        mdl.modal("show");
+                    } else {
+                        location.replace(data.success);
+                    }
+                    
+                } else if (data.url){
+                    location.replace(data.url);
+                }
+                
+                    
+            }
+        });
+    });
+
+    //Function to view password
+    viewPassword.on("click", function(e){
+        console.log("yep");
+        e.preventDefault();
+        if($(this).hasClass("see")){
+            $(this).removeClass("see");
+            $($(this).children()[0]).addClass("fa-eye")
+            $($(this).children()[0]).removeClass("fa-eye-slash");
+            $("#password").attr("type", "password");
+        } else {
+            $(this).addClass("see");
+            $($(this).children()[0]).removeClass("fa-eye")
+            $($(this).children()[0]).addClass("fa-eye-slash");
+            $("#password").attr("type", "text");
+        }
+        
+    });
+
+    //Function to generate a random password
+    genPassword.on("click", function(e){
+        e.preventDefault();
+        var spec_char   = "*#?@<>!$%^&";
+        var rands       = "";
+        var gen         = Math.random().toString(36).slice(-8);
+        rands           = spec_char.charAt(Math.floor(Math.random() * spec_char.length));
+        rands           = gen + rands;
+        $("#password").val(rands);
+    });
 });

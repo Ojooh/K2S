@@ -77,6 +77,30 @@ form span {
   background: linear-gradient(60deg, #ec407a, #d81b60);
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.65;
+  background-color: #19191b;
+  z-index: 1500;
+
+  .close-sidebar {
+    position: absolute;
+    top: 0;
+    left: calc(100% - 5%);
+    padding: 15px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+    @media (max-width: 991px) {
+      left: calc(100% - 20%);
+    }
+  }
+}
+
 .wrapper {
   position: absolute;
   top: 0;
@@ -128,6 +152,10 @@ form span {
       width: 290px;
       z-index: 4;
       padding-bottom: 30px;
+
+      @media (max-width: 290px) {
+        width: 200px;
+      }
     }
 
     ul {
@@ -143,6 +171,9 @@ form span {
           font-size: 25px;
           height: auto;
           padding: 0;
+          @media (max-width: 290px) {
+            width: 150px;
+          }
 
           .input-group-text {
             border: none;
@@ -193,6 +224,10 @@ form span {
           }
         }
       }
+    }
+
+    @media (max-width: 290px) {
+      width: 200px;
     }
 
     @media (max-width: 991px) {
@@ -566,6 +601,26 @@ form span {
             0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
         }
 
+        input[type='password'] {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .input-group-append {
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
+            0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          cursor: pointer;
+          background: transparent;
+          border-top-right-radius: 30px;
+          border-bottom-right-radius: 30px;
+
+          .input-group-text {
+            height: 100% !important;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+          }
+        }
+
         span {
           width: 100%;
           text-align: center;
@@ -715,6 +770,34 @@ form span {
           background: transparent;
           box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
             0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+        }
+
+        input[type='password'] {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .input-group-append {
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
+            0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          cursor: pointer;
+          background: transparent;
+          border-top-right-radius: 30px;
+          border-bottom-right-radius: 30px;
+
+          #basic-addon12 {
+            height: 100% !important;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            font-size: 10px;
+          }
+
+          #basic-addon2 {
+            height: 100% !important;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+            font-size: 10px;
+          }
         }
       }
     }

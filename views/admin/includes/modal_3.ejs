@@ -1,3 +1,12 @@
+<!-- Over Lay  -->
+<div class="overlay deactivated">
+    <div class="close-sidebar">
+        <i class="fas fa-times"></i>
+    </div>
+</div>
+<!-- Over Lay End -->
+
+
 <!-- The Modal -->
 <!-- Envoy Form Modal -->
 <div class="modal fade bd-example-modal-xl" id="addEnvoyModalForm" data-backdrop="static" tabindex="-1" role="dialog"
@@ -143,8 +152,22 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group bmd-form-group">
-                                <label class="bmd-label-floating">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Password....">
+                                <label class="bmd-label-floating mb-2">Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" placeholder="Password....">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon12">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+                                    <div class="input-group-append">
+                        
+                                        <span class="input-group-text" id="basic-addon2">
+                                            <i class="fas fa-robot"></i>&nbsp;Generate Password
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- <input type="password" class="form-control" id="password" placeholder="Password...."> -->
                                 <span class="text-danger password-error my-1"></span>
                             </div>
                         </div>
@@ -190,9 +213,9 @@
 </div>
 <!-- Envoy Form Modal End -->
 
-<!-- Sponsoe Profile Modal -->
-<div class="modal fade bd-example-modal-xl" id="sponsorProfileModal" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="sponsorProfileModalCenterTitle" aria-hidden="true">
+<!-- Envoy Profile Modal -->
+<div class="modal fade bd-example-modal-xl" id="envoyProfileModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="envoyProfileModalCenterTitle" aria-hidden="true">
     <div class="close-modal">
         <i class="fas fa-times"></i>
     </div>
@@ -239,7 +262,7 @@
         </div>
     </div>
 </div>
-<!-- SPonsor Profile Modal End -->
+<!-- Envoy Profile Modal End -->
 
 
 
