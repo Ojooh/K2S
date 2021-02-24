@@ -50,6 +50,13 @@ jQuery(document).ready(function( $ ) {
             $(".side-nav li").eq(0).remove();
         }
     }
+    for (var i = 0; i < $(".card-title").length; i++){
+        if ($($(".card-title")[i]).html().trim() == ""){
+           $($(".card-title")[i]).html("0");
+           console.log($($(".card-title")[i]).html())
+        }
+    }
+     
 
 
     for(var t = 0; t < dates.length; t ++){

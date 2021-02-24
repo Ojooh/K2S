@@ -621,6 +621,29 @@ form span {
           }
         }
 
+        .input-group-append {
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
+            0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          cursor: pointer;
+          background: transparent;
+          border-top-right-radius: 30px;
+          border-bottom-right-radius: 30px;
+
+          #basic-addon12 {
+            height: 100% !important;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            font-size: 10px;
+          }
+
+          #basic-addon2 {
+            height: 100% !important;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+            font-size: 10px;
+          }
+        }
+
         span {
           width: 100%;
           text-align: center;
@@ -749,54 +772,64 @@ form span {
     .modal-body {
       margin-top: 50px;
       padding: 10px 25px;
-
-      .bmd-form-group {
-        label {
-          position: relative;
-          float: left;
-          font-size: 12px;
-          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      form {
+        fieldset:not(:first-of-type) {
+          display: none;
         }
 
-        input,
-        select {
-          padding: 0 14px;
-          border-radius: 30px;
-          &:disabled {
-            background-color: #e9ecef;
-          }
-          // border: none;
-          // border: 1px solid ;
-          background: transparent;
-          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
-            0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
-        }
-
-        input[type='password'] {
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-
-        .input-group-append {
-          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
-            0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
-          cursor: pointer;
-          background: transparent;
-          border-top-right-radius: 30px;
-          border-bottom-right-radius: 30px;
-
-          #basic-addon12 {
-            height: 100% !important;
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-            font-size: 10px;
+        .bmd-form-group {
+          label {
+            position: relative;
+            float: left;
+            font-size: 12px;
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
           }
 
-          #basic-addon2 {
-            height: 100% !important;
+          input,
+          select {
+            padding: 0 14px;
+            border-radius: 30px;
+            &:disabled {
+              background-color: #e9ecef;
+            }
+            // border: none;
+            // border: 1px solid ;
+            background: transparent;
+            box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
+              0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          }
+
+          textarea {
+            box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
+              0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          }
+
+          input[type='password'] {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+
+          .input-group-append {
+            box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14),
+              0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+            cursor: pointer;
+            background: transparent;
             border-top-right-radius: 30px;
             border-bottom-right-radius: 30px;
-            font-size: 10px;
+
+            #basic-addon12 {
+              height: 100% !important;
+              border-top-right-radius: 0px;
+              border-bottom-right-radius: 0px;
+              font-size: 10px;
+            }
+
+            #basic-addon2 {
+              height: 100% !important;
+              border-top-right-radius: 30px;
+              border-bottom-right-radius: 30px;
+              font-size: 10px;
+            }
           }
         }
       }

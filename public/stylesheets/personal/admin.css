@@ -657,6 +657,29 @@ form span {
   border-bottom-right-radius: 30px;
 }
 
+.wrapper .main-content .card .bmd-form-group .input-group-append {
+  -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+  cursor: pointer;
+  background: transparent;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.wrapper .main-content .card .bmd-form-group .input-group-append #basic-addon12 {
+  height: 100% !important;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 10px;
+}
+
+.wrapper .main-content .card .bmd-form-group .input-group-append #basic-addon2 {
+  height: 100% !important;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  font-size: 10px;
+}
+
 .wrapper .main-content .card .bmd-form-group span {
   width: 100%;
   text-align: center;
@@ -794,15 +817,19 @@ form span {
   padding: 10px 25px;
 }
 
-.modal .card-modal-box .modal-body .bmd-form-group label {
+.modal .card-modal-box .modal-body form fieldset:not(:first-of-type) {
+  display: none;
+}
+
+.modal .card-modal-box .modal-body form .bmd-form-group label {
   position: relative;
   float: left;
   font-size: 12px;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
-.modal .card-modal-box .modal-body .bmd-form-group input,
-.modal .card-modal-box .modal-body .bmd-form-group select {
+.modal .card-modal-box .modal-body form .bmd-form-group input,
+.modal .card-modal-box .modal-body form .bmd-form-group select {
   padding: 0 14px;
   border-radius: 30px;
   background: transparent;
@@ -810,17 +837,22 @@ form span {
           box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
 }
 
-.modal .card-modal-box .modal-body .bmd-form-group input:disabled,
-.modal .card-modal-box .modal-body .bmd-form-group select:disabled {
+.modal .card-modal-box .modal-body form .bmd-form-group input:disabled,
+.modal .card-modal-box .modal-body form .bmd-form-group select:disabled {
   background-color: #e9ecef;
 }
 
-.modal .card-modal-box .modal-body .bmd-form-group input[type='password'] {
+.modal .card-modal-box .modal-body form .bmd-form-group textarea {
+  -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+          box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
+}
+
+.modal .card-modal-box .modal-body form .bmd-form-group input[type='password'] {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.modal .card-modal-box .modal-body .bmd-form-group .input-group-append {
+.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append {
   -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
           box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
   cursor: pointer;
@@ -829,14 +861,14 @@ form span {
   border-bottom-right-radius: 30px;
 }
 
-.modal .card-modal-box .modal-body .bmd-form-group .input-group-append #basic-addon12 {
+.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append #basic-addon12 {
   height: 100% !important;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   font-size: 10px;
 }
 
-.modal .card-modal-box .modal-body .bmd-form-group .input-group-append #basic-addon2 {
+.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append #basic-addon2 {
   height: 100% !important;
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;

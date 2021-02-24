@@ -769,13 +769,15 @@ var json        = {
 var countries = json.countries;
 jQuery(document).ready(function( $ ) {
     var country     = $('#country');
-    var state       = $('#state');
+    var state_R       = $('#state-r');
+    var state_O       = $('#state-o');
     
 
     
     var html_ctry = "<option value=''>Select Country .....</option>";
     var html_state = "<option value=''>Select State .....</option>";
-    state.append(html_state); 
+    state_R.append(html_state);
+        state_O.append(html_state);   
 
     for (var t = 0; t < countries.length; t++){
         var ctry = countries[t].country;
@@ -788,13 +790,15 @@ jQuery(document).ready(function( $ ) {
         var cix = $(this).val();
         var valls = cix.split("-");
         var states = countries[valls[1]].states;
-        state.empty();
+        state_R.empty();
+        state_O.empty();
         html_state = "<option value=''><!-----choose----></option>";
         for (var u = 0; u < states.length; u++){
              var ste = states[u];
              html_state += "<option value='" + ste + "'>" + ste + "</option>";
         }
-        state.append(html_state);   
+        state_R.append(html_state);
+        state_O.append(html_state);   
     });
 
     

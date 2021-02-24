@@ -22,7 +22,7 @@ module.exports.getDash = async (req, res, next) => {
             var admins      = await User.getCountAdmins();
             var sponsors    = await User.getCountSponsors();
             var envoys      = await User.getCountEnvoys();
-            var kids      = await User.getCountKids()
+            var kids        = await User.getCountKids();
             var sidebar     = {dash : "active", usr : "", adm : "", kds : "", sps : "", env : "", ntf : ""};
             var count       = {admins : admins[0].total, sponsors : sponsors[0].total, envoys : envoys[0].total, kids :kids.total};
             var context     = {title : title, icon : icon, user : user[0], active : sidebar, count : count};
@@ -140,7 +140,7 @@ module.exports.updateProfileStatus = async (req, res, next) => {
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")){
             if (status == "False"){
                 status = "0";
-                change = "Deactivated"
+                change = "Deactivated";
             } else {
                 status = "1";
                 change = "Activated";
