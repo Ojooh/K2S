@@ -202,6 +202,48 @@ module.exports.getProfile = async (req, res, next) => {
 
 }
 
+//Function To get Kid Data
+module.exports.getKidProfile = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await User.getUserByEmail(email);
+        var ID = req.body.id;
+        var type = req.body.type;
+        var mode = req.body.mode;
+        console.log(type);
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
+            let edittee = await User.getKidById(ID);
+            //console.log(edittee);
+
+            if (type == "edit") {
+                if (mode == "form") {
+
+                    res.json({ success: "", type: mode });
+                } else {
+                    res.json({ success: edittee[0], type: mode });
+                }
+            }
+
+            if (type == "display") {
+                res.json({ success: edittee[0], type: mode });
+            }
+
+
+
+
+        } else {
+            var url = "/login"
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login"
+        res.json({ url: url });
+    }
+
+
+}
+
 //Function To Handle Admin Profile Edit Post
 module.exports.updateAdminProfile = async (req, res, next) => {
     if (req.session.loggedin) {
@@ -740,40 +782,100 @@ module.exports.createKidProfile = async (req, res, next) => {
         var user = await User.getUserByEmail(email);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            console.log(req.body);
+            console.log(req);
             var [raby, state, message] = await validator.validKid(req, "add");
 
             if (state) {
                 if (!req.files) {
-                    let insert = User.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].id);
-
+                    let insert = await User.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].id);
                 } else {
-                    //     let avatar = req.files.pp;
-                    //     let [name, ext] = avatar.name.split(".");
-                    //     let new_name = uuidv4() + "." + ext
-                    //     let dir = "public/images/profile/profile_pic/" + new_name;
-                    //     let db_path = "/images/profile/profile_pic/" + new_name;
+                    let avatar_1 = req.files.pp;
+                    let avatar_2 = req.files.bc
+                    let [name_1, ext_1] = avatar_1.name.split(".");
+                    let [name_2, ext_2] = avatar_2.name.split(".");
+                    let new_name_1 = uuidv4() + "." + ext_1
+                    let new_name_2 = uuidv4() + "." + ext_2
+                    let dir_1 = "public/images/profile/profile_pic/" + new_name_1;
+                    let dir_2 = "public/doc/bc/" + new_name_2;
+                    let db_path_1 = "/images/profile/profile_pic/" + new_name_1;
+                    let db_path_2 = "/doc/bc/" + new_name_2;
 
-                    //     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                    //         let insert = User.insertEnvoyProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, "1", hash, "1");
-                    //         avatar.mv(dir);
-                    //     });
+                    let insert = await User.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].id);
+                    avatar_1.mv(dir_1);
+                    avatar_2.mv(dir_2);
 
-                    // }
-                    res.json({ success: message.message });
-
-                } else {
-                    res.json({ error: message.message })
                 }
+                res.json({ success: message.message });
 
-                // res.render('admin/addAdministrator', context);
             } else {
-                var url = "/login";
-                res.json({ url: url });
+                res.json({ error: message.message })
             }
+
+            // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login";
             res.json({ url: url });
         }
+    } else {
+        var url = "/login";
+        res.json({ url: url });
     }
+}
+
+//Function To Chnage Kid Active Status
+module.exports.updateKidStatus = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await User.getUserByEmail(email);
+        var ID = req.body.id;
+        var status = req.body.status;
+        var change = "";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            if (status == "False") {
+                status = "0";
+                change = "Deactivated";
+            } else {
+                status = "1";
+                change = "Activated";
+            }
+            let update = await User.updateKidStatus(ID, status);
+            var editted = await User.getKidById(ID);
+            var msg = editted[0].fname + " Profile Is " + change;
+            res.json({ success: msg });
+        } else {
+            var url = "/login"
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login"
+        res.json({ url: url });
+    }
+
+}
+
+//Function To Render Kid Edit Form
+module.exports.getEditKidForm = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await User.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "Kids";
+        var ID = req.params.id;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
+            let edittee = await User.getKidById(ID);
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
+            res.render('admin/editAdministrator', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+};
 

@@ -6,17 +6,18 @@ jQuery(document).ready(function ($) {
     var sideBar = $("#sideBar");
     var mainPanel = $(".main-content");
     var dates = $(".pretty-date");
+    var currency = $(".pretty-currency");
     var openMdl_4 = $(".mdl-kid-form");
     var modal = $(".modal");
     var closeModl = $(".close-modal");
     var dob = $("#dob");
     var age = $("#age");
     var deleteImage = $(".delete-image");
-    var submitKid = $('#submitKid');
+    // var submitKid = $('#submitKid');
     var profilePic = $("#profilePic");
     var status = $(".custom-control-input")
-    var editAdmin = $(".edit-admin");
-    var deleteAdmin = $(".delete-admin");
+    var editKid = $(".edit-kid");
+    var deleteKid = $(".delete-kid");
     var profile = $(".profile");
     var viewPassword = $("#basic-addon12");
     var genPassword = $("#basic-addon2");
@@ -70,6 +71,11 @@ jQuery(document).ready(function ($) {
         $(dates[t]).html(date);
     }
 
+    for (var t = 0; t < currency.length; t++) {
+        var cur = prettyCurrency($(currency[t]).html().trim());
+        $(currency[t]).html(cur);
+    }
+
     //function to make date-time pretty
     function prettyDate(date) {
         if (date != "0000-00-00 00:00:00") {
@@ -86,6 +92,17 @@ jQuery(document).ready(function ($) {
         } else {
             return "Never";
         }
+    }
+
+    //function to format currency
+    function prettyCurrency(amount) {
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'NGN',
+            minimumFractionDigits: 2
+        });
+
+        return formatter.format(amount)
     }
 
     //Function to make date pretty
@@ -404,8 +421,8 @@ jQuery(document).ready(function ($) {
             inptArr.sfees = $("#sfees").val();
             inptArr.sother = $("#sother").val();
             $(".text-danger").html("");
-            valid = "Data-Valid"
-            // valid = field2(inptArr);
+            // valid = "Data-Valid"
+            valid = field2(inptArr);
 
             if (valid == "Data-Valid") {
                 counter[0] = indx + 1;
@@ -430,8 +447,8 @@ jQuery(document).ready(function ($) {
             inptArr.pemail = $("#pemail").val().trim();
             inptArr.ptel = $("#ptel").val().trim();
             $(".text-danger").html("");
-            valid = "Data-Valid"
-            //valid = field3(inptArr);
+            // valid = "Data-Valid"
+            valid = field3(inptArr);
 
             if (valid == "Data-Valid") {
                 counter[0] = indx + 1;
@@ -456,19 +473,19 @@ jQuery(document).ready(function ($) {
                 inptArr.bc = $("#bc")[0].files[0];
             }
 
-            if (profilePic[0].files[0]) {
+            if (profilePic[0].files[0] === undefined) {
                 inptArr.pp = "";
             } else {
                 inptArr.pp = profilePic[0].files[0];
             }
 
             $(".text-danger").html("");
-            valid = "Data-Valid"
-            // valid = field4(inptArr);
+            // valid = "Data-Valid"
+            valid = field4(inptArr);
 
             if (valid == "Data-Valid") {
                 var fd = new FormData();
-                fd.append("category", inptArr.category.charAt(0).toUpperCase() + inptArr.category.substr(1).toLowerCase());
+                fd.append("category", inptArr.category);
                 fd.append("fname", inptArr.fname.charAt(0).toUpperCase() + inptArr.fname.substr(1).toLowerCase());
                 fd.append("lname", inptArr.lname.charAt(0).toUpperCase() + inptArr.lname.substr(1).toLowerCase());
                 fd.append("mname", inptArr.mname.charAt(0).toUpperCase() + inptArr.mname.substr(1).toLowerCase());
@@ -575,6 +592,242 @@ jQuery(document).ready(function ($) {
                 valid[0].html(valid[1]);
             }
         }
+    });
+
+    //Function To Change Status
+    status.on("change", function (e) {
+        var ID = $(this).attr("id").split("-")[1];
+        var value = $(this).val();
+        var url = "/admin/Kids/chnage_status";
+        var data = { id: ID, status: value };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Auto close alert!',
+                    html: 'Please Hold on as your details are uploaded, do not refresh.',
+                    timer: 40000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+            },
+            success: function (data) {
+                console.log(data.success);
+                if (data.success) {
+                    modal.modal("hide");
+                    Swal.fire(data.success, "Click OK to Proceed", "success").then(
+                        function () {
+                            location.reload();
+                        }
+                    )
+                } else if (data.url) {
+                    location.replace(data.url);
+                }
+                else {
+                    error.html("");
+                    msg = "<span class='alert alert-success'>" + data.error + "</span>";
+                    error.html(msg);
+                }
+
+            }
+        });
+    });
+
+    //Function To Delete Image
+    deleteImage.on("click", function (e) {
+        e.preventDefault();
+
+        if ($(this).attr("data-type") == "add") {
+            profilePic.val("");
+            $("#frame").attr("src", "");
+            $(".filly").removeClass("deactivated");
+            $(".prev").addClass("deactivated");
+        }
+    });
+
+    //Function to edit Admin
+    editKid.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var mdl = $("#addKidModalForm");
+        var ID = $(this).attr("data-id");
+        var url = $(this).attr("data-url");
+        var type = $(this).attr("data-type").split("-");
+        var data = { id: ID, type: type[0], mode: type[1] };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Auto close alert!',
+                    html: 'Please Hold on as Details are being Fetched.',
+                    timer: 40000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+            },
+            success: function (data) {
+                swal.close();
+
+                //console.log(data.type);
+                if (data.success) {
+
+                    if (type[1] == "modal") {
+                        $(".card-modal-title").html(data.success.fname + " Kid Profile Form ");
+                        $(".card-modal-description").html("Edit " + data.success.fname + "'s Kid Profile");
+                        $("#category").val(data.success.category);
+                        $("#fname").val(data.success.fname)
+                        $("#lname").val(data.success.lname)
+                        $("#mname").val(data.success.mname)
+                        $("#dob").val(data.success.dob);
+                        $("#age").val(data.success.age);
+                        $("#gender").val(data.success.gender);
+                        $("#country").val(data.success.country);
+                        var cix = $("#country").val().split("-");
+                        var states = countries[cix[1]].states;
+                        $("#state-o").empty();
+                        $("#state-r").empty();
+                        html_state = "<option value=''><!-----choose----></option>";
+
+                        for (var u = 0; u < states.length; u++) {
+                            var ste = states[u];
+                            html_state += "<option value='" + ste + "'>" + ste + "</option>";
+                        }
+
+                        $("#state-o").append(html_state);
+                        $("#state-r").append(html_state);
+                        $("#state-o").val(data.success.state_o);
+                        $("#state-r").val(data.success.state_r);
+                        $("#lga").val(data.success.lga);
+                        $("#email").val(data.success.email);
+                        $("#telephone").val(data.success.telephone.split("-")[1]);
+                        $("#countryCode").val(data.success.telephone.split("-")[0]);
+                        $("#sname").val(data.success.school_name);
+                        $("#los").val(data.success.los);
+                        var cix = $("#los").val().split("-");
+                        var classes = levels[cix[1]].class;
+                        $("#class").empty();
+                        html_class = "<option value=''><!-----choose----></option>";
+                        for (var u = 0; u < classes.length; u++) {
+                            var ste = classes[u];
+                            html_class += "<option value='" + ste + "'>" + ste + "</option>";
+                        }
+                        $("#class").append(html_class);
+                        $("#class").val(data.success.class);
+                        $("#saddress").val(data.success.school_address);
+                        $("#sfees").val(data.success.school_fees);
+                        $("#sother").val(data.success.other_school_details);
+                        $('#ptitle option').each(function () {
+                            console.log(this.value);
+                            if (this.value.trim() == data.success.parent_title.trim()) {
+                                $("#ptitle").val(data.success.parent_title)
+                            }
+                        });
+
+                        if ($("#ptitle").val() == "") {
+                            $("#ptitle2").attr("type", "text");
+                            $("#ptitle2").val(data.success.parent_title);
+                        }
+
+                        $("#pname").val(data.success.parent_name);
+                        $("#pemail").val(data.success.parent_email);
+                        $("#ptel").val(data.success.parent_telephone);
+                        $("#story").val(data.success.story);
+                        $("#goal").val(data.success.goal);
+
+                        if (data.success.profile_photo) {
+                            profilePic.val("");
+                            $("#frame").attr("src", data.success.profile_photo);
+                            $(".filly").addClass("deactivated");
+                            $(".prev").removeClass("deactivated");
+                        }
+                        // submitAdmin.attr("data-url", "/admin/Administrators/edit_profile");
+                        // submitAdmin.attr("data-type", "edit");
+                        // submitAdmin.attr("data-id", ID);
+                        mdl.modal("show");
+                    } else {
+                        var url = "/admin/Kid/edit_kid/" + ID;
+                        location.replace(url);
+                    }
+
+                } else if (data.url) {
+                    location.replace(data.url);
+                }
+
+
+            }
+        });
+
+    });
+
+    //Function to Delete Admin
+    deleteKid.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var ID = $(this).attr("data-id");
+        var url = $(this).attr("data-url");
+        var data = { id: ID };
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Are you Sure you want to Delete ?',
+            text: 'This will permanently delete this profile, click yes to confirm',
+            showCancelButton: true,
+            confirmButtonText: `Yes`,
+            cancelButtonText: `No`,
+            allowOutsideClick: false,
+        }).then(async (result) => {
+            if (result.value) {
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: 'Auto close alert!',
+                            html: 'Please Hold on as Details are being Fetched.',
+                            timer: 40000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        });
+                    },
+                    success: function (data) {
+                        swal.close();
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Delete Operation Successful',
+                                text: data.success,
+                            }).then(
+                                function () {
+                                    location.reload();
+                                }
+                            );
+                        } else if (data.url) {
+                            location.replace(data.url);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Delete Operation Un-successful',
+                                text: data.error,
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
     });
 
 

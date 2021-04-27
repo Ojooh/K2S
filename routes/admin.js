@@ -23,6 +23,9 @@ router.post('/User/chnage_status', adminHandler.updateProfileStatus);
 /* GET administrator Details. */
 router.post('/User/get_profile', adminHandler.getProfile);
 
+/* GET administrator Details. */
+router.post('/Kid/get_profile', adminHandler.getKidProfile);
+
 /* POST administrator updated Details. */
 router.post('/Administrators/edit_profile', adminHandler.updateAdminProfile);
 
@@ -68,4 +71,9 @@ router.get('/Kids/add_kid', adminHandler.getAddKidForm);
 /* POST add Kid Profile. */
 router.post('/Kids/add_kid', adminHandler.createKidProfile);
 
+/* POST change kid status page. */
+router.post('/Kids/chnage_status', adminHandler.updateKidStatus);
+
+/* GET edit kid page. */
+router.get('/Kid/edit_kid/:id', adminHandler.getEditKidForm);
 module.exports = router;

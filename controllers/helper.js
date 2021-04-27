@@ -55,12 +55,28 @@ module.exports.validateAge = (dob) => {
     }
 };
 
+
 //Is Email Input Exist
 module.exports.emailExist = async (email) => {
     var user_e = await User.getUserByEmail(email)
     // console.log("helpey");
     // console.log(user_e)
     if (user_e.length > 0) {
+        // console.log("helper" + true);
+        return true
+    } else {
+        // console.log("helper" + false);
+        return false
+    }
+
+};
+
+//Is Kid Email Input Exist
+module.exports.kidIsEmailExist = async (email) => {
+    var kid = await User.getKidByEmail(email)
+    // console.log("helpey");
+    // console.log(user_e)
+    if (kid.length > 0) {
         // console.log("helper" + true);
         return true
     } else {
@@ -79,7 +95,7 @@ module.exports.generateUserId = async (title, width) => {
     }
 
     if (user.length < 1) {
-        var t = 0;
+        var t = 1;
     } else {
         var t = parseInt(user[0].id) + 1
     }

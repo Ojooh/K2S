@@ -68,9 +68,9 @@
                                                                 <th scope="col">S/N</th>
                                                                 <th scope="col">Name</th>
                                                                 <th scope="col">Category</th>
-                                                                <th scope="col">Kids</th>
+                                                                <th scope="col">Fees</th>
                                                                 <th scope="col">Date Created</th>
-                                                                <th scope="col">Last Login</th>
+                                                                <th scope="col">Last Editted</th>
                                                                 <th scope="col">Status</th>
                                                                 <th scope="col">Action</th>
                                                             </tr>
@@ -87,16 +87,21 @@
                                                                     <td>
                                                                         <%= kds[i].category %>
                                                                     </td>
+                                                                    <td class="pretty-currency">
+                                                                        <%= kds[i].school_fees %>
+                                                                    </td>
+                                                                    <td class="pretty-date">
+                                                                        <%= kds[i].date_joined %>
+                                                                    </td>
+                                                                <% if (kds[i].last_edit == "0000-00-00 00:00:00" ) { %>
                                                                     <td>
-                                                                        0
-                                                                    </td>
-                                                                    <td class="pretty-date">
-                                                                        <%= kds[i].date_created %>
-                                                                    </td>
-                                                                    <td class="pretty-date">
                                                                         Never
                                                                     </td>
-                                                                <% if (kds[i].id !=user.id) { %>
+                                                                <% } else { %>
+                                                                    <td class="pretty-date">
+                                                                        <%= kds[i].last_edit %>
+                                                                    </td>
+                                                                <% } %>
                                                                     <td>
                                                                         <% if (kds[i].is_active) { %>
                                                                             <div class="custom-control custom-switch">
@@ -112,32 +117,29 @@
                                                                                     <label class="custom-control-label"
                                                                                         for="customSwitch-<%= kds[i].id %>"> In-Active</label>
                                                                                 </div>
-                                                                                <% } %>
+                                                                            <% } %>
                                                                     </td>
-                                                                <% } else { %>
-                                                                    <td></td>
-                                                                <% } %>
                                                                     <td class="td-actions">
                                                                         <a href="#" class="profile text-info mr-4"
                                                                             data-id="<%= kds[i].id %>"
                                                                             data-url="/admin/User/get_profile" data-type="display-modal"
                                                                             data-toggle="tooltip" data-placement="top"
-                                                                            title="Envoy Details">
+                                                                            title="Kid Details">
                                                                             <i class="fas fa-info-circle"></i>
                                                                         </a>
-                                                                        <a href="#" class="edit-envoy text-primary mr-4"
+                                                                        <a href="#" class="edit-kid text-primary mr-4"
                                                                             data-id="<%= kds[i].id %>"
-                                                                            data-url="/admin/User/get_profile" data-type="edit-modal"
+                                                                            data-url="/admin/Kid/get_profile" data-type="edit-modal"
                                                                             data-toggle="tooltip" data-placement="top"
-                                                                            title="Edit Envoy">
+                                                                            title="Edit Kid">
                                                                             <i class="fas fa-pencil-alt"></i>
                                                                         </a>
                                                                         <% if (user.user_type=="ADMS" ) { %>
-                                                                            <a href="#" class="delete-envoy text-danger"
+                                                                            <a href="#" class="delete-kid text-danger"
                                                                                 data-id="<%= kds[i].id %>"
                                                                                 data-url="/admin/User/delete_profile"
                                                                                 data-toggle="tooltip" data-placement="top"
-                                                                                title="Remove Envoy">
+                                                                                title="Remove Kid">
                                                                                 <i class="fas fa-times"></i>
                                                                             </a>
                                                                         <% } %>

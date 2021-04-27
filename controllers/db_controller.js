@@ -26,6 +26,21 @@ module.exports.getUserById = (id) => {
     });
 };
 
+//GET kid by ID field			
+module.exports.getKidById = (id) => {
+    const query = "SELECT * FROM kids WHERE id = '" + id + "';";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 //GET user by email field
 module.exports.getUserByEmail = (email) => {
     const query = "SELECT * FROM users WHERE email = '" + email + "';";
@@ -42,9 +57,40 @@ module.exports.getUserByEmail = (email) => {
     });
 }
 
+//GET kid by email field
+module.exports.getKidByEmail = (email) => {
+    const query = "SELECT * FROM kids WHERE email = '" + email + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+}
+
 //GET user by user_id field
 module.exports.getUserByUserId = (user_id) => {
     const query = "SELECT * FROM users WHERE user_id = '" + user_id + "';";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+}
+
+//GET user by kid_id field
+module.exports.getUserByUserId = (user_id) => {
+    const query = "SELECT * FROM kids WHERE kid_id = '" + user_id + "';";
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
             if (err) {
@@ -213,6 +259,21 @@ module.exports.updateUserStatus = (id, status) => {
     });
 }
 
+//UPDATE Kid Status
+module.exports.updateKidStatus = (id, status) => {
+    const query = "UPDATE kids SET `is_active` = '" + status + "' WHERE id = '" + id + "';";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+}
+
 //UPDATE Admin Profile
 module.exports.updateAdminProfile = (id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, profile_photo, password, editor, time) => {
     const query = "UPDATE users SET `fname` = '" + fname + "', `lname` = '" + lname + "', `dob` = '" + dob + "', `age` = '" + age + "',`gender` = '" + gender + "', `country` = '" + country + "', `state` = '" + state + "', `email` = '" + email + "', `telephone` = '" + telephone + "', `user_type` = '" + user_type + "', `title`  = '" + title + "', `profile_photo` =  '" + profile_photo + "', `password` = '" + password + "', `editted_by` = '" + editor + "', `last_editted` = '" + time + "' WHERE `id` = '" + id + "';";
@@ -340,18 +401,18 @@ module.exports.getKids = () => {
 
 //INSERT new kid profile
 module.exports.insertKidProfile = (uid, category, fname, lname, mname, dob, age, gender, country, s_o, s_r, lga, email, tely, sname, saddress, los, cl, sfees, sother, pname, ptitle, pemail, ptel, story, goal, bc, pp, author) => {
-    const query = "INSERT INTO users (`kid_id`,`category`, `fname`, `lname`, `mname`, `dob`, `age`, `gender`, `country`, `state`, `state_o`, `state_r`, `lga`, `email`, `telephone`, `address`, `school_name`, `los`,	`class`, `school_address`, `other_school_details`, `school_fees`, `parent_title`, `parent_name`, `parent_email`, `parent_telephone`, `story`, `goal`, `bc`, `profile_photo`, `is_active`, `is_kid`, `created_by`) VALUES('" + uid + "', '" + category + "', '" + fname + "', '" + lname + "', '" + mname + "', '" + dob + "', '" + age + "', '" + gender + "', '" + country + "', '" + state + "', '" + s_o + "', '" + s_r + "', '" + lga + "', '" + email + "', '" + tely + "', '" "', '" + sname + "', '" + los + "', '" + cl + "', '" + saddress + "', '" + sother + "', '" + sfees + "', '" + ptitle + "', '" + pname + "', '" + pemail + "', '" + ptel + "', '" + story + "', '" + goal + "', '" + bc + "', '" + pp + "', '1', '1','" + author + "'); ";
+    const query = "INSERT INTO kids (`kid_id`,`category`, `fname`, `lname`, `mname`, `dob`, `age`, `gender`, `country`, `state_o`, `state_r`, `lga`, `email`, `telephone`, `address`, `school_name`, `los`, `class`, `school_address`, `other_school_details`, `school_fees`, `parent_title`, `parent_name`, `parent_email`, `parent_telephone`, `story`, `goal`, `bc`, `profile_photo`, `is_active`, `is_kid`, `created_by`) VALUES('" + uid + "', '" + category + "', '" + fname + "', '" + lname + "', '" + mname + "', '" + dob + "', '" + age + "', '" + gender + "', '" + country + "', '" + s_o + "', '" + s_r + "', '" + lga + "', '" + email + "', '" + tely + "', '', '" + sname + "', '" + los + "', '" + cl + "', '" + saddress + "', '" + sother + "', '" + sfees + "', '" + ptitle + "', '" + pname + "', '" + pemail + "', '" + ptel + "', '" + story + "', '" + goal + "', '" + bc + "', '" + pp + "', '1', '1','" + author + "'); ";
     console.log(query);
-    // return new Promise((resolve, reject) => {
-    //     con.query(query, (err, result) => {
-    //         if (err) {
-    //             return reject(err);
-    //         } else {
-    //             resolve(result);
-    //         }
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
 
-    //     });
-    // });
+        });
+    });
 }
 
 

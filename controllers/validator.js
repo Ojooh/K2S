@@ -110,7 +110,7 @@ module.exports.validEnvoy = async (req, type) => {
 
 //Function To Validate Kid Profile Entry
 module.exports.validKid = async (req, type) => {
-    var exist = await helper.emailExist(req.body.email);
+    var exist = await helper.kidIsEmailExist(req.body.email);
 
     if (helper.isEmpty(req.body.category)) {
         return [null, false, { message: 'Category Input is not Valid' }];
@@ -120,7 +120,7 @@ module.exports.validKid = async (req, type) => {
         return [null, false, { message: 'Last Name Input is not Valid' }];
     } else if (!helper.isEmpty(req.body.mname) && !helper.validateName(req.body.mname)) {
         return [null, false, { message: 'Middle Name Input is not Valid' }];
-    } else if (helper.isEmpty(req.body.dob) || helper.validateAge(req.body.dob)) {
+    } else if (helper.isEmpty(req.body.dob)) {
         return [null, false, { message: 'Date of Birth Input is not Valid' }];
     } else if (helper.isEmpty(req.body.gender)) {
         return [null, false, { message: 'Gender Input is not Valid' }];
@@ -134,7 +134,7 @@ module.exports.validKid = async (req, type) => {
         return [null, false, { message: 'Middle Name Input is not Valid' }];
     } else if (!helper.isEmpty(req.body.email) && !helper.validateEmail(req.body.email)) {
         return [null, false, { message: 'Email Input is not Valid' }];
-    } else if (type == "add" && exist) {
+    } else if (type == "add" && !helper.isEmpty(req.body.email) && exist) {
         return [null, false, { message: 'Email Input already Exist In Database' }];
     } else if (!helper.isEmpty(req.body.tely.split("-")[1]) && helper.validateTel(req.body.tely) == false) {
         return [null, false, { message: 'Telephone Input is not Valid' }];
@@ -155,15 +155,15 @@ module.exports.validKid = async (req, type) => {
     } else if (helper.isEmpty(req.body.ptitle) || helper.validateName(req.body.ptitle) == false) {
         return [null, false, { message: 'Invalid or No Value for Parent Title Field.' }];
     } else if (helper.isEmpty(req.body.pname) || helper.validateName(req.body.pname) == false) {
-        return [null, false, { message: 'Invalid or No Value for Parent Name Field.'}];
+        return [null, false, { message: 'Invalid or No Value for Parent Name Field.' }];
     } else if (helper.isEmpty(req.body.pemail) || helper.validateEmail(req.body.pemail) == false) {
         return [null, false, { message: 'Invalid or No Value for Parent Email Field.' }];
     } else if (helper.isEmpty(req.body.ptel) || helper.validateTel(req.body.ptel) == false) {
-        return [null, false, {message: 'Invalid or No Value for Telephone Field.'}];
+        return [null, false, { message: 'Invalid or No Value for Telephone Field.' }];
     } else if (!helper.isEmpty(req.body.story) && req.body.story.split(" ").length > 501) {
         return [null, false, { message: 'Only 500 words Allowed.' }];
     } else if (!helper.isEmpty(req.body.goal) && req.body.goal.split(" ").length > 501) {
-        return [null, false, { message: 'Only 500 words Allowed.'}];
+        return [null, false, { message: 'Only 500 words Allowed.' }];
     } else if (req.files && helper.isDoc(req.files.bc) == false) {
         return [null, false, { message: 'Only Image, pdf or docx files Allowed.' }];
     } else if (req.files && helper.isImage(req.files.pp) == false) {
