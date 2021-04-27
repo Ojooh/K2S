@@ -20,10 +20,12 @@ module.exports.logIn = async (req, res, next) => {
             if (reslt == true) {
                 let datetime = moment().format( 'YYYY-MM-DD  HH:mm:ss.000' );
                 await User.updateLastLogin(user[0].id, datetime);
-                if (user[0].user_type  == "ADMS" || user[0].user_type  == "ADM"){
-                    url = "/admin";
-                } else if (user[0].user_type == "SPN" ){
-                    url = "/sponsor"
+                if (user[0].user_type == 'ADMS' || user[0].user_type == 'ADM') {
+                  url = '/admin';
+                } else if (user[0].user_type == 'SPN') {
+                  url = '/sponsor';
+                } else if (user[0].user_type == 'ENV') {
+                  url = '/envoy';
                 }
                 req.session.loggedin = true;
                 req.session.username = email;

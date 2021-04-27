@@ -17,7 +17,7 @@
         <div class="modal-content card-modal-box mt-5">
             <div class="card-modal-header bg-success">
                 <h4 class="card-modal-title ">Kids Form</h4>
-                <p class="card-modal-description">Add an kids for the Kids To school Foundation.</p>
+                <p class="card-modal-description">Add a Child for the Kids To school Foundation.</p>
 
             </div>
 
@@ -215,14 +215,14 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">School Fees</label>
                                     <input type="number" class="form-control" id="sfees" placeholder="School Fees ....." min="0">
-                                    <span class="text-danger los-error my-1"></span>
+                                    <span class="text-danger sfees-error my-1"></span>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Other Details</label>
                                     <textarea class="form-control" id="sother" placeholder="School Address..." rows="6"></textarea>
-                                    <span class="text-danger class-error my-1"></span>
+                                    <span class="text-danger sother-error my-1"></span>
                                 </div>
                             </div>
                         
@@ -269,7 +269,7 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Parent Telephone</label>
                                     <input type="tel" class="form-control" id="ptel" name="ptel" placeholder="Parent Telephone....">
-                                    <span class="text-danger pemail-error my-1"></span>
+                                    <span class="text-danger ptel-error my-1"></span>
                                 </div>
                             </div>
                     
@@ -281,6 +281,7 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Story</label>
                                     <textarea class="form-control" id="story" rows="8"></textarea>
+                                    <span class="text-danger story-error my-1"></span>
                                 </div>
                             </div>
                         </div>
@@ -289,6 +290,7 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Goal</label>
                                     <textarea class="form-control" id="goal" rows="8"></textarea>
+                                    <span class="text-danger goal-error my-1"></span>
                                 </div>
                             </div>
                         </div>
@@ -320,18 +322,13 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary back deactivated">
+                <button type="button" class="btn btn-secondary rounded-pill back deactivated">
                     <i class="fas fa-long-arrow-alt-left"></i>
                     Back
                 </button>
-                <button type="button" class="btn btn-outline-kts next" data-dismiss="modal">
+                <button type="button" class="btn btn-outline-kts next" id="submitKid" data-type="add" data-url="/admin/Kids/add_kid">
                     <i class="fas fa-long-arrow-alt-right"></i>
                     Next
-                </button>
-                <button type="button" id="submitKid" data-type="add" data-url="/admin/Administrators/add_admin"
-                    data-id="" class="btn btn-outline-kts deactivated">
-                    <i class="far fa-paper-plane"></i>
-                    Submit
                 </button>
             </div>
         </div>

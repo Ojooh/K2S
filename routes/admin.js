@@ -1,6 +1,6 @@
-var express         = require('express');
-var router          = express.Router();
-var adminHandler    = require('../controllers/administrators_controller');
+var express = require('express');
+var router = express.Router();
+var adminHandler = require('../controllers/administrators_controller');
 
 /* GET login page. */
 router.get('/', adminHandler.getDash);
@@ -64,5 +64,8 @@ router.get('/Kids', adminHandler.getKids);
 
 /* GET Kid Form. */
 router.get('/Kids/add_kid', adminHandler.getAddKidForm);
+
+/* POST add Kid Profile. */
+router.post('/Kids/add_kid', adminHandler.createKidProfile);
 
 module.exports = router;
