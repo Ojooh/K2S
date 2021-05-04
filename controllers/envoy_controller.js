@@ -42,7 +42,7 @@ module.exports.getEnvoyKids = async (req, res, next) => {
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
-            var kids = await User.getEnvoyKids(user[0].id);
+            var kids = await User.getEnvoyKids(user[0].user_id);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, kds: kids };
             res.render('envoy/kids', context);

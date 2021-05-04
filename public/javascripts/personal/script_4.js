@@ -892,6 +892,26 @@ jQuery(document).ready(function ($) {
                         'email': "<a href='mailto:" + data.success.email + "'>" + data.success.email + "</a>",
                         'Tel': "<a href='tel:" + data.success.telephone + "'>" + data.success.telephone + "</a>",
                         'Home Address': data.success.address
+                    },
+                    {
+                        "School Name": data.success.school_name,
+                        "Level of study": data.success.los.split("-")[0] + " - " + data.success.class,
+                        "School Address": data.success.school_address,
+                        "School Fees": prettyCurrency(data.success.school_fees),
+                        "Other Information": data.success.other_school_details,
+                    },
+                    {
+                        "Parent Title": data.success.parent_title,
+                        "Parent Name": data.success.parent_name,
+                        "Parent Email": data.success.parent_email,
+                        "Parent Tel": data.success.parent_telephone
+                    },
+                    {
+                        "Date Joined": prettyDate(data.success.dob),
+                        "Date of last Edit": prettyDate(data.success.last_edit),
+                        "Created By": "<h6 class='text-danger'>" + data.success.created_by + "</h6>",
+                        "Editted By": "<h6 class='text-danger'>" + data.success.editted_by + "</h6>",
+
                     }];
 
                     if (data.type == "modal") {
@@ -914,25 +934,61 @@ jQuery(document).ready(function ($) {
                         });
                         $(".info").html(data_html);
 
+                        var data_html = "";
+                        Object.keys(info[1]).forEach(function (key) {
+                            var _html = `  <div class="data ml-3">
+                                                <span>` + key + `</span>
+                                                <div class="data-sub">
+                                                    <span>`+ info[1][key] + `</span>
+                                                </div>
+                                            </div >`;
+                            data_html += _html
+                        });
+                        $(".s-info").html(data_html);
 
+                        var data_html = "";
+                        Object.keys(info[2]).forEach(function (key) {
+                            var _html = `  <div class="data ml-3">
+                                                <span>` + key + `</span>
+                                                <div class="data-sub">
+                                                    <span>`+ info[2][key] + `</span>
+                                                </div>
+                                            </div >`;
+                            data_html += _html
+                        });
+                        $(".p-info").html(data_html);
 
+                        var data_html = "";
+                        Object.keys(info[3]).forEach(function (key) {
+                            var _html = `  <div class="data ml-3">
+                                                <span>` + key + `</span>
+                                                <div class="data-sub">
+                                                    <span>`+ info[3][key] + `</span>
+                                                </div>
+                                            </div >`;
+                            data_html += _html
+                        });
+                        if (data.success.bc != "") {
+                            var rarr = data.success.bc.split("/")
+                            var name = rarr[rarr.length - 1];
+                            var _html = `  <div class="data ml-3">
+                                                <span>` + "Birth Certificate Doc" + `</span>
+                                                <div class="data-sub">
+                                                    <span class='text-info'>`+ name + `</span>
+                                                </div>
+                                            </div >`;
+                            data_html += _html;
+                        } else {
+                            var _html = `  <div class="data ml-3">
+                                                <span>` + "Birth Certificate Doc" + `</span>
+                                                <div class="data-sub">
+                                                    <span class='text-info'> No Doc </span>
+                                                </div>
+                                            </div >`;
+                            data_html += _html;
+                        }
+                        $(".pro-info").html(data_html);
 
-
-
-
-                        // $(".u-id").html("<strong>" + data.success.title.toUpperCase() + ": " + data.success.user_id + "</strong>")
-                        // $(".f-name").html("<i class='fas fa-glasses'></i> First Name : " + "<span class='text-info'>" + data.success.fname + "</span>");
-                        // $(".l-name").html("<i class='fab fa-lastfm'></i> Last Name : " + "<span class='text-info'>" + data.success.lname + "</span>");
-                        // $(".dob").html("<i class='fas fa-calendar-week'></i> Date of Birth : " + "<span class='text-info'>" + prettyDateOnly(data.success.dob.split("T")[0]) + "</span>");
-                        // $(".age").html("<i class='fas fa-sort-numeric-down-alt'></i> Age : " + "<span class='text-info'>" + data.success.age + "</span>");
-                        // $(".gender").html("<i class='fas fa-user-check'></i> Gender : " + "<span class='text-info'>" + data.success.gender + "</span>");
-                        // $(".country").html("<i class='far fa-flag'></i> Country : " + "<span class='text-danger'>" + data.success.country.split("-")[0] + ", " + data.success.state + "</span>");
-                        // $(".email").html("<i class='far fa-envelope'></i> Email : " + "<a href='mailto:" + data.success.email + "'> " + data.success.email + "</a>");
-                        // $(".telephone").html("<i class='fas fa-phone-alt'></i> Telephone : " + "<span class='text-info'>" + data.success.telephone + "</span>");
-                        // $(".doj").html("<i class='far fa-clock'></i> Join Date : " + "<span class='text-info'>" + prettyDate(data.success.date_created) + "</span>");
-                        // $(".ll").html("<i class='far fa-clock'></i> Last Login : " + "<span class='text-info'>" + prettyDate(data.success.last_login) + "</span>");
-                        // $(".eb").html("<i class='far fa-user'></i> Last Editted By : " + "<span class='text-info'>" + data.success.editted_by + "</span>");
-                        // $(".le").html("<i class='far fa-calendar-check'></i> Last Editted : " + "<span class='text-info'>" + prettyDate(data.success.last_editted) + "</span>");
                         mdl.modal("show");
                     } else {
                         location.replace(data.success);
