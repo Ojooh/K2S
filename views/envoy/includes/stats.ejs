@@ -1,0 +1,69 @@
+<div class="row row-cols-5">
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-warning">
+                    <i class="fas fa-child"></i>
+                </div>
+                <p class="card-category">Kids</p>
+                <h3 class="card-title"><%= count.kids %>
+                </h3>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-success">
+                    <i class="fas fa-users"></i>
+                </div>
+                <p class="card-category">Sponsors</p>
+                <h3 class="card-title"><%= count.sponsors %>
+                </h3>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-danger">
+                    <i class="far fa-handshake"></i>
+                </div>
+                <p class="card-category">Envoys</p>
+                <h3 class="card-title"><%= count.envoys %>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-info">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <p class="card-category">Administrators</p>
+                <h3 class="card-title"><%= count.admins %>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg col-md-12 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon-img">
+                    <img src="/images/profile/avatar/avatar_2.jpg" class="img-fluid">
+                </div>
+                <p class="card-category">
+                    <%= user.fname %>
+                </p>
+                <span class="card-title_2">
+                    <%= user.user_id %>
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+</div>

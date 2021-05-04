@@ -24,9 +24,9 @@ jQuery(document).ready(function( $ ) {
     const monthNames            = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 
-    if (window_width <= 991 ){
-            if ($(".side-nav li").length <= 6) {
-                    var html = `<li class="nav-item">
+    if (window_width <= 991) {
+        if (!$(".side-nav li").hasClass("mob")) {
+            var html = `<li class="nav-item mob">
                     <div class="search-area mt-2">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
@@ -37,14 +37,14 @@ jQuery(document).ready(function( $ ) {
                         </div>
                     </div>
                 </li>
-                <li class="nav-item <%= active.usr %>">
+                <li class="nav-item <%= active.usr %> mob">
                     <a class="nav-link" href="sponsors.html">
                         <i class="fas fa-user"></i>
                         Profile
                     </a>
                 </li>`;
-                $(".side-nav").prepend(html);
-            }
+            $(".side-nav").prepend(html);
+        }
     } else {
         if ($(".side-nav li").length > 6) {
             $(".side-nav li").eq(0).remove();
@@ -97,11 +97,11 @@ jQuery(document).ready(function( $ ) {
     });
 
     //Function to adjust sidebar on window size change
-    $(window).on('resize', function() {
+    $(window).on('resize', function () {
         var width = $(window).width();
-        if (width <= 991 ){
-            if ($(".side-nav li").length <= 6) {
-                    var html = `<li class="nav-item">
+        if (width <= 991) {
+            if (!$(".side-nav li").hasClass("mob")) {
+                var html = `<li class="nav-item mob">
                     <div class="search-area mt-2">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
@@ -112,7 +112,7 @@ jQuery(document).ready(function( $ ) {
                         </div>
                     </div>
                 </li>
-                <li class="nav-item <%= active.usr %>">
+                <li class="nav-item <%= active.usr %> mob">
                     <a class="nav-link" href="sponsors.html">
                         <i class="fas fa-user"></i>
                         Profile
@@ -125,7 +125,7 @@ jQuery(document).ready(function( $ ) {
                 $(".side-nav li").eq(0).remove();
                 $(".side-nav li").eq(0).remove();
             }
-            
+
 
         }
     });

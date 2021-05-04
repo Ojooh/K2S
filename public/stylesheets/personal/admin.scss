@@ -329,7 +329,7 @@ form span {
         }
 
         .nav-item {
-          margin-right: 25px;
+          margin-right: 17px;
 
           &:last-child {
             margin-right: 0;
@@ -354,6 +354,16 @@ form span {
             font-weight: 400;
             font-family: 'Lato', sans-serif;
             color: white;
+          }
+
+          span.namey {
+            position: absolute;
+            right: 0;
+            top: 0;
+            left: 35px;
+            font-size: 14px;
+            // margin-left: 20px;
+            // display: block;
           }
         }
 
@@ -456,6 +466,12 @@ form span {
 
         .card-body {
           text-align: right;
+
+          .form {
+            fieldset:not(:first-of-type) {
+              display: none;
+            }
+          }
         }
       }
 
@@ -773,7 +789,49 @@ form span {
     .modal-body {
       margin-top: 50px;
       padding: 10px 25px;
-      form {
+
+      .data {
+        width: 100% !important;
+        display: inline-flex;
+        justify-content: space-evenly;
+        padding: 10px;
+        color: #000;
+        span {
+          &:first-child {
+            width: 40%;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 20px;
+            color: #cfc7c7e3;
+          }
+
+          // &:nth-child(2) {
+          //   padding: 10px;
+          //   margin-left: 20px;
+
+          //   // &:after {
+          //   //   content: '';
+          //   //   display: block;
+          //   //   width: 100% !important;
+          //   //   border-bottom: 1px solid #cfc7c7e3;
+          //   // }
+          // }
+        }
+
+        .data-sub {
+          width: 60% !important;
+          border-bottom: 1px solid #cfc7c7e3;
+          word-wrap: break-word;
+
+          span {
+            color: #000;
+            // margin-left: 20px;
+          }
+        }
+      }
+      form,
+      .form {
         fieldset:not(:first-of-type) {
           display: none;
         }

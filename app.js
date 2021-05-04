@@ -13,7 +13,7 @@ var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var adminRouter = require('./routes/admin');
 // var sponsorRouter   = require('./routes/sponsor');
-// var envoyRouter     = require('./routes/envoy');
+var envoyRouter     = require('./routes/envoy');
 
 var app = express();
 
@@ -43,7 +43,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/admin', adminRouter);
 // app.use('/sponsor', sponsorRouter);
-// app.use('/envoy', envoyRouter);
+app.use('/envoy', envoyRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

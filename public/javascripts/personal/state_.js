@@ -775,35 +775,27 @@ jQuery(document).ready(function ($) {
 
 
 
-  var html_ctry = "<option value=''>Select Country .....</option>";
+
   var html_state = "<option value=''>Select State .....</option>";
   state_R.append(html_state);
   state_O.append(html_state);
   state.append(html_state);
 
-  for (var t = 0; t < countries.length; t++) {
-    var ctry = countries[t].country;
-    var ctry_val = ctry + "-" + t
-    html_ctry += "<option value='" + ctry_val + "'>" + ctry + "</option>";
-  }
-  country.append(html_ctry);
 
-  country.change(function fillStates() {
-    var cix = $(this).val();
-    var valls = cix.split("-");
-    var states = countries[valls[1]].states;
-    state_R.empty();
-    state_O.empty();
-    html_state = "<option value=''><!-----choose----></option>";
-    for (var u = 0; u < states.length; u++) {
-      var ste = states[u];
-      html_state += "<option value='" + ste + "'>" + ste + "</option>";
-    }
-    state_R.append(html_state);
-    state_O.append(html_state);
-    state.append(html_state);
-  });
+
+  var cix = "Nigeria-131";
+  var valls = cix.split("-");
+  var states = countries[valls[1]].states;
+  state_R.empty();
+  state_O.empty();
+  html_state = "<option value=''><!-----choose----></option>";
+  for (var u = 0; u < states.length; u++) {
+    var ste = states[u];
+    html_state += "<option value='" + ste + "'>" + ste + "</option>";
+  }
+  state_R.append(html_state);
+  state_O.append(html_state);
+  state.append(html_state);
 
 
 });
-

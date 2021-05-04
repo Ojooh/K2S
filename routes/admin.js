@@ -75,5 +75,12 @@ router.post('/Kids/add_kid', adminHandler.createKidProfile);
 router.post('/Kids/chnage_status', adminHandler.updateKidStatus);
 
 /* GET edit kid page. */
-router.get('/Kid/edit_kid/:id', adminHandler.getEditKidForm);
+router.get('/Kids/edit_kid/:id', adminHandler.getEditKidForm);
+
+/* POST kids updated Details. */
+router.post('/Kids/edit_profile', adminHandler.updateKidProfile);
+
+/* DELETE  Profile. */
+router.post('/Kids/delete_profile', adminHandler.deleteKidProfile);
+
 module.exports = router;

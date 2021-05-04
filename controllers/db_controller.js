@@ -306,6 +306,22 @@ module.exports.deleteUserProfile = (id) => {
     });
 }
 
+//DELETE Kid Profile
+module.exports.deleteKidProfile = (id) => {
+    const query = "DELETE FROM kids WHERE id = '" + id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+}
+
 //GET Sponsors
 module.exports.getSponsors = () => {
     const query = "SELECT * FROM users WHERE is_sponsor = 1;";
@@ -382,7 +398,7 @@ module.exports.insertEnvoyProfile = (user_id, fname, lname, dob, age, gender, co
 
         });
     });
-}
+};
 
 //GET Kids
 module.exports.getKids = () => {
@@ -399,6 +415,24 @@ module.exports.getKids = () => {
     });
 };
 
+//GET Envoy Kids
+module.exports.getEnvoyKids = (id) => {
+    const query = "SELECT * FROM kids WHERE created_by = '" + id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+
 //INSERT new kid profile
 module.exports.insertKidProfile = (uid, category, fname, lname, mname, dob, age, gender, country, s_o, s_r, lga, email, tely, sname, saddress, los, cl, sfees, sother, pname, ptitle, pemail, ptel, story, goal, bc, pp, author) => {
     const query = "INSERT INTO kids (`kid_id`,`category`, `fname`, `lname`, `mname`, `dob`, `age`, `gender`, `country`, `state_o`, `state_r`, `lga`, `email`, `telephone`, `address`, `school_name`, `los`, `class`, `school_address`, `other_school_details`, `school_fees`, `parent_title`, `parent_name`, `parent_email`, `parent_telephone`, `story`, `goal`, `bc`, `profile_photo`, `is_active`, `is_kid`, `created_by`) VALUES('" + uid + "', '" + category + "', '" + fname + "', '" + lname + "', '" + mname + "', '" + dob + "', '" + age + "', '" + gender + "', '" + country + "', '" + s_o + "', '" + s_r + "', '" + lga + "', '" + email + "', '" + tely + "', '', '" + sname + "', '" + los + "', '" + cl + "', '" + saddress + "', '" + sother + "', '" + sfees + "', '" + ptitle + "', '" + pname + "', '" + pemail + "', '" + ptel + "', '" + story + "', '" + goal + "', '" + bc + "', '" + pp + "', '1', '1','" + author + "'); ";
@@ -413,6 +447,22 @@ module.exports.insertKidProfile = (uid, category, fname, lname, mname, dob, age,
 
         });
     });
-}
+};
+
+//UPDATE Kid Profile
+module.exports.updateKidProfile = (id, category, fname, lname, mname, dob, age, gender, country, s_o, s_r, lga, email, tely, sname, saddress, los, cl, sfees, sother, pname, ptitle, pemail, ptel, story, goal, bc, pp, editor, time) => {
+    const query = "UPDATE kids SET `category` = '" + category + "', `fname` = '" + fname + "', `lname` = '" + lname + "', `mname` = '" + mname + "', `dob` = '" + dob + "', `age` = '" + age + "',`gender` = '" + gender + "', `country` = '" + country + "', `state_o` = '" + s_o + "', `state_r` = '" + s_r + "', `lga` = '" + lga + "',`email` = '" + email + "', `telephone` = '" + tely + "',  `address`= '', `school_name` = '" + sname + "', `los`=  '" + los + "', `class` = '" + cl + "', `school_address` = '" + saddress + "', `other_school_details` = '" + sother + "', `school_fees` = '" + sfees + "', `parent_title` = '" + ptitle + "', `parent_name` = '" + pname + "', `parent_email` = '" + pemail + "', `parent_telephone` = '" + ptel + "', `story` = '" + story + "', `goal` = '" + goal + "', `bc` = '" + bc + "', `profile_photo` = '" + pp + "', `editted_by` = '" + editor + "', `last_edit` = '" + time + "' WHERE`id` = '" + id + "'; ";
+    // console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
 
 

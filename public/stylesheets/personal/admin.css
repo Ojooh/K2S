@@ -349,7 +349,7 @@ form span {
 }
 
 .wrapper .main-content .navbar .navbar-collapse .nav-item {
-  margin-right: 25px;
+  margin-right: 17px;
 }
 
 .wrapper .main-content .navbar .navbar-collapse .nav-item:last-child {
@@ -374,6 +374,14 @@ form span {
   font-weight: 400;
   font-family: 'Lato', sans-serif;
   color: white;
+}
+
+.wrapper .main-content .navbar .navbar-collapse .nav-link span.namey {
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 35px;
+  font-size: 14px;
 }
 
 .wrapper .main-content .navbar .navbar-collapse .dropdown-menu {
@@ -488,6 +496,10 @@ form span {
 
 .wrapper .main-content .card.card-stats .card-body {
   text-align: right;
+}
+
+.wrapper .main-content .card.card-stats .card-body .form fieldset:not(:first-of-type) {
+  display: none;
 }
 
 .wrapper .main-content .card .card-header,
@@ -817,11 +829,44 @@ form span {
   padding: 10px 25px;
 }
 
-.modal .card-modal-box .modal-body form fieldset:not(:first-of-type) {
+.modal .card-modal-box .modal-body .data {
+  width: 100% !important;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  padding: 10px;
+  color: #000;
+}
+
+.modal .card-modal-box .modal-body .data span:first-child {
+  width: 40%;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 20px;
+  color: #cfc7c7e3;
+}
+
+.modal .card-modal-box .modal-body .data .data-sub {
+  width: 60% !important;
+  border-bottom: 1px solid #cfc7c7e3;
+  word-wrap: break-word;
+}
+
+.modal .card-modal-box .modal-body .data .data-sub span {
+  color: #000;
+}
+
+.modal .card-modal-box .modal-body form fieldset:not(:first-of-type),
+.modal .card-modal-box .modal-body .form fieldset:not(:first-of-type) {
   display: none;
 }
 
-.modal .card-modal-box .modal-body form .bmd-form-group label {
+.modal .card-modal-box .modal-body form .bmd-form-group label,
+.modal .card-modal-box .modal-body .form .bmd-form-group label {
   position: relative;
   float: left;
   font-size: 12px;
@@ -829,7 +874,9 @@ form span {
 }
 
 .modal .card-modal-box .modal-body form .bmd-form-group input,
-.modal .card-modal-box .modal-body form .bmd-form-group select {
+.modal .card-modal-box .modal-body form .bmd-form-group select,
+.modal .card-modal-box .modal-body .form .bmd-form-group input,
+.modal .card-modal-box .modal-body .form .bmd-form-group select {
   padding: 0 14px;
   border-radius: 30px;
   background: transparent;
@@ -838,21 +885,26 @@ form span {
 }
 
 .modal .card-modal-box .modal-body form .bmd-form-group input:disabled,
-.modal .card-modal-box .modal-body form .bmd-form-group select:disabled {
+.modal .card-modal-box .modal-body form .bmd-form-group select:disabled,
+.modal .card-modal-box .modal-body .form .bmd-form-group input:disabled,
+.modal .card-modal-box .modal-body .form .bmd-form-group select:disabled {
   background-color: #e9ecef;
 }
 
-.modal .card-modal-box .modal-body form .bmd-form-group textarea {
+.modal .card-modal-box .modal-body form .bmd-form-group textarea,
+.modal .card-modal-box .modal-body .form .bmd-form-group textarea {
   -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
           box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
 }
 
-.modal .card-modal-box .modal-body form .bmd-form-group input[type='password'] {
+.modal .card-modal-box .modal-body form .bmd-form-group input[type='password'],
+.modal .card-modal-box .modal-body .form .bmd-form-group input[type='password'] {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append {
+.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append,
+.modal .card-modal-box .modal-body .form .bmd-form-group .input-group-append {
   -webkit-box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
           box-shadow: 0 4px 10px 0px rgba(0, 0, 0, 0.14), 0 2px 1.25px -5px rgba(76, 175, 80, 0.4);
   cursor: pointer;
@@ -861,14 +913,16 @@ form span {
   border-bottom-right-radius: 30px;
 }
 
-.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append #basic-addon12 {
+.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append #basic-addon12,
+.modal .card-modal-box .modal-body .form .bmd-form-group .input-group-append #basic-addon12 {
   height: 100% !important;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   font-size: 10px;
 }
 
-.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append #basic-addon2 {
+.modal .card-modal-box .modal-body form .bmd-form-group .input-group-append #basic-addon2,
+.modal .card-modal-box .modal-body .form .bmd-form-group .input-group-append #basic-addon2 {
   height: 100% !important;
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;

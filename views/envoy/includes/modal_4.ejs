@@ -112,9 +112,7 @@
                             <div class="col-md-3">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Country of residence</label>
-                                    <select class="form-control" id="country">
-                        
-                                    </select>
+                                    <input class="form-control" id="country" name="country" placeholder="country....." value="Nigeria" disabled>
                                     <span class="text-danger country-error my-1"></span>
                                 </div>
                             </div>
@@ -343,24 +341,69 @@
         </div>
     </div>
 </div>
-<!-- Admin Form Modal End -->
+<!-- Key Form Modal End -->
 
 <!-- Admin Profile Modal -->
-<div class="modal fade bd-example-modal-xl" id="adminProfileModal" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="adminProfileModalCenterTitle" aria-hidden="true">
+<div class="modal fade bd-example-modal-xl" id="kidProfileModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="kifProfileModalCenterTitle" aria-hidden="true">
     <div class="close-modal">
         <i class="fas fa-times"></i>
     </div>
 
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content card-modal-box mt-5" style="width: 900px;">
-            <div class="card-modal-img-header">
-                <img src="" class="avatar">
-            </div>
+        <div class="modal-content card-modal-box mt-5">
 
-            <div class="modal-body card-modal-body mt-5">
-                <div class="container-fluid">
-                    <div class="row" style="font-size: 18px;">
+            <div class="modal-body card-modal-body mt-2">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#bio" role="tab" aria-controls="home"
+                            aria-selected="true">Bio</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                            aria-selected="false">Profile</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+                            aria-selected="false">Contact</a>
+                    </li>
+                </ul>
+                <div class="tab-content my-2 p-md-4" id="myTabContent">
+                    <div class="tab-pane fade show active" id="bio" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="profile-img">
+                                        <img src="" class="avatar img-fluid rounded-pill">
+                                    </div>
+                                    <div class="k-id text-center my-4">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-8 info">
+                                    <div class="data ml-3">
+                                    
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                </div>
+                <!-- <div class="container">
+                    <div class="row">
+                        
+                        
+                        <div class="col-4">
+                            <div class="profile-img">
+                                <img src="" class="avatar img-fluid rounded-pill" >
+                            </div>
+                        </div>
+                        <div class="col-8">
+
+                        </div>
                         <div class="col-12 text-center">
                             <h4 class="u-id"></h4>
                         </div>
@@ -381,7 +424,7 @@
                             <div class="le mt-3"></div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
             </div>
             <div class="modal-footer">
@@ -400,6 +443,6 @@
 
 <!-- The Modal End -->
 <script src="/javascripts/personal/school_level.js"></script>
-<script src="/javascripts/personal/country_state.js"></script>
+<script src="/javascripts/personal/state_.js"></script>
 <script src="/javascripts/personal/country_code.js"></script>
 <!-- The Modal End -->

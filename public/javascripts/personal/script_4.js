@@ -13,6 +13,7 @@ jQuery(document).ready(function ($) {
     var dob = $("#dob");
     var age = $("#age");
     var deleteImage = $(".delete-image");
+    var deleteFile = $(".delete-file");
     // var submitKid = $('#submitKid');
     var profilePic = $("#profilePic");
     var status = $(".custom-control-input")
@@ -23,6 +24,7 @@ jQuery(document).ready(function ($) {
     var genPassword = $("#basic-addon2");
     var nextFieldset = $(".next");
     var prevFieldset = $(".back");
+    var profile = $(".profile");
     var counter = [0];
 
     var inptArr = {};
@@ -31,8 +33,8 @@ jQuery(document).ready(function ($) {
     var fNames = ['Personal Bio', 'School Details', 'Parent Information', 'Profile Information'];
 
     if (window_width <= 991) {
-        if ($(".side-nav li").length <= 6) {
-            var html = `<li class="nav-item">
+        if (!$(".side-nav li").hasClass("mob")) {
+            var html = `<li class="nav-item mob">
                     <div class="search-area mt-2">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
@@ -43,7 +45,7 @@ jQuery(document).ready(function ($) {
                         </div>
                     </div>
                 </li>
-                <li class="nav-item <%= active.usr %>">
+                <li class="nav-item <%= active.usr %> mob">
                     <a class="nav-link" href="sponsors.html">
                         <i class="fas fa-user"></i>
                         Profile
@@ -57,6 +59,7 @@ jQuery(document).ready(function ($) {
             $(".side-nav li").eq(0).remove();
         }
     }
+
     for (var i = 0; i < $(".card-title").length; i++) {
         if ($($(".card-title")[i]).html().trim() == "") {
             $($(".card-title")[i]).html("0");
@@ -207,9 +210,9 @@ jQuery(document).ready(function ($) {
             return [$(".story-error"), "Only 500 words Allowed."];
         } else if (inptArr.goal != "" && inptArr.goal.split(" ").length > 501) {
             return [$(".goal-error"), "Only 500 words Allowed."];
-        } else if (inptArr.bc !== undefined && validDocTypes.includes(inptArr.bc.type) == false) {
+        } else if (inptArr.bc !== undefined && inptArr.bc != "" && validDocTypes.includes(inptArr.bc.type) == false) {
             return [$(".bc-error"), "Only Image, pdf or docx files Allowed."];
-        } else if (inptArr.pp !== undefined && validImageTypes.includes(inptArr.pp.type) == false) {
+        } else if (inptArr.pp !== undefined && inptArr.pp != "" && validImageTypes.includes(inptArr.pp.type) == false) {
             return [$(".pp-error"), "Only Image Files are Allowed."];
         } else {
             return "Data-Valid";
@@ -225,8 +228,8 @@ jQuery(document).ready(function ($) {
     $(window).on('resize', function () {
         var width = $(window).width();
         if (width <= 991) {
-            if ($(".side-nav li").length <= 6) {
-                var html = `<li class="nav-item">
+            if (!$(".side-nav li").hasClass("mob")) {
+                var html = `<li class="nav-item mob">
                     <div class="search-area mt-2">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
@@ -237,7 +240,7 @@ jQuery(document).ready(function ($) {
                         </div>
                     </div>
                 </li>
-                <li class="nav-item <%= active.usr %>">
+                <li class="nav-item <%= active.usr %> mob">
                     <a class="nav-link" href="sponsors.html">
                         <i class="fas fa-user"></i>
                         Profile
@@ -376,29 +379,28 @@ jQuery(document).ready(function ($) {
         var prevField = fieldsets[indx];
         var nextField = fieldsets[indx + 1];
         var FieldsetName = $(".fieldset-name");
-        // var inptArr = {};
         var url = $(this).attr("data-url");
 
 
         if (indx == 0) {
 
             inptArr.category = $("#category").val();
-            inptArr.fname = $("#fname").val().trim();
-            inptArr.lname = $("#lname").val().trim();
-            inptArr.mname = $("#mname").val().trim();
+            inptArr.fname = $("#fname").val();
+            inptArr.lname = $("#lname").val();
+            inptArr.mname = $("#mname").val();
             inptArr.dob = $("#dob").val();
-            inptArr.age = $("#age").val().trim();
+            inptArr.age = $("#age").val();
             inptArr.gender = $("#gender").val();
             inptArr.country = $("#country").val();
             inptArr.state_O = $("#state-o").val();
             inptArr.state_R = $("#state-r").val();
-            inptArr.lga = $("#lga").val().trim();
-            inptArr.email = $("#email").val().trim();
-            inptArr.tely = $("#telephone").val().trim();
-            inptArr.code = $("#countryCode").val().trim();
+            inptArr.lga = $("#lga").val();
+            inptArr.email = $("#email").val();
+            inptArr.tely = $("#telephone").val();
+            inptArr.code = $("#countryCode").val();
             $(".text-danger").html("");
-            valid = "Data-Valid"
-            // valid = field1(inptArr);
+            // valid = "Data-Valid"
+            valid = field1(inptArr);
 
             if (valid == "Data-Valid") {
                 counter[0] = indx + 1;
@@ -415,9 +417,9 @@ jQuery(document).ready(function ($) {
 
         } else if (indx == 1) {
             inptArr.sname = $("#sname").val();
-            inptArr.los = $("#los").val().trim();
-            inptArr.class = $("#class").val().trim();
-            inptArr.saddress = $("#saddress").val().trim();
+            inptArr.los = $("#los").val();
+            inptArr.class = $("#class").val();
+            inptArr.saddress = $("#saddress").val();
             inptArr.sfees = $("#sfees").val();
             inptArr.sother = $("#sother").val();
             $(".text-danger").html("");
@@ -443,9 +445,9 @@ jQuery(document).ready(function ($) {
             } else {
                 inptArr.ptitle = $("#ptitle").val();
             }
-            inptArr.pname = $("#pname").val().trim();
-            inptArr.pemail = $("#pemail").val().trim();
-            inptArr.ptel = $("#ptel").val().trim();
+            inptArr.pname = $("#pname").val();
+            inptArr.pemail = $("#pemail").val();
+            inptArr.ptel = $("#ptel").val();
             $(".text-danger").html("");
             // valid = "Data-Valid"
             valid = field3(inptArr);
@@ -465,8 +467,8 @@ jQuery(document).ready(function ($) {
                 valid[0].html(valid[1]);
             }
         } else if (indx == 3) {
-            inptArr.story = $("#story").val().trim();
-            inptArr.goal = $("#goal").val().trim();
+            inptArr.story = $("#story").val();
+            inptArr.goal = $("#goal").val();
             if ($("#bc")[0].files[0] === undefined) {
                 inptArr.bc = "";
             } else {
@@ -492,7 +494,13 @@ jQuery(document).ready(function ($) {
                 fd.append("dob", inptArr.dob);
                 fd.append("age", inptArr.age);
                 fd.append("gender", inptArr.gender);
-                fd.append("country", inptArr.country);
+                var cix = $("#country").val().split("-");
+                if (cix[1] == "" || cix[1] == undefined) {
+                    fd.append("country", "Nigeria-131");
+                } else {
+                    fd.append("country", inptArr.country);
+                }
+
                 fd.append("state_o", inptArr.state_O);
                 fd.append("state_r", inptArr.state_R);
                 fd.append("lga", inptArr.lga);
@@ -513,9 +521,10 @@ jQuery(document).ready(function ($) {
                 fd.append("bc", inptArr.bc);
                 fd.append("pp", inptArr.pp);
                 fd.append("title", "KDS")
-                //ajax
-                console.log(inptArr);
-                console.log(url);
+
+                if (nextFieldset.attr("data-type") == "edit") {
+                    fd.append("id", nextFieldset.attr("data-id"));
+                }
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -640,13 +649,25 @@ jQuery(document).ready(function ($) {
     //Function To Delete Image
     deleteImage.on("click", function (e) {
         e.preventDefault();
+        e.stopPropagation();
 
-        if ($(this).attr("data-type") == "add") {
-            profilePic.val("");
-            $("#frame").attr("src", "");
-            $(".filly").removeClass("deactivated");
-            $(".prev").addClass("deactivated");
-        }
+        profilePic.val("");
+        $("#frame").attr("src", "");
+        $(".filly").removeClass("deactivated");
+        $(".prev").addClass("deactivated");
+
+    });
+
+    //Function To Delete File
+    deleteFile.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $("#bc").val("");
+        $(".path").html("");
+        $(".dilly").removeClass("deactivated");
+        $(".jev").addClass("deactivated");
+
     });
 
     //Function to edit Admin
@@ -677,7 +698,7 @@ jQuery(document).ready(function ($) {
             success: function (data) {
                 swal.close();
 
-                //console.log(data.type);
+                console.log(data);
                 if (data.success) {
 
                     if (type[1] == "modal") {
@@ -687,12 +708,16 @@ jQuery(document).ready(function ($) {
                         $("#fname").val(data.success.fname)
                         $("#lname").val(data.success.lname)
                         $("#mname").val(data.success.mname)
-                        $("#dob").val(data.success.dob);
+                        $("#dob").val(data.success.dob.split("T")[0]);
                         $("#age").val(data.success.age);
                         $("#gender").val(data.success.gender);
                         $("#country").val(data.success.country);
                         var cix = $("#country").val().split("-");
-                        var states = countries[cix[1]].states;
+                        if (cix[1] == "" || cix[1] == undefined) {
+                            var states = countries["131"].states;
+                        } else {
+                            var states = countries[cix[1]].states;
+                        }
                         $("#state-o").empty();
                         $("#state-r").empty();
                         html_state = "<option value=''><!-----choose----></option>";
@@ -749,17 +774,16 @@ jQuery(document).ready(function ($) {
                             $(".filly").addClass("deactivated");
                             $(".prev").removeClass("deactivated");
                         }
-                        // submitAdmin.attr("data-url", "/admin/Administrators/edit_profile");
-                        // submitAdmin.attr("data-type", "edit");
-                        // submitAdmin.attr("data-id", ID);
+                        nextFieldset.attr("data-url", "/admin/kids/edit_profile");
+                        nextFieldset.attr("data-type", "edit");
+                        nextFieldset.attr("data-id", ID);
                         mdl.modal("show");
                     } else {
-                        var url = "/admin/Kid/edit_kid/" + ID;
+                        console.log(data.type);
+                        var url = "/admin/Kids/edit_kid/" + ID;
                         location.replace(url);
                     }
 
-                } else if (data.url) {
-                    location.replace(data.url);
                 }
 
 
@@ -829,6 +853,100 @@ jQuery(document).ready(function ($) {
         });
 
     });
+
+    //Function to Open Profile Modal
+    profile.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var ID = $(this).attr("data-id");
+        var url = $(this).attr("data-url");
+        var mdl = $("#kidProfileModal");
+        var type = $(this).attr("data-type").split("-");
+        var data = { id: ID, type: type[0], mode: type[1] };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Auto close alert!',
+                    html: 'Please Hold on as Details are being Fetched.',
+                    timer: 40000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                });
+            },
+            success: function (data) {
+                swal.close();
+                if (data.success) {
+                    var info = [{
+                        'category': data.success.category,
+                        'name': data.success.lname + " " + data.success.mname + " " + data.success.fname,
+                        'D.O.B': data.success.dob.split("T")[0],
+                        'age': data.success.age + " Yeras Old",
+                        'gender': data.success.gender,
+                        'country': data.success.country.split("-")[0] + ", " + data.success.state_o + " - " + data.success.state_r + "(" + data.success.lga + ")",
+                        'email': "<a href='mailto:" + data.success.email + "'>" + data.success.email + "</a>",
+                        'Tel': "<a href='tel:" + data.success.telephone + "'>" + data.success.telephone + "</a>",
+                        'Home Address': data.success.address
+                    }];
+
+                    if (data.type == "modal") {
+                        if (data.success.profile_photo != "") {
+                            $(".avatar").attr('src', data.success.profile_photo);
+                        } else {
+                            $(".avatar").attr('src', '/images/profile/avatar/avatar.png');
+                        }
+                        $(".k-id").html("<h4>" + data.success.kid_id + "</h4>");
+
+                        var data_html = "";
+                        Object.keys(info[0]).forEach(function (key) {
+                            var _html = `  <div class="data ml-3">
+                                                <span>` + key + `</span>
+                                                <div class="data-sub">
+                                                    <span>`+ info[0][key] + `</span>
+                                                </div>
+                                            </div >`;
+                            data_html += _html
+                        });
+                        $(".info").html(data_html);
+
+
+
+
+
+
+
+                        // $(".u-id").html("<strong>" + data.success.title.toUpperCase() + ": " + data.success.user_id + "</strong>")
+                        // $(".f-name").html("<i class='fas fa-glasses'></i> First Name : " + "<span class='text-info'>" + data.success.fname + "</span>");
+                        // $(".l-name").html("<i class='fab fa-lastfm'></i> Last Name : " + "<span class='text-info'>" + data.success.lname + "</span>");
+                        // $(".dob").html("<i class='fas fa-calendar-week'></i> Date of Birth : " + "<span class='text-info'>" + prettyDateOnly(data.success.dob.split("T")[0]) + "</span>");
+                        // $(".age").html("<i class='fas fa-sort-numeric-down-alt'></i> Age : " + "<span class='text-info'>" + data.success.age + "</span>");
+                        // $(".gender").html("<i class='fas fa-user-check'></i> Gender : " + "<span class='text-info'>" + data.success.gender + "</span>");
+                        // $(".country").html("<i class='far fa-flag'></i> Country : " + "<span class='text-danger'>" + data.success.country.split("-")[0] + ", " + data.success.state + "</span>");
+                        // $(".email").html("<i class='far fa-envelope'></i> Email : " + "<a href='mailto:" + data.success.email + "'> " + data.success.email + "</a>");
+                        // $(".telephone").html("<i class='fas fa-phone-alt'></i> Telephone : " + "<span class='text-info'>" + data.success.telephone + "</span>");
+                        // $(".doj").html("<i class='far fa-clock'></i> Join Date : " + "<span class='text-info'>" + prettyDate(data.success.date_created) + "</span>");
+                        // $(".ll").html("<i class='far fa-clock'></i> Last Login : " + "<span class='text-info'>" + prettyDate(data.success.last_login) + "</span>");
+                        // $(".eb").html("<i class='far fa-user'></i> Last Editted By : " + "<span class='text-info'>" + data.success.editted_by + "</span>");
+                        // $(".le").html("<i class='far fa-calendar-check'></i> Last Editted : " + "<span class='text-info'>" + prettyDate(data.success.last_editted) + "</span>");
+                        mdl.modal("show");
+                    } else {
+                        location.replace(data.success);
+                    }
+
+                } else if (data.url) {
+                    location.replace(data.url);
+                }
+
+
+            }
+        });
+    });
+
 
 
 

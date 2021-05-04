@@ -164,9 +164,9 @@ module.exports.validKid = async (req, type) => {
         return [null, false, { message: 'Only 500 words Allowed.' }];
     } else if (!helper.isEmpty(req.body.goal) && req.body.goal.split(" ").length > 501) {
         return [null, false, { message: 'Only 500 words Allowed.' }];
-    } else if (req.files && helper.isDoc(req.files.bc) == false) {
+    } else if (req.files && req.files.bc && helper.isDoc(req.files.bc) == false) {
         return [null, false, { message: 'Only Image, pdf or docx files Allowed.' }];
-    } else if (req.files && helper.isImage(req.files.pp) == false) {
+    } else if (req.files && req.files.pp && helper.isImage(req.files.pp) == false) {
         return [null, false, { message: 'File Sent is not an Image' }];
     } else {
         var user_id = await helper.generateUserId(req.body.title, 5)
