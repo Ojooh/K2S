@@ -5,6 +5,9 @@ var adminHandler = require('../controllers/administrators_controller');
 /* GET login page. */
 router.get('/', adminHandler.getDash);
 
+/*GET login page. */
+router.get('/Users/get_all', adminHandler.getAllUsers);
+
 /* GET administrators page. */
 router.get('/Administrators', adminHandler.getAdministrators);
 

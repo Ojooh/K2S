@@ -6,6 +6,7 @@ var window_width = $(window).width();
 var sideBar = $("#sideBar");
 var mainPanel = $(".main-content");
 var dates = $(".pretty-date");
+var timeO = $(".time-only");
 var openMdl_5 = $(".mdl-task-form");
 var modal = $(".modal");
 var closeModl = $(".close-modal");
@@ -14,6 +15,8 @@ var submitTask = $('#submitTask');
 var editTask = $(".edit-task");
 var infoTask = $(".task-info");
 var deleteTask = $(".delete-task");
+var startConvo = $(".start-convo");
+var send = $(".icon2");
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var socket = io('http://localhost:3000');
@@ -59,6 +62,11 @@ for (var i = 0; i < $(".card-title").length; i++) {
 
 
 
+for (var t = 0; t < timeO.length; t++) {
+    var time = prettyTime($(timeO[t]).html().trim());
+    $(timeO[t]).html(time);
+}
+
 for (var t = 0; t < dates.length; t++) {
     var date = prettyDate($(dates[t]).html().trim());
     $(dates[t]).html(date);
@@ -80,6 +88,21 @@ function prettyDate(date) {
     } else {
         return "Never";
     }
+};
+
+
+//function to make date-time pretty
+function prettyTime(date) {
+    if (date != "0000-00-00 00:00:00") {
+        var d = new Date(date);
+        var h = d.getHours()
+        var m = d.getMinutes();
+        var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
+        var result = _time;
+        return result
+    } else {
+        return "Never";
+    }
 }
 
 //Function to make date pretty
@@ -95,7 +118,7 @@ function prettyDateOnly(date) {
     } else {
         return "Never";
     }
-}
+};
 
 //Function date is greater than today
 function dateGreater(date) {
@@ -107,7 +130,34 @@ function dateGreater(date) {
     } else {
         return false;
     }
-}
+};
+
+//Function to send message to receipient
+function sendMessage(e, input, rec, send, rec_name, id) {
+    // e.preventDefault();
+    // e.stopPropagation();
+
+    var msg = input.val();
+    var receiver = rec;
+    var sender = send;
+    var data = {
+        sender: sender,
+        receiver: receiver,
+        msg: msg,
+        send_name: user_name,
+        rec_name: rec_name
+    };
+
+    if (id && id != "") {
+        data["id"] = id
+    }
+
+    console.log(data)
+
+    socket.emit("send_message", data);
+
+    return msg
+};
 
 //Function to acativate Tool Tip
 $(function () {
@@ -495,18 +545,21 @@ infoTask.on("click", function (e) {
 
 });
 
-
+//click on contact to see convos
 $(".box").on("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
     var chatList = $(".chat-contacts");
     var chats = $(".chat-convo");
     var id = $(this).attr("data-id");
+    var rec_id = $(this).attr("data-user");
     var namey = $(this).attr("data-name");
-    console.log($(this).attr("data-convo"));
+    // console.log($(this).attr("data-convo"));
     var convo = JSON.parse($(this).attr("data-convo"));
     var chat_area = $(".gratty");
     var html = ""
+    send.attr("data-id", id);
+    $("#send-message").attr("data-rec", rec_id + "*" + namey);
 
     if (convo.length <= 0) {
         chat_area.html("");
@@ -516,7 +569,7 @@ $(".box").on("click", function (e) {
         chat_area.html("");
 
         for (var y = 0; y < convo.length; y++) {
-            if (convo[y].who == "sender") {
+            if (convo[y].sender == user_id) {
                 html += `<div class="d-flex align-items-center text-right justify-content-end ">
                             <div class="pr-2">
                                 <span class="name">` + convo[y].name + `</span>
@@ -528,7 +581,7 @@ $(".box").on("click", function (e) {
                         </div>`
             }
 
-            if (convo[y].who == "receiver") {
+            if (convo[y].receiver == user_id) {
                 html += `<div class="d-flex align-items-center">
                             <div class="text-left pr-1">
                                 <img src="https://img.icons8.com/color/40/000000/guest-female.png"
@@ -544,7 +597,7 @@ $(".box").on("click", function (e) {
         chat_area.html(html);
     }
 
-    console.log(namey);
+    // console.log(namey);
     $(".name").html(namey)
     chatList.fadeOut('slow', function () {
         chats.fadeIn('slow');
@@ -555,6 +608,7 @@ $(".box").on("click", function (e) {
 });
 
 
+//click the back button to see contact list
 $(".fa-chevron-left").on("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -567,6 +621,147 @@ $(".fa-chevron-left").on("click", function (e) {
 
 
 });
+
+
+//function to handle new convo
+startConvo.on("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    $.ajax({
+        url: "/admin/Users/get_all",
+        type: 'GET',
+        beforeSend: function () {
+            Swal.fire({
+                title: 'Auto close alert!',
+                html: 'Please Hold on as Details are being Fetched.',
+                timer: 40000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+            });
+        },
+        success: function (data) {
+            swal.close();
+
+            //console.log(data.type);
+            if (data.success) {
+                var userList = {};
+                var convos = [];
+                $.each($(".box"), function (i, val) {
+                    convos.push($(val).attr("data-user"))
+                });
+                for (var u = 0; u < data.success.length; u++) {
+                    if (data.success[u].user_id != user_id && !convos.includes(data.success[u].user_id)) {
+                        var key = data.success[u].user_id + "*" + data.success[u].fname + " " + data.success[u].lname;;
+                        var value = data.success[u].user_id + " " + data.success[u].fname + " " + data.success[u].lname;
+                        userList[key] = value;
+                    }
+                }
+
+
+                Swal.fire({
+                    title: 'Select User From List',
+                    input: 'select',
+                    inputOptions: userList,
+                    inputPlaceholder: 'Select a User',
+                    showCancelButton: true,
+                    confirmButtonText: 'Start',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (login) => {
+                        console.log(login);
+                        if (login == "") {
+                            Swal.showValidationMessage(
+                                `Request failed: No User Was Selected`
+                            )
+                        }
+                    }
+                }).then((result) => {
+                    if (result.value == "") {
+                        var rar = result.value.split("*")
+                        var receiver = rar[0];
+                        var name = rar[1];
+                        var chat_area = $(".gratty");
+                        var chatList = $(".chat-contacts");
+                        var chats = $(".chat-convo");
+                        chat_area.html("");
+                        html = `<div class="text-center my-3"><span class="between">No conversations yet</span></div>`;
+                        chat_area.html(html);
+                        $(".name").html(name)
+                        $("#send-message").attr("data-rec", result.value);
+                        chatList.addClass("deactivated");
+                        chats.removeClass('deactivated');
+                    }
+                });
+
+            } else if (data.url) {
+                location.replace(data.url);
+            }
+
+
+        }
+    });
+
+});
+
+
+//function to send a message
+send.on("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var inputy = $("#send-message");
+    var sender = user_id;
+    var rec = inputy.attr("data-rec").split("*");
+    var chat_area = $(".gratty");
+    var id = $(this).attr("data-id");
+    var html = $(".gratty").html();
+
+    var msg = sendMessage(e, inputy, rec[0], sender, rec[1], id);
+
+    html += `<div class="d-flex align-items-center text-right justify-content-end ">
+                <div class="pr-2">
+                    <span class="name">` + rec[1] + `</span>
+                    <p class="msg">` + msg + `</p>
+                </div>
+                <div>
+                    <img src="https://i.imgur.com/HpF4BFG.jpg" width="30" class="img1" />
+                </div>
+            </div>`
+    chat_area.html(html);
+    inputy.val("");
+});
+
+
+//function to send a message on enter key for input
+$("#send-message").keypress(function (e) {
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode == '13') {
+        e.preventDefault();
+        e.stopPropagation();
+        var inputy = $("#send-message");
+        var sender = user_id;
+        var rec = inputy.attr("data-rec").split("*");
+        var chat_area = $(".gratty");
+        var id = send.attr("data-id");
+        var html = $(".gratty").html();
+
+        var msg = sendMessage(e, inputy, rec[0], sender, rec[1], id);
+
+        html += `<div class="d-flex align-items-center text-right justify-content-end ">
+                <div class="pr-2">
+                    <span class="name">` + user_name + `</span>
+                    <p class="msg">` + msg + `</p>
+                </div>
+                <div>
+                    <img src="https://i.imgur.com/HpF4BFG.jpg" width="30" class="img1" />
+                </div>
+            </div>`
+        chat_area.html(html);
+        inputy.val("");
+    }
+});
+
+
 
 // });
 

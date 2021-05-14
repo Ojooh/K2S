@@ -134,6 +134,45 @@ io.on("connection", function (socket) {
     io.to(socketId_r).emit("new_task_succeded", { "success": rt });
     // console.log(rt)
   });
+
+  // listen from client for message
+  socket.on("send_message", async function (data) {
+    // send event to receiver
+    var socketId = users[data.receiver];
+    var newy = { "sender": data.sender, "receiver": data.receiver, "msg": data.msg, "sender_name": data.send_name, "receiver_name": data.rec_name };
+
+    let d_created = moment().format('YYYY-MM-DD  HH:mm:ss.000');
+    let exist = [];
+    if (data.id && data.id != "") {
+      exist = await DB.getChat(data.id);
+      var chat = JSON.parse(exist[0].message);
+      // console.log(chat);
+      // console.log(newy);
+      // chat.push(newy);
+      var chat = JSON.stringify(chat);
+      let update = await DB.updateChat(chat, exist[0].id);
+
+    } else {
+      var chat = [];
+      chat.push(newy);
+      var chat = JSON.stringify(chat);
+      let insert = await DB.createNewNotification(data.sender, data.receiver, "New Chat", chat, "chat", d_created, "", "");
+
+    }
+
+    let testin = await DB.notyExist(data.receiver, "chat");
+    if (testin.length > 0) {
+      let gst = "You have " + (testin[0].count + 1).toString() + " Unread Messages " + data.send_name;
+      let update_2 = await DB.updateNoty(data.receiver, gst, (testin[0].count + 1).toString(), "chat");
+    } else {
+      let insert_2 = await DB.addNoty(data.receiver, "You Have 1 unread message from " + data.send_name, "chat", 1);
+    }
+
+    io.to(socketId).emit("new_message", data);
+    console.log(socketId);
+  });
+
+
 });
 
 

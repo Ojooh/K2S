@@ -11,6 +11,39 @@ socket.on("new_task", function (data) {
     }
 });
 
+socket.on("new_message", function (data) {
+    // console.log(data);
+    var html = $(".gratty").html();
+    var chat_area = $(".gratty");
+    if (data.sender == user_id) {
+        html += `<div class="d-flex align-items-center text-right justify-content-end ">
+                            <div class="pr-2">
+                                <span class="name">` + data.send_name + `</span>
+                                <p class="msg">` + data.msg + `</p>
+                            </div>
+                            <div>
+                                <img src="https://i.imgur.com/HpF4BFG.jpg" width="30" class="img1" />
+                            </div>
+                        </div>`
+    }
+
+    if (data.receiver == user_id) {
+        html += `<div class="d-flex align-items-center">
+                    <div class="text-left pr-1">
+                        <img src="https://img.icons8.com/color/40/000000/guest-female.png"
+                            width="30" class="img1" />
+                    </div>
+                    <div class="pr-2 pl-1">
+                        <span class="name">` + data.rec_name + `</span>
+                        <p class="msg">` + data.msg + `</p>
+                    </div>
+                </div>`;
+    }
+    // console.log(html)
+    chat_area.html(html);
+});
+
+
 $(".dropdown-item").on("click", function (e) {
     e.preventDefault();
     e.stopPropagation();

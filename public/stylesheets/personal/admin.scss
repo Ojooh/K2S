@@ -303,6 +303,11 @@ li {
     display: block;
     transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);
 
+    @media (max-width: 991px) {
+      width: 100%;
+      left: 0;
+    }
+
     .navbar {
       justify-content: space-between !important;
 
@@ -1053,7 +1058,7 @@ li {
       }
     }
 
-    .wrapper {
+    .cradles {
       // .wrapper {
       // height: 100vh;
       display: flex;
@@ -1079,7 +1084,7 @@ li {
         h6 {
           font-size: 20px;
         }
-        
+
         i {
           cursor: pointer;
         }
@@ -1104,7 +1109,7 @@ li {
       .scroll {
         overflow-y: scroll;
         scroll-behavior: smooth;
-        height: auto;
+        height: 500px;
       }
 
       .img1 {

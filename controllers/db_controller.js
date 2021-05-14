@@ -26,6 +26,23 @@ module.exports.getUserById = (id) => {
     });
 };
 
+
+//GET All Users
+module.exports.getAllUsers = () => {
+    const query = "SELECT users.user_id, users.fname, users.lname, users.email FROM users WHERE is_active = '1';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 //GET kid by ID field			
 module.exports.getKidById = (id) => {
     const query = "SELECT * FROM kids WHERE id = '" + id + "';";
@@ -777,9 +794,48 @@ module.exports.notyExist = (id, cat) => {
 //get chats
 module.exports.getContacts = (id) => {
     const query = `SELECT * FROM 
-                    (SELECT notify.receiver, notify.sender, users.user_id, users.fname, users.lname, users.email, users.profile_photo, notify.message_topic, notify.message, notify.category, notify.date_created 
-                    FROM notify INNER JOIN users ON notify.receiver = users.user_id) AS contacts 
+                    (SELECT notify.id, notify.receiver, notify.sender, 
+                    rec_users.user_id AS rec_user_id, rec_users.fname AS rec_fname, rec_users.lname AS rec_lname, rec_users.email AS rec_email, rec_users.profile_photo AS rec_pp, 
+                    send_users.user_id AS send_user_id, send_users.fname AS send_fname, send_users.lname AS send_lname, send_users.email AS send_email, send_users.profile_photo AS send_pp, 
+                    notify.message_topic, notify.message, notify.category, notify.date_created 
+                    FROM notify 
+                    INNER JOIN users rec_users ON notify.receiver = rec_users.user_id 
+                    INNER JOIN users send_users ON notify.sender = send_users.user_id) 
+                    AS contacts 
                     WHERE category = "chat" AND (sender = '` + id + `' OR receiver = '` + id + `');`
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+// if chat exist
+module.exports.getChat = (id) => {
+    const query = "SELECT * FROM notify WHERE id = '" + id + "' AND category = 'chat';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//update chat
+module.exports.updateChat = (chat, id) => {
+    const query = "UPDATE notify SET message = '" + chat + "' where id = '" + id + "';";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {

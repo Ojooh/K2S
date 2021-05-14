@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
     var taskChart = new Chart(taskChartCanvas);
     var yart = [parseInt($(".A").html()), parseInt($(".B").html()), parseInt($(".C").html()), parseInt($(".D").html())]
     var yart_2 = [parseInt($(".A .m").html()), parseInt($(".A .f").html()), parseInt($(".B .m").html()), parseInt($(".B .f").html()), parseInt($(".C .m").html()), parseInt($(".C .f").html()), parseInt($(".D .m").html()), parseInt($(".D .f").html())]
-    console.log(yart_2);
+    // console.log(yart_2);
     var maxValue = 0;
 
     if (yart[0] == 0 && yart[1] == 0 && yart[2] == 0 && yart[3] == 0) {
@@ -51,7 +51,6 @@ jQuery(document).ready(function ($) {
     }
 
     if (yart_2[6] == 0 && yart_2[7] == 0) {
-        console.log("heret");
         $(".yart-D").addClass("deactivated");
         $(".yart-D-no-data").removeClass("deactivated");
     } else {
