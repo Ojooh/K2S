@@ -6,6 +6,8 @@ var logger = require('morgan');
 var expressSession = require('express-session');
 var fileUpload = require('express-fileupload');
 var bodyParser = require('body-parser');
+const DB = require('./controllers/db_controller');
+const moment = require('moment');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -13,9 +15,15 @@ var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var adminRouter = require('./routes/admin');
 // var sponsorRouter   = require('./routes/sponsor');
-var envoyRouter     = require('./routes/envoy');
+var envoyRouter = require('./routes/envoy');
+var users = [];
 
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -50,6 +58,11 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -61,4 +74,69 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+
+io.on("connection", function (socket) {
+  console.log("User connected", socket.id);
+
+  // attach incoming listener for new user
+  socket.on("user_connected", function (username) {
+    // save in array
+    users[username] = socket.id;
+    console.log(users);
+    io.emit("user_connected", username);
+  });
+
+  // listen from client
+  socket.on("send_task", async (data) => {
+    // send event to receiver
+    var socketId = users[data.receiver];
+    var cat, msg = ""
+
+    if (data.sender == data.receiver) {
+      var datas = { "action": "pass" };
+      cat = "task_c";
+      msg = "You have " + (data.count + 1).toString() + " Created Task(s)";
+    } else {
+      var datas = { "action": "reload" };
+      cat = "task_a";
+      msg = "You have " + (data.count + 1).toString() + " Assigned Task(s)";
+    }
+
+    io.to(socketId).emit("new_task", datas);
+
+    //save to database
+    let rt = "";
+    let d_created = moment().format('YYYY-MM-DD  HH:mm:ss.000');
+    if (data.ID && data.ID != "") {
+      let updatey = await DB.updateNotification(data.subject, data.desc, data.due, data.ID)
+      rt = "Task Updated Succesfully";
+      cat = "task_u";
+    } else {
+      let insert = await DB.createNewNotification(data.sender, data.receiver, data.subject, data.desc, data.category, d_created, "", data.due);
+      rt = "Task Created Succesfully";
+    }
+
+
+    let exist = await DB.notyExist(data.receiver, cat);
+    if (exist.length > 0) {
+      if (cat == "task_u") {
+        msg = "You have " + (exist[0].count + 1).toString() + " Updated Task(s)";
+      }
+      let update = await DB.updateNoty(data.receiver, msg, data.count + 1, cat);
+    } else {
+      if (cat == "task_u") {
+        msg = "You have 1 Updated Task(s)";
+      }
+      let insert_2 = await DB.addNoty(data.receiver, msg, cat, data.count + 1);
+    }
+
+    var socketId_r = users[data.sender];
+    io.to(socketId_r).emit("new_task_succeded", { "success": rt });
+    // console.log(rt)
+  });
+});
+
+
+
+
+module.exports = { app: app, server: server };

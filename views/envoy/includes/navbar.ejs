@@ -1,22 +1,27 @@
-
 <nav class="navbar navbar-expand-lg navbar-transparent">
-    <!-- Navbar content -->
     <!-- Side Menu Toggle Btn -->
     <div id="sideBarToggler" class="toggle-nav">
         <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom">
             <i class="fas fa-bars"></i>
         </div>
     </div>
+    <div class="d-flex flex-grow-1">
+        <span class="w-100 d-lg-none d-block">
+            <!-- hidden spacer to center brand on mobile -->
+        </span>
+        <div class="navbar-brand logo">
+            <i class="<%= icon %>"></i>
+            <%= title %>
+        </div>
 
-    <div class="navbar-brand logo">
-        <i class="<%= icon %>"></i>
-        <%= title %>
+        <div class="w-100 text-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
     </div>
-
-    <div class="middle"></div>
-
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav navy">
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
+        <ul class="navbar-nav navy ml-auto flex-nowrap">
             <li class="nav-item ">
                 <div class="search-area mt-2">
                     <div class="input-group">
@@ -26,26 +31,36 @@
                         <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
                             aria-describedby="basic-addon1">
                     </div>
-                </div>  
+                </div>
             </li>
             <li class="nav-item dropdown dropdown-place">
                 <a class="nav-link dropdown-toggle not-caret" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <i class="far fa-bell"></i>
-                    <span class="info-count"> 6 </span>
+                <% if (noty.length > 0) {%>
+                    <span class="info-count"><%= noty.length %></span>
+                <% } else { %>
+                        <span class="info-count deactivated">0</span>
+                <% } %>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                    <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                    <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                    <a class="dropdown-item" href="#">Another Notification</a>
-                    <a class="dropdown-item" href="#">Another One</a>
+                <% if (noty.length > 0) {%>
+                    <% for (var i=0; i < noty.length; i++) { %>
+                        <a class="dropdown-item" href="/envoy/notifications" data-id="<%= noty[i].id; %>">
+                            <%= noty[i].msg; %> <span class="ml-5"><i class="fas fa-times"></i></span>
+                        </a>
+                    <% } %>
+                <% } else { %>
+                    <div class="my-5">
+                        <h6 class="text-center text-danger">No Notifications</h6>
+                    </div>
+                <% } %>
                 </div>
             </li>
             <li class="nav-item dropdown dropdown-place">
-                <a class="nav-link dropdown-toggle not-caret" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <i class="far fa-user"></i><span class="namey"> Welcome <br> <%= user.fname %></span>
+                <a class="nav-link dropdown-toggle not-caret" href="#" id="navbarDropdownProfile" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="far fa-user"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
                     <a class="dropdown-item" href="#">Profile</a>
@@ -54,8 +69,8 @@
                     <a class="dropdown-item" href="/logout">Log out</a>
                 </div>
             </li>
-
         </ul>
     </div>
 </nav>
+
 <!-- End of Navbar -->

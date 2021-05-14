@@ -41,6 +41,22 @@ module.exports.getKidById = (id) => {
     });
 };
 
+//GET kid by ID field			
+module.exports.getTaskById = (id) => {
+    const query = "SELECT * FROM notify WHERE id = '" + id + "';";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
 //GET user by email field
 module.exports.getUserByEmail = (email) => {
     const query = "SELECT * FROM users WHERE email = '" + email + "';";
@@ -149,7 +165,7 @@ module.exports.getCountEnvoys = () => {
 
         });
     });
-}
+};
 
 //GET count for kids
 module.exports.getCountKids = () => {
@@ -165,7 +181,119 @@ module.exports.getCountKids = () => {
 
         });
     });
-}
+};
+
+//GET count for envoy kids
+module.exports.getCountEnvoyKids = (user_id) => {
+    const query = "SELECT COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET COUNT FOR ENVOY ACTIVE KIDS
+module.exports.getCountEnvoyActiveKids = (user_id) => {
+    const query = "SELECT COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and is_active = 1;";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET COUNT FOR ENVOY InACTIVE KIDS
+module.exports.getCountEnvoyInactiveKids = (user_id) => {
+    const query = "SELECT COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and is_active = 0;";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET count for envoys kts
+module.exports.getCountEnvoyKTS = (user_id) => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and category = 'Kids to School';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET count for envoys ktsp
+module.exports.getCountEnvoyKTSP = (user_id) => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and category = 'Kids to Sports';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET count for envoys kta
+module.exports.getCountEnvoyKTA = (user_id) => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and category = 'Kids to Arts';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET count for envoys ktt
+module.exports.getCountEnvoyKTT = (user_id) => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and category = 'Kids to Tech';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
 
 //UPDATE USER LAST LOGIN
 module.exports.updateLastLogin = (id, last_login) => {
@@ -259,6 +387,37 @@ module.exports.updateUserStatus = (id, status) => {
     });
 }
 
+//UPDATE Task Status
+module.exports.updateTaskStatus = (id, status, d_done) => {
+    const query = "UPDATE notify SET `is_complete` = '" + status + "', date_done = '" + d_done + "' WHERE id = '" + id + "';";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+}
+
+//UPDATE MESSGE STATUS
+module.exports.updateMessageStatus = (id) => {
+    const query = "UPDATE messages SET `seen` = '1' WHERE id = '" + id + "';";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+}
+
 //UPDATE Kid Status
 module.exports.updateKidStatus = (id, status) => {
     const query = "UPDATE kids SET `is_active` = '" + status + "' WHERE id = '" + id + "';";
@@ -293,6 +452,22 @@ module.exports.updateAdminProfile = (id, fname, lname, dob, age, gender, country
 //DELETE User Profile
 module.exports.deleteUserProfile = (id) => {
     const query = "DELETE FROM users WHERE id = '" + id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//DELETE user task
+module.exports.deleteUserTask = (id) => {
+    const query = "DELETE FROM notify WHERE id = '" + id + "';";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -462,5 +637,162 @@ module.exports.updateKidProfile = (id, category, fname, lname, mname, dob, age, 
         });
     });
 };
+
+//get envoy tasks
+module.exports.getEnvoyTasks = (id) => {
+    const query = "SELECT * FROM notify WHERE category = 'task' AND receiver = '" + id + "' ORDER BY is_complete ASC;";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//INSERT new task
+module.exports.createNewNotification = (sender, receiver, topic, message, category, d_created, d_done, d_due) => {
+    const query = "INSERT INTO notify (`sender`, `receiver`, `message_topic`, `message`, `category`, `date_created`, `date_done`, `due_date`, `is_complete`) VALUES('" + sender + "', '" + receiver + "', '" + topic + "', '" + message + "', '" + category + "', '" + d_created + "', '" + d_done + "', '" + d_due + "', '0');";
+    //console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+
+};
+
+
+//UPDATE TASK
+module.exports.updateNotification = (topic, message, d_due, id) => {
+    const query = "UPDATE notify SET `message_topic`= '" + topic + "', `message`= '" + message + "', `due_date` = '" + d_due + "' WHERE id = '" + id + "' ;";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+
+};
+
+
+//add notification 
+module.exports.addNoty = (user_id, msg, cat, count) => {
+    const query = " INSERT INTO messages (`user_id`, `msg`, `category`, `count`) VALUES('" + user_id + "', '" + msg + "', '" + cat + "',  '" + count + "');";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+//update notification
+module.exports.updateNoty = (id, msg, count, cat) => {
+    const query = " UPDATE messages SET `msg`= '" + msg + "', `count` = '" + count + "' WHERE user_id = '" + id + "' AND category = '" + cat + "'";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+//GET notification created task count
+module.exports.getNotifyMECount = (user_id) => {
+    const query = "SELECT COUNT(*) AS total notify WHERE category = 'task' AND receiver = '" + user_id + "' AND sender = '" + user_id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+//Get notifications
+module.exports.getNotys = (id) => {
+    const query = "SELECT * FROM messages WHERE user_id = '" + id + "' AND seen = '0'";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//get existing message category 
+module.exports.notyExist = (id, cat) => {
+    const query = "SELECT * FROM messages WHERE user_id = '" + id + "' AND category = '" + cat + "' AND seen = '0'";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+//get chats
+module.exports.getContacts = (id) => {
+    const query = `SELECT * FROM 
+                    (SELECT notify.receiver, notify.sender, users.user_id, users.fname, users.lname, users.email, users.profile_photo, notify.message_topic, notify.message, notify.category, notify.date_created 
+                    FROM notify INNER JOIN users ON notify.receiver = users.user_id) AS contacts 
+                    WHERE category = "chat" AND (sender = '` + id + `' OR receiver = '` + id + `');`
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
 
 

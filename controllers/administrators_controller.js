@@ -1,4 +1,4 @@
-const User = require('./db_controller');
+const DB = require('./db_controller');
 const validator = require('./validator');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
@@ -14,15 +14,15 @@ const saltRounds = 10;
 module.exports.getDash = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-th-large";
         var title = "Dashboard";
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            var admins = await User.getCountAdmins();
-            var sponsors = await User.getCountSponsors();
-            var envoys = await User.getCountEnvoys();
-            var kids = await User.getCountKids();
+            var admins = await DB.getCountAdmins();
+            var sponsors = await DB.getCountSponsors();
+            var envoys = await DB.getCountEnvoys();
+            var kids = await DB.getCountKids();
             var sidebar = { dash: "active", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "" };
             var count = { admins: admins[0].total, sponsors: sponsors[0].total, envoys: envoys[0].total, kids: kids.total };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, count: count };
@@ -39,13 +39,13 @@ module.exports.getDash = async (req, res, next) => {
 module.exports.getAdministrators = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-user-shield";
         var title = "Administrators";
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
-            var admins = await User.getAdministrators();
+            var admins = await DB.getAdministrators();
             var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, admins: admins };
             res.render('admin/administrators', context);
@@ -64,7 +64,7 @@ module.exports.getAdministrators = async (req, res, next) => {
 module.exports.getAddAdministratorForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-user-shield";
         var title = "Administrators";
 
@@ -86,7 +86,7 @@ module.exports.getAddAdministratorForm = async (req, res, next) => {
 module.exports.createAdminProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
             var [raby, state, message] = await validator.validAdministrator(req, "add");
@@ -95,7 +95,7 @@ module.exports.createAdminProfile = async (req, res, next) => {
             if (state) {
                 if (!req.files) {
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        let insert = User.insertAdminProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + req.body.telephone, req.body.title, message.user_type, "", "1", hash, "1");
+                        let insert = DB.insertAdminProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + req.body.telephone, req.body.title, message.user_type, "", "1", hash, "1");
                     });
 
                 } else {
@@ -106,7 +106,7 @@ module.exports.createAdminProfile = async (req, res, next) => {
                     let db_path = "/images/profile/profile_pic/" + new_name;
 
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        let insert = User.insertAdminProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, db_path, "1", hash, "1");
+                        let insert = DB.insertAdminProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, db_path, "1", hash, "1");
                         avatar.mv(dir);
                     });
 
@@ -126,13 +126,13 @@ module.exports.createAdminProfile = async (req, res, next) => {
         var url = "/login"
         res.json({ url: url });
     }
-}
+};
 
 //Function To Chnage Active Status
 module.exports.updateProfileStatus = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
         var status = req.body.status;
         var change = "";
@@ -145,8 +145,8 @@ module.exports.updateProfileStatus = async (req, res, next) => {
                 status = "1";
                 change = "Activated";
             }
-            let update = await User.updateUserStatus(ID, status);
-            var editted = await User.getUserById(ID);
+            let update = await DB.updateUserStatus(ID, status);
+            var editted = await DB.getUserById(ID);
             var msg = editted[0].fname + " Profile Is " + change;
             res.json({ success: msg });
         } else {
@@ -158,20 +158,20 @@ module.exports.updateProfileStatus = async (req, res, next) => {
         res.json({ url: url });
     }
 
-}
+};
 
 //Function To get Admin Data
 module.exports.getProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
         var type = req.body.type;
         var mode = req.body.mode;
         console.log(type);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM")) {
-            let edittee = await User.getUserById(ID);
+            let edittee = await DB.getUserById(ID);
             //console.log(edittee);
 
             if (type == "edit") {
@@ -200,20 +200,20 @@ module.exports.getProfile = async (req, res, next) => {
     }
 
 
-}
+};
 
 //Function To get Kid Data
 module.exports.getKidProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
         var type = req.body.type;
         var mode = req.body.mode;
         console.log(type);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
-            let edittee = await User.getKidById(ID);
+            let edittee = await DB.getKidById(ID);
             //console.log(edittee);
 
             if (type == "edit") {
@@ -248,9 +248,9 @@ module.exports.getKidProfile = async (req, res, next) => {
 module.exports.updateAdminProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
-        var edittee = await User.getUserById(ID);
+        var edittee = await DB.getUserById(ID);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID)) {
             var [raby, state, message] = await validator.validAdministrator(req, "edit");
@@ -261,12 +261,12 @@ module.exports.updateAdminProfile = async (req, res, next) => {
                     if (req.body.password != "") {
                         bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                             let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                            let update = User.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, edittee[0].profile_photo, hash, user[0].user_id, datetime);
+                            let update = DB.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, edittee[0].profile_photo, hash, user[0].user_id, datetime);
                         });
                     } else {
                         var hash = edittee[0].password;
                         let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                        let update = User.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, edittee[0].profile_photo, hash, user[0].user_id, datetime);
+                        let update = DB.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, edittee[0].profile_photo, hash, user[0].user_id, datetime);
                     }
                 } else {
                     if (edittee[0].profile_photo != "") {
@@ -283,12 +283,12 @@ module.exports.updateAdminProfile = async (req, res, next) => {
                     if (req.body.password != "") {
                         bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                             let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                            let update = User.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, db_path, hash, user[0].user_id, datetime);
+                            let update = DB.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, db_path, hash, user[0].user_id, datetime);
                         });
                     } else {
                         var hash = edittee[0].password;
                         let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                        let update = User.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, db_path, hash, user[0].user_id, datetime);
+                        let update = DB.updateAdminProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, db_path, hash, user[0].user_id, datetime);
                     }
                     avatar.mv(dir);
 
@@ -314,14 +314,14 @@ module.exports.updateAdminProfile = async (req, res, next) => {
 module.exports.getEditAdministratorForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-user-shield";
         var title = "Administrators";
         var ID = req.params.id;
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
-            let edittee = await User.getUserById(ID);
+            let edittee = await DB.getUserById(ID);
             var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
             res.render('admin/editAdministrator', context);
@@ -339,13 +339,13 @@ module.exports.getEditAdministratorForm = async (req, res, next) => {
 module.exports.deleteProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
-        var editted = await User.getUserById(ID);
+        var editted = await DB.getUserById(ID);
         var change = "";
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
-            let update = await User.deleteUserProfile(ID);
+            let update = await DB.deleteUserProfile(ID);
             var msg = editted[0].fname + " Profile Deleted Successfully";
             res.json({ success: msg });
         } else {
@@ -363,13 +363,13 @@ module.exports.deleteProfile = async (req, res, next) => {
 module.exports.getSponsors = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-users";
         var title = "Sponsors";
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            var sponsors = await User.getSponsors();
+            var sponsors = await DB.getSponsors();
             var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, spns: sponsors };
             res.render('admin/sponsors', context);
@@ -389,7 +389,7 @@ module.exports.getSponsors = async (req, res, next) => {
 module.exports.getAddSponsorForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-users";
         var title = "Sponsors";
 
@@ -413,7 +413,7 @@ module.exports.getAddSponsorForm = async (req, res, next) => {
 module.exports.createSponsorProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
             var [raby, state, message] = await validator.validSponsor(req, "add");
@@ -422,7 +422,7 @@ module.exports.createSponsorProfile = async (req, res, next) => {
             if (state) {
                 if (!req.files) {
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        let insert = User.insertSponsorProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, "", "1", hash, "1");
+                        let insert = DB.insertSponsorProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, "", "1", hash, "1");
                     });
 
                 } else {
@@ -433,7 +433,7 @@ module.exports.createSponsorProfile = async (req, res, next) => {
                     let db_path = "/images/profile/profile_pic/" + new_name;
 
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        let insert = User.insertSponsorProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, "1", hash, "1");
+                        let insert = DB.insertSponsorProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, "1", hash, "1");
                         avatar.mv(dir);
                     });
 
@@ -459,14 +459,14 @@ module.exports.createSponsorProfile = async (req, res, next) => {
 module.exports.getEditSponsorForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-users";
         var title = "Sponsors";
         var ID = req.params.id;
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            let edittee = await User.getUserById(ID);
+            let edittee = await DB.getUserById(ID);
             var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
             res.render('admin/editSponsor', context);
@@ -484,9 +484,9 @@ module.exports.getEditSponsorForm = async (req, res, next) => {
 module.exports.updateSponsorProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
-        var edittee = await User.getUserById(ID);
+        var edittee = await DB.getUserById(ID);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM")) {
             var [raby, state, message] = await validator.validSponsor(req, "edit");
@@ -497,12 +497,12 @@ module.exports.updateSponsorProfile = async (req, res, next) => {
                     if (req.body.password != "") {
                         bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                             let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                            let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
+                            let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
                         });
                     } else {
                         var hash = edittee[0].password;
                         let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                        let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
+                        let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
                     }
                 } else {
                     if (edittee[0].profile_photo != "") {
@@ -519,12 +519,12 @@ module.exports.updateSponsorProfile = async (req, res, next) => {
                     if (req.body.password != "") {
                         bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                             let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                            let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
+                            let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
                         });
                     } else {
                         var hash = edittee[0].password;
                         let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                        let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
+                        let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
                     }
                     avatar.mv(dir);
 
@@ -550,13 +550,13 @@ module.exports.updateSponsorProfile = async (req, res, next) => {
 module.exports.getEnvoys = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-hands-helping";
         var title = "Envoys";
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            var envoys = await User.getEnvoys();
+            var envoys = await DB.getEnvoys();
             var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "active", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, envs: envoys };
             res.render('admin/envoys', context);
@@ -576,7 +576,7 @@ module.exports.getEnvoys = async (req, res, next) => {
 module.exports.getAddEnvoyForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-hands-helping";
         var title = "Envoys";
 
@@ -598,7 +598,7 @@ module.exports.createEnvoyProfile = async (req, res, next) => {
     console.log(req);
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         console.log("got here");
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
@@ -608,7 +608,7 @@ module.exports.createEnvoyProfile = async (req, res, next) => {
             if (state) {
                 if (!req.files) {
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        let insert = User.insertEnvoyProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, "", "1", hash, "1");
+                        let insert = DB.insertEnvoyProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, "", "1", hash, "1");
                     });
 
                 } else {
@@ -619,7 +619,7 @@ module.exports.createEnvoyProfile = async (req, res, next) => {
                     let db_path = "/images/profile/profile_pic/" + new_name;
 
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        let insert = User.insertEnvoyProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, "1", hash, "1");
+                        let insert = DB.insertEnvoyProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, "1", hash, "1");
                         avatar.mv(dir);
                     });
 
@@ -645,14 +645,14 @@ module.exports.createEnvoyProfile = async (req, res, next) => {
 module.exports.getEditEnvoyForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-users";
         var title = "Sponsors";
         var ID = req.params.id;
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            let edittee = await User.getUserById(ID);
+            let edittee = await DB.getUserById(ID);
             var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
             res.render('admin/editSponsor', context);
@@ -668,9 +668,9 @@ module.exports.getEditEnvoyForm = async (req, res, next) => {
 module.exports.updateEnvoyProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
-        var edittee = await User.getUserById(ID);
+        var edittee = await DB.getUserById(ID);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM")) {
             var [raby, state, message] = await validator.validSponsor(req, "edit");
@@ -681,12 +681,12 @@ module.exports.updateEnvoyProfile = async (req, res, next) => {
                     if (req.body.password != "") {
                         bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                             let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                            let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
+                            let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
                         });
                     } else {
                         var hash = edittee[0].password;
                         let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                        let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
+                        let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, edittee[0].profile_photo, hash, user[0].user_id, datetime);
                     }
                 } else {
                     if (edittee[0].profile_photo != "") {
@@ -703,12 +703,12 @@ module.exports.updateEnvoyProfile = async (req, res, next) => {
                     if (req.body.password != "") {
                         bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
                             let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                            let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
+                            let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
                         });
                     } else {
                         var hash = edittee[0].password;
                         let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                        let update = User.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
+                        let update = DB.updateUserProfile(ID, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, req.body.prof, db_path, hash, user[0].user_id, datetime);
                     }
                     avatar.mv(dir);
 
@@ -734,13 +734,13 @@ module.exports.updateEnvoyProfile = async (req, res, next) => {
 module.exports.getKids = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-child";
         var title = "Kids";
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
-            var kids = await User.getKids();
+            var kids = await DB.getKids();
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, kds: kids };
             res.render('admin/kids', context);
@@ -760,7 +760,7 @@ module.exports.getKids = async (req, res, next) => {
 module.exports.getAddKidForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-hands-helping";
         var title = "Envoys";
 
@@ -781,7 +781,7 @@ module.exports.getAddKidForm = async (req, res, next) => {
 module.exports.createKidProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
             console.log(req);
@@ -789,7 +789,7 @@ module.exports.createKidProfile = async (req, res, next) => {
 
             if (state) {
                 if (!req.files) {
-                    let insert = await User.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id);
+                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id);
                 } else {
                     let avatar_1 = req.files.pp;
                     let avatar_2 = req.files.bc
@@ -802,7 +802,7 @@ module.exports.createKidProfile = async (req, res, next) => {
                     let db_path_1 = "/images/profile/profile_pic/" + new_name_1;
                     let db_path_2 = "/doc/bc/" + new_name_2;
 
-                    let insert = await User.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id);
+                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id);
                     avatar_1.mv(dir_1);
                     avatar_2.mv(dir_2);
 
@@ -828,7 +828,7 @@ module.exports.createKidProfile = async (req, res, next) => {
 module.exports.updateKidStatus = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
         var status = req.body.status;
         var change = "";
@@ -841,8 +841,8 @@ module.exports.updateKidStatus = async (req, res, next) => {
                 status = "1";
                 change = "Activated";
             }
-            let update = await User.updateKidStatus(ID, status);
-            var editted = await User.getKidById(ID);
+            let update = await DB.updateKidStatus(ID, status);
+            var editted = await DB.getKidById(ID);
             var msg = editted[0].fname + " Profile Is " + change;
             res.json({ success: msg });
         } else {
@@ -860,14 +860,14 @@ module.exports.updateKidStatus = async (req, res, next) => {
 module.exports.getEditKidForm = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var icon = "fas fa-child";
         var title = "Kids";
         var ID = req.params.id;
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            let edittee = await User.getKidById(ID);
+            let edittee = await DB.getKidById(ID);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
             res.render('admin/editKids', context);
@@ -885,9 +885,9 @@ module.exports.getEditKidForm = async (req, res, next) => {
 module.exports.updateKidProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
-        var edittee = await User.getKidById(ID);
+        var edittee = await DB.getKidById(ID);
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
             var [raby, state, message] = await validator.validKid(req, "edit");
@@ -895,7 +895,7 @@ module.exports.updateKidProfile = async (req, res, next) => {
             if (state) {
                 if (!req.files) {
                     let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                    let update = User.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id, datetime);
+                    let update = DB.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id, datetime);
                 } else {
                     if (edittee[0].profile_photo != "" && req.body.pp) {
                         fs.unlinkSync(path.join(__dirname, '..', 'public', edittee[0].profile_photo));
@@ -928,7 +928,7 @@ module.exports.updateKidProfile = async (req, res, next) => {
                     }
 
                     let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                    let update = User.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id, datetime);
+                    let update = DB.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id, datetime);
                     if (req.files.pp) {
                         req.files.pp.mv(dir_1);
                     }
@@ -959,13 +959,13 @@ module.exports.updateKidProfile = async (req, res, next) => {
 module.exports.deleteKidProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
-        var user = await User.getUserByEmail(email);
+        var user = await DB.getUserByEmail(email);
         var ID = req.body.id;
-        var editted = await User.getKidById(ID);
+        var editted = await DB.getKidById(ID);
         var change = "";
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
-            let update = await User.deleteKidProfile(ID);
+            let update = await DB.deleteKidProfile(ID);
             var msg = editted[0].fname + " Profile Deleted Successfully";
             res.json({ success: msg });
         } else {

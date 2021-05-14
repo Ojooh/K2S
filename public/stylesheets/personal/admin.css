@@ -4,6 +4,7 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
   background-color: #eaeef5b4;
   background-attachment: fixed;
 }
@@ -12,8 +13,24 @@ body {
   display: block;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .deactivated {
-  display: none;
+  display: none !important;
 }
 
 *,
@@ -34,6 +51,24 @@ form span {
 
 .alert {
   width: 100%;
+}
+
+li {
+  list-style-type: none !important;
+}
+
+.btn-kts {
+  color: #fff;
+  border: 1px solid #631e9c;
+  border-radius: 9px;
+  width: 100%;
+  background: #631e9c;
+}
+
+.btn-kts:hover {
+  color: #fff;
+  -webkit-box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
+          box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
 }
 
 .btn-outline-kts {
@@ -98,16 +133,6 @@ form span {
   .overlay .close-sidebar {
     left: calc(100% - 20%);
   }
-}
-
-.wrapper {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: auto;
-  max-width: 100%;
 }
 
 .wrapper .sidebar {
@@ -248,20 +273,20 @@ form span {
 }
 
 .wrapper .main-content {
-  top: 0;
-  bottom: 0;
-  left: 290px;
-  z-index: 2;
-  float: right;
-  height: auto;
   width: calc(100% - 290px);
+  left: 290px;
+  position: relative;
+  min-height: 100vh;
+  height: 100%;
+  display: block;
   -webkit-transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);
   transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);
 }
 
 .wrapper .main-content .navbar {
-  -ms-flex-pack: distribute !important;
-      justify-content: space-around !important;
+  -webkit-box-pack: justify !important;
+      -ms-flex-pack: justify !important;
+          justify-content: space-between !important;
 }
 
 .wrapper .main-content .navbar.navbar-transparent {
@@ -310,23 +335,6 @@ form span {
   .wrapper .main-content .navbar .logo {
     font-size: 18px;
     width: 70%;
-  }
-}
-
-.wrapper .main-content .navbar .middle {
-  float: left;
-  width: 50%;
-}
-
-@media (min-width: 992px) and (max-width: 1198px) {
-  .wrapper .main-content .navbar .middle {
-    width: 15%;
-  }
-}
-
-@media (max-width: 991px) {
-  .wrapper .main-content .navbar .middle {
-    display: none;
   }
 }
 
@@ -395,6 +403,12 @@ form span {
 }
 
 .wrapper .main-content .navbar .navbar-collapse .dropdown-menu a {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   font-size: 13px;
   color: #333333;
 }
@@ -535,7 +549,7 @@ form span {
 
 .wrapper .main-content .card .card-icon-img {
   position: absolute;
-  top: -20px;
+  top: -24px;
   left: 10px;
   border-radius: 50%;
   overflow: hidden;
@@ -593,17 +607,361 @@ form span {
 
 .wrapper .main-content .card .card-category {
   margin: 0;
+  margin-top: 25px !important;
   text-align: right;
   font-size: 16px;
   font-weight: 300;
   color: #999999;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+@media (min-width: 991px) and (max-width: 1442px) {
+  .wrapper .main-content .card .card-category {
+    margin-top: 50px !important;
+  }
 }
 
 @media (max-width: 991px) {
   .wrapper .main-content .card .card-category {
     font-size: 18px;
   }
+}
+
+.wrapper .main-content .card .explain,
+.wrapper .main-content .card .explain-list {
+  width: 100%;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.wrapper .main-content .card .explain li span,
+.wrapper .main-content .card .explain-list li span {
+  color: #3f1363;
+  font-weight: 700;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+.wrapper .main-content .card .graph-top {
+  width: 100%;
+  padding: 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #3f1363;
+}
+
+.wrapper .main-content .card .graph-top h3 {
+  text-align: left;
+  font-size: 16px;
+  color: #3f1363;
+  font-weight: 800;
+}
+
+.wrapper .main-content .card .convos {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wrapper .main-content .card .convos .scroll {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  height: 300px;
+}
+
+.wrapper .main-content .card .convos .box {
+  padding: 10px;
+  width: 100%;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.wrapper .main-content .card .convos .box .box-img {
+  width: 40%;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid #bebaba;
+  -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+          box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+}
+
+.wrapper .main-content .card .convos .box .box-img img {
+  width: 100%;
+  height: 100% !important;
+}
+
+.wrapper .main-content .card .convos .box .box-content {
+  width: 60%;
+  display: block;
+}
+
+.wrapper .main-content .card .convos .box .box-content h3 {
+  padding-left: 6px;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+@media (max-width: 992px) {
+  .wrapper .main-content .card .convos .box .box-content h3 {
+    font-size: 12px;
+    font-weight: 300;
+  }
+}
+
+.wrapper .main-content .card .convos .box .box-content span {
+  display: block;
+  padding-left: 6px;
+  text-align: right;
+  font-weight: 500;
+}
+
+@media (max-width: 992px) {
+  .wrapper .main-content .card .convos .box .box-content span {
+    font-weight: 100;
+  }
+}
+
+.wrapper .main-content .card .convos .box:hover {
+  -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+          box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+  cursor: pointer;
+}
+
+.wrapper .main-content .card .task-percent {
+  width: 100%;
+  height: auto;
+  margin: 30px auto 0;
+  display: block;
+}
+
+.wrapper .main-content .card .task-percent canvas {
+  padding: 10px;
+  width: 100% !important;
+  height: 300px !important;
+}
+
+.wrapper .main-content .card .task-percent .percent-text {
+  padding: 5px 20px 30px;
+}
+
+.wrapper .main-content .card .task-percent .percent-text h4 {
+  font-weight: 600;
+}
+
+.wrapper .main-content .card .task-percent .percent-text .inner-text {
+  position: absolute;
+  top: 30%;
+  left: 38%;
+}
+
+.wrapper .main-content .card .task-percent .percent-text .inner-text h3 {
+  font-weight: 600;
+}
+
+.wrapper .main-content .card .task-percent .percent-text .inner-text span {
+  font-weight: 600;
+}
+
+.wrapper .main-content .card .category-chart {
+  width: 100%;
+  height: 300px;
+  margin: 30px auto 0;
+  display: block;
+}
+
+.wrapper .main-content .card .category-chart .yart {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.wrapper .main-content .card .category-chart .numbers {
+  width: 50px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  float: left;
+  position: relative;
+}
+
+.wrapper .main-content .card .category-chart .numbers .max {
+  bottom: 100%;
+}
+
+.wrapper .main-content .card .category-chart .numbers .half {
+  bottom: 50%;
+}
+
+.wrapper .main-content .card .category-chart .numbers .zero {
+  bottom: -1px;
+}
+
+.wrapper .main-content .card .category-chart .numbers li {
+  text-align: right;
+  padding-right: 1em;
+  list-style: none;
+  height: 29px;
+  bottom: 30px;
+  position: absolute;
+  right: 0;
+  width: 30px;
+}
+
+.wrapper .main-content .card .category-chart .numbers li:last-child {
+  height: 30px;
+}
+
+.wrapper .main-content .card .category-chart .numbers li span {
+  color: #3f1363;
+  font-weight: 700;
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+}
+
+.wrapper .main-content .card .category-chart .bars {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background: transparent;
+  width: 190;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #3f1363;
+}
+
+.wrapper .main-content .card .category-chart .bars li {
+  -webkit-box-flex: 1;
+      -ms-flex: auto;
+          flex: auto;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+  position: relative;
+}
+
+.wrapper .main-content .card .category-chart .bars .bar {
+  width: 80%;
+  background: #3f1363;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-left: -40%;
+  height: 0;
+  -webkit-transition: height 1s;
+  transition: height 1s;
+}
+
+.wrapper .main-content .card .category-chart .bars .per {
+  color: #3f1363;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: -25px;
+}
+
+.wrapper .main-content .card .category-chart .bars span {
+  color: #3f1363;
+  font-weight: 700;
+  width: 100%;
+  position: absolute;
+  bottom: -2em;
+  left: 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.wrapper .main-content .card .gender-chart {
+  width: 100%;
+  height: auto;
+  margin: 30px auto 0;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+@media (max-width: 992px) {
+  .wrapper .main-content .card .gender-chart {
+    height: auto;
+  }
+}
+
+.wrapper .main-content .card .gender-chart canvas {
+  padding: 10px;
+  width: 100% !important;
+  height: 300px !important;
+}
+
+.wrapper .main-content .card .gender-chart .set {
+  color: #3f1363;
+  font-weight: 700;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+.wrapper .main-content .card .gender-chart .set .cat-exp {
+  padding: 10px 35px;
+}
+
+.wrapper .main-content .card .gender-chart .set .cat-exp .cat-1 {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  width: 100%;
+  text-align: center;
+  padding: 5px 10px;
+}
+
+.wrapper .main-content .card .gender-chart .set .cat-exp .cat-1 .bod {
+  height: 10px;
+  width: 10px;
+  margin-top: 5px;
+  margin-right: 12px;
+  border: 1px solid black;
+  clear: both;
+}
+
+.wrapper .main-content .card .gender-chart .set .cat-exp .cat-1 .male {
+  background-color: #3f1363;
+}
+
+.wrapper .main-content .card .gender-chart .set .cat-exp .cat-1 .female {
+  background-color: #56118fb4;
+}
+
+.wrapper .main-content .card .gender-chart .yart-A-no-data,
+.wrapper .main-content .card .gender-chart .yart-B-no-data,
+.wrapper .main-content .card .gender-chart .yart-C-no-data,
+.wrapper .main-content .card .gender-chart .yart-D-no-data {
+  width: 100%;
+  height: 300px !important;
+  vertical-align: middle;
+}
+
+.wrapper .main-content .card .gender-chart .yart-A-no-data h4,
+.wrapper .main-content .card .gender-chart .yart-B-no-data h4,
+.wrapper .main-content .card .gender-chart .yart-C-no-data h4,
+.wrapper .main-content .card .gender-chart .yart-D-no-data h4 {
+  margin-top: 50%;
+  display: inline-block;
 }
 
 .wrapper .main-content .card .card-title {
@@ -727,11 +1085,144 @@ form span {
   font-size: 20px;
 }
 
+.wrapper .main-content .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 @media (max-width: 991px) {
-  .wrapper .main-content {
+  .wrapper .main-content .wrapper {
     left: 0;
     width: 100%;
   }
+}
+
+.wrapper .main-content .wrapper .adiv {
+  border-radius: 15px;
+  width: 100%;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 12px;
+  height: 46px;
+}
+
+.wrapper .main-content .wrapper .adiv h6 {
+  font-size: 20px;
+}
+
+.wrapper .main-content .wrapper .adiv i {
+  cursor: pointer;
+}
+
+.wrapper .main-content .wrapper .main {
+  background-color: #eee;
+  width: 100%;
+  height: auto;
+  position: relative;
+  border-radius: 8px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 0px 0px 0px 0px;
+}
+
+.wrapper .main-content .wrapper .scroll {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  height: auto;
+}
+
+.wrapper .main-content .wrapper .img1 {
+  border-radius: 50%;
+  background-color: #66bb6a;
+}
+
+.wrapper .main-content .wrapper .name {
+  font-size: 8px;
+}
+
+.wrapper .main-content .wrapper .msg {
+  background-color: #fff;
+  font-size: 11px;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 500;
+  color: #3e3c3c;
+}
+
+.wrapper .main-content .wrapper .between {
+  font-size: 18px;
+  font-weight: 500;
+  color: #a09e9e;
+}
+
+.wrapper .main-content .wrapper .navbar {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.wrapper .main-content .wrapper .form-control {
+  font-size: 12px;
+  font-weight: 400;
+  width: 230px;
+  height: 30px;
+  border: none;
+}
+
+.wrapper .main-content .wrapper .form-control:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  overflow: hidden;
+  border: none;
+}
+
+.wrapper .main-content .wrapper .form-control:focus {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+.wrapper .main-content .wrapper .icon1 {
+  color: #7c4dff !important;
+  font-size: 18px !important;
+  cursor: pointer;
+}
+
+.wrapper .main-content .wrapper .icon2 {
+  color: #512da8 !important;
+  font-size: 18px !important;
+  position: relative;
+  left: 8px;
+  padding: 0px;
+  cursor: pointer;
+}
+
+.wrapper .main-content .wrapper .icondiv {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  padding: 2px;
+  position: relative;
+  bottom: 1px;
+}
+
+.wrapper .main-content .debby .card {
+  padding: 5px 1.5px;
+}
+
+.wrapper .main-content .debby .card .card-icon i {
+  font-size: 28px;
 }
 
 .modal {
