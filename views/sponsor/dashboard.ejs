@@ -1,0 +1,256 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar %>
+        <div class="main-content">
+            <% include includes/navbar2 %>
+            <div class="content">
+                <div class="container-fluid">
+
+                    <!-- BreadCrumb -->
+                    <div class="row">
+                        <div class="col-12">
+                            <ol class="breadcrumb bg-light-mode">
+                                <li class="breadcrumb-item">
+                                    <a href="">
+                                        <i class="fas fa-home"></i> Home
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <i class="fas fa-th-large"></i> Dashboard
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <!-- BreadCrumb End -->
+
+                    <!-- Stats -->
+                    <% include includes/stats %>
+                    <!-- Stats End -->
+
+                    <!-- wallet section  -->
+                    <% include includes/savings %>
+                    <!-- wallet section End -->
+
+                    <div class="row jsutify-content-space-between my-4">
+                        <div class="col-lg-8 col-md-12 col-sm-12 red-lg-2">
+                            <div class="card card-stats px-3">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="graph-top mb-3">
+                                            <div class="float-left">
+                                                <h3>Wallet Percentage</h3>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="task-percent my-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                <% if (wllt && wllt.length> 0) {%>
+                                                    <div class="data deactivated">
+                                                        <span class="A">
+                                                            <p class="q">
+                                                                <%= wllt[0].quick %>
+                                                            </p>
+                                                            <p class="a">
+                                                                <%= wllt[0].auto %>
+                                                            </p>
+                                                            <p class="d">
+                                                                <%= wllt[0].donate %>
+                                                            </p>
+                                                        </span>
+                                                    </div>
+                                                    <canvas id="walletChart"></canvas>
+                                                    <div class="percent-text w-100 text-center my-4">
+                                                            <div class="inner-mn-text text-center">
+                                                                <h3>&#8358; <%= wllt[0].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></h3><br>
+                                                            </div>
+                                                    </div>
+                                                <% } else { %>
+                                                    <canvas id="walletChart"></canvas>
+                                                    <div class="percent-text w-100 text-center my-4">
+                                                            <div class="inner-mn-text text-center">
+                                                                <h3>&#8358; 0.00</h3><br>
+                                                            </div>
+                                                    </div>
+                                                <% } %>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                <% if (wllt && wllt.length > 0) {%>
+                                                    <div class="wallet-sections w-100">
+                                                        <div class="text-center set">
+                                                            <span>A : </span>
+                                                            <span><%=  user.user_id %></span>
+                                                            <div class="cat-exp">
+                                                                <div class="cat-1">
+                                                                    <div class="bod quick"></div>Quick Save &#8358; <%= wllt[0].quick.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                                                </div>
+                                                                <div class="cat-1">
+                                                                    <div class="bod auto"></div>Auto Save &#8358; <%= wllt[0].auto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                                                </div>
+                                                                <div class="cat-1">
+                                                                    <div class="bod don"></div>Donate &#8358; <%= wllt[0].donate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+                                                                </div>
+                                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% } else { %>
+                                                    <div class="wallet-sections w-100">
+                                                        <div class="text-center set">
+                                                            <span>A : </span>
+                                                            <span>
+                                                                <%= user.user_id %>
+                                                            </span>
+                                                            <div class="cat-exp">
+                                                                <div class="cat-1">
+                                                                    <div class="bod quick"></div>
+                                                                    Quick Save &#8358; 0.00
+                                                                </div>
+                                                                <div class="cat-1">
+                                                                    <div class="bod auto"></div>
+                                                                    Auto Save &#8358; 0.00
+                                                                </div>
+                                                                <div class="cat-1">
+                                                                    <div class="bod don"></div>
+                                                                    Donate &#8358; 0.00
+                                                                </div>
+                                                    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Task Percentage End -->
+                        
+                        
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12 red-lg-2">
+                            <div class="card card-stats">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="graph-top mb-3  px-3">
+                                            <div class="float-left">
+                                                <h3>Recent Messages</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                        
+                                    <div class="card-body mt-5 w-100">
+                                        <div class="row">
+                                            <div class="col-12">
+                                            <% if (contacts.length> 0) {%>
+                                                <div class="convos">
+                                                    <div class="scroll">
+                                                    <% for (var i=0; i < contacts.length; i++) { %>
+                                                    <% if (contacts[0].sender==user.user_id ) { %>
+                                                        <a href="/sponsor/notifications">
+                                                            <div class="box my-2" data-id="<%= contacts[0].id %>"
+                                                                data-name="<%= contacts[0].rec_fname + ' ' + contacts[0].rec_lname  %>"
+                                                                data-user="<%= contacts[0].rec_user_id %>"
+                                                                data-convo="<%= contacts[0].message %>">
+                                                            <% if (contacts[0].rec_pp !="" ) {%>
+                                                                    <div class="box-img">
+                                                                        <img src="<%= contacts[0].rec_pp %>" class="img-fluid">
+                                                                    </div>
+                                                            <% } else { %>
+                                                                    <div class="box-img">
+                                                                        <img src="/images/profile/avatar/avatar_1.jpg"
+                                                                            class="img-fluid">
+                                                                    </div>
+                                                            <% } %>
+                                                                    <div class="box-content">
+                                                                        <h3>
+                                                                            <%= contacts[0].rec_fname + " " +
+                                                                                contacts[0].rec_lname %>
+                                                                        </h3>
+                                                                        <span>
+                                                                            <%= contacts[0].rec_user_id %>
+                                                                        </span>
+                                                                        <span class="time-only">
+                                                                            <%= contacts[0].date_created %>
+                                                                        </span>
+                                                                    </div>
+                                                            </div>
+                                                        </a>
+                        
+                                                    <% } else { %>
+                                                        <div class="box my-2" data-id="<%= contacts[0].id %>"
+                                                            data-name="<%= contacts[0].send_fname + ' ' + contacts[0].send_lname  %>"
+                                                            data-user="<%= contacts[0].send_user_id %>"
+                                                            data-convo="<%= contacts[0].message %>">
+                                                        <% if (contacts[0].send_pp !="" ) {%>
+                                                            <div class="box-img">
+                                                                <img src="<%= contacts[0].send_pp %>" class="img-fluid">
+                                                            </div>
+                                                        <% } else { %>
+                                                            <div class="box-img">
+                                                                <img src="/images/profile/avatar/avatar_1.jpg"
+                                                                    class="img-fluid">
+                                                            </div>
+                                                        <% } %>
+                                                            <div class="box-content">
+                                                                <h3>
+                                                                    <%= contacts[0].send_fname + " " +
+                                                                        contacts[0].send_lname %>
+                                                                </h3>
+                                                                <span>
+                                                                    <%= contacts[0].send_user_id %>
+                                                                </span>
+                                                                <span class="time-only">
+                                                                    <%= contacts[0].date_created %>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    <% } %>
+                                                    <% } %>
+                                                    </div>
+                                                </div>
+                                            <% } else { %>
+                                                <div class="my-5">
+                                                    <h6 class="text-center text-danger">No Conversations Yet</h6>
+                                                </div>
+                                            <% } %>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="bottom tex-center w-100 mt-4 pt-4 pb-lg-2 pb-md-2">
+                                                    <a href="/sponsor/notifications" class="btn btn-kts start-convo">Start Conversation</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="overlay deactivated">
+        <div class="close-sidebar">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    
+        
+        
+        
+
+<% include includes/modal_2.ejs %>
+<script>var user_id = "<%= user.user_id %>";</script>
+<% include includes/foot.ejs%>

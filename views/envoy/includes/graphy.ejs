@@ -83,54 +83,99 @@
         </div>
     </div>
     <div class="col-lg-3 col-md-12 col-sm-12 red-lg-2">
-        <div class="card card-stats px-3">
+        <div class="card card-stats">
             <div class="container">
                 <div class="row">
-                    <div class="graph-top mb-3">
+                    <div class="graph-top mb-3  px-3">
                         <div class="float-left">
                             <h3>Recent Messages</h3>
                         </div>
                     </div>
+                </div>
 
-                    <div class="convos">
-                        <div class="box my-3">
-                            <div class="box-img">
-                                <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
-                            </div>
-                            <div class="box-content">
-                                <h3>Hank Davids</h3>
-                                <span> ADM-0001</span>
-                                <span> 5:30 pm</span>
+                
+                <div class="card-body mt-5 w-100">
+                    <div class="row">
+                        <div class="col-12">
+                            <% if (contacts.length> 0) {%>
+                                <div class="convos">
+                                    <div class="scroll">
+                                        <% for (var i=0; i < contacts.length; i++) { %>
+                                            <% if (contacts[0].sender==user.user_id ) {%>
+                                                <a href="/envoy/notifications">
+                                                    <div class="box my-2" data-id="<%= contacts[0].id %>"
+                                                        data-name="<%= contacts[0].rec_fname + ' ' + contacts[0].rec_lname  %>" data-user="<%= contacts[0].rec_user_id %>"
+                                                        data-convo="<%= contacts[0].message %>">
+                                                        <% if (contacts[0].rec_pp !="" ) {%>
+                                                            <div class="box-img">
+                                                                <img src="<%= contacts[0].rec_pp %>" class="img-fluid">
+                                                            </div>
+                                                        <% } else { %>
+                                                            <div class="box-img">
+                                                                <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
+                                                            </div>
+                                                        <% } %>
+                                                            <div class="box-content">
+                                                                <h3>
+                                                                    <%= contacts[0].rec_fname + " " + contacts[0].rec_lname %>
+                                                                </h3>
+                                                                <span>
+                                                                    <%= contacts[0].rec_user_id %>
+                                                                </span>
+                                                                <span class="time-only">
+                                                                    <%= contacts[0].date_created %>
+                                                                </span>
+                                                            </div>
+                                                    </div>
+                                                </a>
+                                                
+                                                <% } else { %>
+                                                    <div class="box my-2" data-id="<%= contacts[0].id %>"
+                                                        data-name="<%= contacts[0].send_fname + ' ' + contacts[0].send_lname  %>"
+                                                        data-user="<%= contacts[0].send_user_id %>"
+                                                        data-convo="<%= contacts[0].message %>">
+                                                        <% if (contacts[0].send_pp !="" ) {%>
+                                                            <div class="box-img">
+                                                                <img src="<%= contacts[0].send_pp %>" class="img-fluid">
+                                                            </div>
+                                                            <% } else { %>
+                                                                <div class="box-img">
+                                                                    <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
+                                                                </div>
+                                                                <% } %>
+                                                                    <div class="box-content">
+                                                                        <h3>
+                                                                            <%= contacts[0].send_fname + " " + contacts[0].send_lname %>
+                                                                        </h3>
+                                                                        <span>
+                                                                            <%= contacts[0].send_user_id %>
+                                                                        </span>
+                                                                        <span class="time-only">
+                                                                            <%= contacts[0].date_created %>
+                                                                        </span>
+                                                                    </div>
+                                                    </div>
+                                                    <% } %>
+                                                        <% } %>
+                                    </div>
+                                </div>
+                
+                                <% } else { %>
+                                    <div class="my-5">
+                                        <h6 class="text-center text-danger">No Conversations Yet</h6>
+                                    </div>
+                                    <% } %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="bottom tex-center w-100 mt-4 pt-4 pb-lg-2 pb-md-2">
+                                <a href="/envoy/notifications" class="btn btn-kts start-convo">Start Conversation</a>
                             </div>
                         </div>
-
-                        <div class="box my-3">
-                            <div class="box-img">
-                                <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
-                            </div>
-                            <div class="box-content">
-                                <h3>Hank Davids</h3>
-                                <span> ADM-0001</span>
-                                <span> 5:30 pm</span>
-                            </div>
-                        </div>
-
-                        <!-- <div class="box my-3">
-                                                <div class="box-img">
-                                                    <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
-                                                </div>
-                                                <div class="box-content">
-                                                    <h3>Hank Davids</h3>
-                                                    <span> ADM-0001</span>
-                                                    <span> 5:30 pm</span>
-                                                </div>
-                                            </div> -->
-
                     </div>
-
-                    <div class="bottom tex-center w-100 mt-4 pt-4 pb-lg-2 pb-md-2">
-                        <a href="#" class="btn btn-kts">Start Conversation</a>
-                    </div>
+                
+                
                 </div>
             </div>
         </div>

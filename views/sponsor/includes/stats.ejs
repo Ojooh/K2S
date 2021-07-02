@@ -1,0 +1,73 @@
+<div class="row row-cols-5">
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-warning">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <p class="card-category">My Wallet</p>
+            <% if (wllt && wllt.length > 0) {%>
+                <h3 class="card-title">&#8358; <%= wllt[0].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></h3>
+            <% } else { %>
+                <h3 class="card-title">&#8358; 0.00
+                </h3>
+            <% } %>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-success">
+                    <i class="fas fa-users"></i>
+                </div>
+                <p class="card-category">Kids Adopted</p>
+                <h3 class="card-title">0
+                </h3>
+            </div>
+        </div>
+
+    </div>
+    <!-- <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-danger">
+                    <i class="fas fa-user-slash"></i>
+                </div>
+                <p class="card-category">Kids Sponsored</p>
+                <h3 class="card-title">0
+                </h3>
+            </div>
+        </div>
+    </div> -->
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-info">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <p class="card-category">Kids Sponsored</p>
+                <h3 class="card-title">0
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg col-md-12 col-sm-12">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon-img">
+                    <img src="/images/profile/avatar/avatar_2.jpg" class="img-fluid">
+                </div>
+                <p class="card-category">
+                    <%= user.fname %>
+                </p>
+                <span class="card-title_2">
+                    <%= user.user_id %>
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+</div>

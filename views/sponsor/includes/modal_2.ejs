@@ -1,0 +1,328 @@
+<!-- Over Lay  -->
+<div class="overlay deactivated">
+    <div class="close-sidebar">
+        <i class="fas fa-times"></i>
+    </div>
+</div>
+<!-- Over Lay End -->
+<!-- The Modal -->
+<!-- Kid Form Modal -->
+<div class="modal fade bd-example-modal-xl" id="paymentModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="paymentModalCenterTitle" aria-hidden="true">
+    <div class="close-modal">
+        <i class="fas fa-times"></i>
+    </div>
+
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content card-modal-box mt-5">
+            <div class="card-modal-header">
+                <h4 class="card-modal-title "></h4>
+                <p class="card-modal-description"></p>
+
+            </div>
+
+            <div class="modal-body card-modal-body mt-5">
+                <div class="qky deactivated mt-5">
+                    <div class="slide-1 w-100">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <input type="hidden" class="form-control" id="email" value="<%= user.email %>">
+                                    <input type="hidden" class="form-control" id="f_name" value="<%= user.fname + ' ' + user.lname %>">
+                                    <div class="form-group error my-4 d-flex"></div>
+
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Amount : </label>
+                                        <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount.....">
+                                        <span class="text-danger amount-error my-1"></span>
+                                    </div>
+
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">To Where :</label>
+                                        <select class="form-control category" id="to" required>
+                                            <option value="" selected="selected">
+                                                Choose an Option
+                                            </option>
+                                            <option value="wallet">
+                                                KTS-wallet
+                                            </option>
+                                            <option value="donate">
+                                                Donations
+                                            </option>
+                                        </select>
+                                        <span class="text-danger to-error my-1"></span>
+                                    </div>
+                                </div>
+                        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-2 w-100 deactivated">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <div class="form-group error my-4 d-flex"></div>
+                                    <div class="credit-cards cardsy my-2">
+                                        <span><i class="fas fa-plus"></i></span>
+                                        <h3>Add New Card </h3>
+                                    </div>
+                                    <div class="credit-cards banky my-2">
+                                        <span><i class="fas fa-minus"></i></span>
+                                        <h3>Pay With Bank </h3>
+                                    </div>
+                                <% if (cards && cards.length> 0) { %>
+                                    <% for (var g=0; g < cards.length; g++) { %>
+                                        <div class="credit-cards oldy my-2" data-no="<%= cards[g].card_number %>">
+                                        <% if ( cards[g].card_type.trim()=="visa" ) { %>
+                                            <span><i class="fab fa-cc-visa"></i></span>
+                                        <% } else if ( cards[g].card_type.trim()=="master" ) { %>
+                                            <span><i class="fab fa-cc-mastercard"></i></span>
+                                        <% } else { %>
+                                            <span><i class="fas fa-university"></i></span>
+                                        <% } %>
+                                            <div class="rigt">
+                                                <h3>
+                                                    <%= cards[g].card_number %>
+                                                        
+                                                </h3>
+                                                <p class="mt-2">
+                                                    <%= cards[g].bank %>
+                                                </p>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    <% } %>
+                                 <% } %>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dny deactivated mt-5">
+                    <div class="slide-1 w-100">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <input type="hidden" class="form-control" id="email" value="<%= user.email %>">
+                                    <input type="hidden" class="form-control" id="f_name" value="<%= user.fname + ' ' + user.lname %>">
+                                    <div class="form-group error my-4 d-flex"></div>
+                
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Amount : </label>
+                                        <input type="number" class="form-control nl" id="amount" name="amount" placeholder="Amount.....">
+                                        <span class="text-danger amount-error my-1"></span>
+                                    </div>
+                
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">To Where :</label>
+                                        <select class="form-control category" id="to" required>
+                                            <option value="donate">
+                                                Donations
+                                            </option>
+                                        </select>
+                                        <span class="text-danger to-error my-1"></span>
+                                    </div>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-2 w-100 deactivated">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <div class="form-group error my-4 d-flex"></div>
+                                    <div class="credit-cards cardsy my-2">
+                                        <span><i class="fas fa-plus"></i></span>
+                                        <h3>Add New Card </h3>
+                                    </div>
+                                    <div class="credit-cards banky my-2">
+                                        <span><i class="fas fa-minus"></i></span>
+                                        <h3>Pay With Bank </h3>
+                                    </div>
+                                    <% if (cards && cards.length> 0) { %>
+                                        <% for (var g=0; g < cards.length; g++) { %>
+                                            <div class="credit-cards oldy my-2" data-no="<%= cards[g].card_number %>">
+                                            <% if ( cards[g].card_type.trim()=="visa" ) { %>
+                                                <span><i class="fab fa-cc-visa"></i></span>
+                                            <% } else if ( cards[g].card_type.trim()=="master" ) { %>
+                                                <span><i class="fab fa-cc-mastercard"></i></span>
+                                            <% } else { %>
+                                                <span><i class="fas fa-university"></i></span>
+                                            <% } %>
+                                                <div class="rigt">
+                                                    <h3>
+                                                        <%= cards[g].card_number %>
+
+                                                    </h3>
+                                                    <p class="mt-2">
+                                                        <%= cards[g].bank %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="asy deactivated mt-5">
+                    <div class="slide-1 w-100">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <input type="hidden" class="form-control" id="email" value="<%= user.email %>">
+                                    <input type="hidden" class="form-control" id="f_name" value="<%= user.fname + ' ' + user.lname %>">
+                                    <div class="form-group error my-4 d-flex"></div>
+                
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Amount You want to Deduct Regularly: </label>
+                                        <input type="number" class="form-control nl" id="amount" name="amount"
+                                            placeholder="Amount.....">
+                                        <span class="text-danger amount-error my-1"></span>
+                                    </div>
+                
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">To Where :</label>
+                                        <select class="form-control category" id="to" required>
+                                            <option value="" selected="selected">
+                                                Choose an Option
+                                            </option>
+                                            <option value="wallet">
+                                                KTS-wallet
+                                            </option>
+                                            <option value="donate">
+                                                Donations
+                                            </option>
+                                        </select>
+                                        <span class="text-danger to-error my-1"></span>
+                                    </div>
+
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">How Do you Want the Deduction: </label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="routine" id="routine1" value="Daily">
+                                            <label class="form-check-label" for="routine1">
+                                                Daily
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="routine" id="routine2" value="Weekly">
+                                            <label class="form-check-label" for="routine2">
+                                                Weekly
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="routine" id="routine3" value="Monthly">
+                                            <label class="form-check-label" for="routine3">
+                                                Monthly
+                                            </label>
+                                        </div>
+                                        <span class="text-danger routine-error my-1"></span>
+                                    </div>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-2 w-100 deactivated">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <div class="form-group error my-4 d-flex"></div>
+                    
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">When to start Deduction: </label>
+                                        <input type="date" class="form-control start" id="startt" name="startt" placeholder="Start Time">
+                                        <span class="text-danger amount-error my-1"></span>
+                                    </div>
+                    
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Choose Debit Time: </label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="debit-t" id="debit-t1" value="morning">
+                                            <label class="form-check-label" for="debit-t1">
+                                                Morning
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="debit-t" id="debit-t2" value="afternoon">
+                                            <label class="form-check-label" for="debit-t2">
+                                                Afternoon
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="debit-t" id="debit-t3" value="evening">
+                                            <label class="form-check-label" for="debit-t3">
+                                                Evening
+                                            </label>
+                                        </div>
+                                        <span class="text-danger debit-error my-1"></span>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-3 w-100 deactivated">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <div class="form-group error my-4"></div>
+                                <% if (cards && cards.length > 0) { %>
+                                    <% for (var g=0; g < cards.length; g++) { %>
+                                    <div class="credit-cards my-2" data-no="<%= cards[g].card_number %>">
+                                    <% if ( cards[g].card_type.trim()=="visa" ) { %>
+                                        <span><i class="fab fa-cc-visa"></i></span>
+                                    <% } else if ( cards[g].card_type.trim()=="master" ) { %>
+                                        <span><i class="fab fa-cc-mastercard"></i></span>
+                                    <% } else { %>
+                                        <span><i class="fas fa-university"></i></span>
+                                    <% } %>
+                                        <div class="rigt">
+                                            <h3>
+                                                <%= cards[g].card_number %>
+
+                                            </h3>
+                                            <p class="mt-2">
+                                                <%= cards[g].bank %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                <% } else { %>
+                                    <div class="text-center text-danger text-uppercase">
+                                        <h4>
+                                            No card or bank details have been set, please go to your profile and add a card.
+                                        </h4>
+                                       
+                                    </div>
+                                <% } %>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary rounded-pill cancel" data-dismiss="modal">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </button> -->
+                <button type="button" class="btn btn-secondary rounded-pill back deactivated">
+                    <i class="fas fa-long-arrow-alt-left"></i>
+                    Go Back
+                </button>
+                <button type="button" class="btn btn-outline-kts next" data-type=""> 
+                    Next
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
