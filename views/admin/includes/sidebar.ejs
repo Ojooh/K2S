@@ -1,0 +1,52 @@
+
+<div id="sideBar" class="sidebar">
+    <div class="logo">
+        <a href="/admin" class="logo text-center">
+            KTS
+        </a>
+    </div>
+    <div class="sidebar-wrapper">
+        <ul class="navbar-nav side-nav">
+            
+            <li class="nav-item <%= active.dash %>">
+                <a class="nav-link" href="/admin">
+                    <i class="fas fa-th-large"></i>
+                    Dahsboard
+                </a>
+            </li>
+        <% if (user.user_type=="ADMS" ) { %>
+            <li class="nav-item <%= active.adm %>">
+                <a class="nav-link" href="/admin/Administrators">
+                    <i class="fas fa-user-shield"></i>
+                    Administrators
+                </a>
+            </li>
+        <% } %>
+            <li class="nav-item <%= active.sps %>">
+                <a class="nav-link" href="/admin/Sponsors">
+                    <i class="fas fa-users"></i>
+                    Sponsors    
+                </a>
+            </li>
+            <li class="nav-item <%= active.env %>">
+                <a class="nav-link" href="/admin/Envoys">
+                    <i class="fas fa-hands-helping"></i>
+                    Envoys
+                </a>
+            </li>
+            
+            <li class="nav-item <%= active.kds %>">
+                <a class="nav-link" href="/admin/Kids">
+                    <i class="fas fa-child"></i>
+                    Kids
+                </a>
+            </li>
+            <li class="nav-item <%= active.ntf %>">
+                <a class="nav-link" href="notifications.html">
+                    <i class="fas fa-bell"></i>
+                    Notifications   
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

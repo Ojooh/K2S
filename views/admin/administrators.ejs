@@ -1,0 +1,152 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar %>
+            <div class="main-content">
+                <% include includes/navbar %>
+                    <div class="content">
+                        <div class="container-fluid">
+
+                            <!-- BreadCrumb -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb bg-light-mode">
+                                        <li class="breadcrumb-item">
+                                            <a href="">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <i class='fas fa-user-shield'></i> Administrators
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <!-- BreadCrumb End -->
+
+                            <!-- Add Button -->
+                            <!-- Add Button Modal-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-left mdl-admin-form mt-5">
+                                        <a href="/admin/Administrators/add_admin" class="btn btn-outline-kts">
+                                            <i class="fas fa-plus"></i>
+                                            Add An Administrator
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Add Button Modal-->
+                            <!-- Add Button Form -->
+                            <!-- <div class="row">
+                                <div class="col-12">
+                                    <div class="float-left mt-5">
+                                        <a href="/admin/Administrators/add_admin" class="btn btn-outline-kts">
+                                            <i class="fas fa-plus"></i>
+                                            Add An Administrator
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- End Add Button Form-->
+                            <!-- Add Button End -->
+
+                            <!-- Administrator Table -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card card-stats mt-5">
+                                        <div class="card-table-title bg-success">
+                                            <h4 class="card-title ">Administrators Table</h4>
+                                            <p class="card-description"> List of administrators for the Kids To school Foundation.</p>
+
+                                        </div>
+                                        <div class="card-body mt-5">
+                                            <% if (admins.length > 0) {%>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">S/N</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Title</th>
+                                                            <th scope="col">Date Created</th>
+                                                            <th scope="col">Last Login</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <%
+                                                        for (var i = 0; i < admins.length; i++) {
+                                                    %>
+                                                        <tr>
+                                                            <th scope="row"><%= i + 1; %></th>
+                                                            <td>
+                                                                <%= admins[i].fname + " " + admins[i].lname %>
+                                                            </td>
+                                                            <td>
+                                                                <%= admins[i].title %>
+                                                            </td>
+                                                            <td class="pretty-date">
+                                                                <%= admins[i].date_created %>
+                                                            </td>
+                                                            <td class="pretty-date">
+                                                                <%= admins[i].last_login %>
+                                                            </td>
+                                                            <% if (admins[i].id !=user.id) { %>
+                                                            <td>
+                                                                <% if (admins[i].is_active) { %>
+                                                                <div class="custom-control custom-switch">
+                                                                    <input type="checkbox" class="custom-control-input" id="customSwitch-<%= admins[i].id %>" value="False" checked>
+                                                                    <label class="custom-control-label" for="customSwitch-<%= admins[i].id %>"> Active</label>
+                                                                </div>
+                                                                <% } else { %>
+                                                                <div class="custom-control custom-switch">
+                                                                    <input type="checkbox" class="custom-control-input" id="customSwitch-<%= admins[i].id %>" value="True">
+                                                                    <label class="custom-control-label" for="customSwitch-<%= admins[i].id %>"> In-Active</label>
+                                                                </div>
+                                                                <% } %>
+                                                            </td>
+                                                            <% }  else { %>
+                                                            <td></td>
+                                                            <% } %>
+                                                            <td class="td-actions">
+                                                                <a href="#" class="profile text-info mr-4" data-id="<%= admins[i].id %>" data-url="/admin/User/get_profile" data-type="display-modal"data-toggle="tooltip" data-placement="top" title="Administrator Details">
+                                                                    <i class="fas fa-info-circle"></i>
+                                                                </a>
+                                                                <a href="#" class="edit-admin text-primary mr-4" data-id="<%= admins[i].id %>" data-url="/admin/User/get_profile" data-type="edit-modal" data-toggle="tooltip" data-placement="top" title="Edit Administrator">
+                                                                        <i class="fas fa-pencil-alt"></i>
+                                                                </a>
+                                                                <% if (admins[i].id != user.id) { %>
+                                                                <a href="#" class="delete-admin text-danger" data-id="<%= admins[i].id %>" data-url="/admin/User/delete_profile" data-toggle="tooltip" data-placement="top" title="Remove Administrator">
+                                                                    <i class="fas fa-times"></i>
+                                                                </a>
+                                                                <% } %>
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                    <% } %>
+                                                            
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="my-5">
+                                                <h6 class="text-center text-danger">No Administrators Available</h6>
+                                            </div>
+                                        <% } %>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Administrator Table End -->
+                        </div>
+                    </div>
+                        
+            </div>
+    </div>
+    
+<% include includes/modal_1.ejs %>                    
+<% include includes/foot.ejs%>

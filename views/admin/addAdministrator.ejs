@@ -1,0 +1,241 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar %>
+            <div class="main-content">
+                <% include includes/navbar %>
+                    <div class="content">
+                        <div class="container-fluid">
+
+                            <!-- BreadCrumb -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb bg-light-mode">
+                                        <li class="breadcrumb-item">
+                                            <a href="">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="/admin/Administrators">
+                                                <i class='fas fa-user-shield'></i> 
+                                                Administrators
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <i class="fas fa-plus"></i>
+                                            Add Administrator
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <!-- BreadCrumb End -->
+
+                            <!-- Administrator Form -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card card-stats mt-5">
+                                        <div class="card-table-title bg-success">
+                                            <h4 class="card-title ">Administrators Form</h4>
+                                            <p class="card-description"> Add an administrators for the Kids To school Foundation.</p>
+                            
+                                        </div>
+                                        <div class="card-body mt-5">
+                                            <form class=" mt-4" method="POST" enctype="multipart/form-data">
+                                                <div class="form-row">
+                                                    <div class="col-12">
+                                                        <div class="form-group error my-4">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">User ID</label>
+                                                            <input type="text" class="form-control" id="userID" name="userID" value="****-******"
+                                                                placeholder="User ID....." disabled="">
+                                                            <span class="text-danger user-id-error my-1"></span>
+                                                        </div>
+                                            
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">First Name</label>
+                                                            <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name.....">
+                                                            <span class="text-danger fname-error my-1"></span>
+                                                        </div>
+                                            
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Last Name</label>
+                                                            <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name.....">
+                                                            <span class="text-danger lname-error my-1"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">DOB</label>
+                                                            <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of Birth">
+                                                            <span class="text-danger dob-error my-1"></span>
+                                                        </div>
+                                            
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Age</label>
+                                                            <input type="text" class="form-control" id="age" name="age" placeholder="Age....." disabled>
+                                                            <span class="text-danger age-error my-1"></span>
+                                                        </div>
+                                            
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Gender</label>
+                                                            <select class="form-control" id="gender">
+                                                                <option value="">Select a Gender .....</option>
+                                                                <option value="Male"> Male </option>
+                                                                <option value="Female"> Female </option>
+                                                            </select>
+                                                            <span class="text-danger gender-error my-1"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Country</label>
+                                                            <select class="form-control" id="country">
+                                            
+                                                            </select>
+                                                            <span class="text-danger country-error my-1"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">State</label>
+                                                            <select class="form-control" id="state">
+                                            
+                                                            </select>
+                                                            <span class="text-danger state-error my-1"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Email</label>
+                                                            <input type="email" class="form-control" id="email" placeholder="Email....">
+                                                            <span class="text-danger email-error my-1"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-row">
+                                                            <div class="col-4">
+                                                                <div class="form-group bmd-form-group">
+                                                                    <label class="bmd-label-floating">Code</label>
+                                                                    <input type="text" class="form-control" id="countryCode" disabled="">
+                                                                    <span class="text-danger code-error my-1"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-8">
+                                                                <div class="form-group bmd-form-group">
+                                                                    <label class="bmd-label-floating">Telephone</label>
+                                                                    <input type="tel" class="form-control" id="telephone" placeholder="Phone Number....">
+                                                                    <span class="text-danger tely-error my-1"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating">Title</label>
+                                                            <select class="form-control" id="title">
+                                                                <option value="">Select a Title .....</option>
+                                                                <option value="ADMS">Super Admin</option>
+                                                                <option value="ADM">Administrator Editor</option>
+                                                            </select>
+                                                            <span class="text-danger title-error my-1"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <label class="bmd-label-floating mb-2">Password</label>
+                                                            <div class="input-group">
+                                                                <input type="password" class="form-control" id="password" placeholder="Password....">
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text" id="basic-addon2">
+                                                                        <i class="fas fa-robot"></i>&nbsp;Generate Password
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <input type="password" class="form-control" id="password" placeholder="Password...."> -->
+                                                            <span class="text-danger password-error my-1"></span>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="form-row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group filly bmd-form-group">
+                                                            <label class="bmd-label-floating">Profile Picture</label>
+                                                            <input type="file" class="form-control" id="profilePic" placeholder="upload an image.....">
+                                                            <span class="text-danger pp-error my-1"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group prev  deactivated">
+                                                            <label class="bmd-label-floating">Picture Preview</label><br>
+                                                            <img id="frame" class="img-fluid border float-right" width="200px" height="150px">
+                                                            <a href="#" class="text-danger delete-image" data-type="add">
+                                                                <i class="far fa-times-circle"></i>
+                                                                Delete Image
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                            
+                                            </form>
+                                            <div class="modal-footer">
+                                                <a href="/admin/Administrators" class="btn btn-secondary">
+                                                    <i class="fas fa-long-arrow-alt-left"></i>
+                                                    Back
+                                                </a>
+                                                <button type="button" id="submitAdmin" data-type="add" data-url="/admin/Administrators/add_admin" data-id=""
+                                                    class="btn btn-outline-kts">
+                                                    <i class="far fa-paper-plane"></i>
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Administrator Form End -->
+
+                        </div>
+                    </div>
+                        
+            </div>
+    </div>
+    <!-- Over Lay  -->
+    <div class="overlay deactivated">
+        <div class="close-sidebar">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    <!-- Over Lay End -->
+<script src="/javascripts/personal/country_state.js"></script>
+<script src="/javascripts/personal/country_code.js"></script>
+                        
+<% include includes/foot.ejs%>
