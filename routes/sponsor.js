@@ -27,6 +27,9 @@ router.post('/Kid/get_profile', sponsorHandler.getProfile);
 /*get verification*/
 router.get('/payment/verify=:ref/wallet=:wllt', sponsorHandler.getVerification);
 
+/*get verification*/
+router.get('/payment/verify=:ref/wallet=:wllt/donate=:val/kid=:kd/title=:ttl', sponsorHandler.getVerification);
+
 /*charge old card */
 router.post('/charge/', sponsorHandler.chargeCard);
 

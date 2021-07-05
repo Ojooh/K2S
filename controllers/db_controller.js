@@ -977,7 +977,7 @@ module.exports.sponsorFilterKidsByDate = (order) => {
 
 //SPONSOR FILTER by date joined
 module.exports.sponsorFilterKidsByDOB = (yr, order) => {
-    const query = "SELECT * FROM kids where YEAR(dob) = '" + yr + "' ORDER BY dob " + order + ";";
+    const query = "SELECT * FROM kids where YEAR(dob) = '" + yr + "'AND is_paid = 0 AND adopted_by IS NULL AND is_active = 1 ORDER BY dob " + order + " ;";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -994,7 +994,7 @@ module.exports.sponsorFilterKidsByDOB = (yr, order) => {
 
 //SPONSOR search
 module.exports.getSPNSearch = (kwy) => {
-    const query = "SELECT * FROM kids WHERE category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%';";
+    const query = "SELECT * FROM kids WHERE (category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%') AND (is_paid = 0 AND adopted_by IS NULL AND is_active = 1);";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -1118,7 +1118,22 @@ module.exports.adoptKid = (id, user) => {
 
         });
     });
-}
+};
+
+module.exports.addDonation = (ref, user, kid, amount, title, type, status) => {
+    const query = "INSERT INTO donations (`ref`, `donator`, `kid`, `amount`, `title`, `payment_type`, `status`) VALUES ('" + ref + "', '" + user + "',  '" + kid + "',  '" + amount + "',  '" + title + "', '" + type + "',  '" + status + "')";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
 
 
 

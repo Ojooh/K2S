@@ -1,4 +1,5 @@
 jQuery(document).ready(function ($) {
+    var error = $(".error");
     var filter = $(".dropdown-item");
     var filterDOB = $(".filter-dob");
     var dobBtn = $(".dob-btn");
@@ -6,11 +7,18 @@ jQuery(document).ready(function ($) {
     var order = $(".order");
     var search = $("#basic-addon1");
     var modal = $("#viewKidModal");
+    var modal_2 = $("#donateModal");
     var profile = $(".s-profile");
     var display = $(".list-tab-item");
     var adopt = $('#adoptKid');
+    var donate = $("#donateKid");
+    var next = $(".next");
+    var back = $(".back");
+    var pay = $(".pay");
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var inptArr = {};
+    var start = 1;
 
     //function to make date-time pretty
     function prettyDate(date) {
@@ -39,6 +47,106 @@ jQuery(document).ready(function ($) {
         });
 
         return formatter.format(amount)
+    };
+
+    function fillSummary(key, value) {
+        var html = '';
+
+        html += `<div class="field w-100">
+                    <h5 class="float-left"> ` + key + ` : </h5>
+                    <h5 class="float-right"> ` + value + `</h5>
+                </div>`;
+
+        return html;
+    };
+
+    // function to validate a set of inputs
+    function validateInputs1(amount, to, title) {
+        if (amount == "") {
+            return [false, "Amount Field cannot be empty"];
+        } if (title == "") {
+            return [false, "Title Field cannot be empty"];
+        } else if (isNaN(amount) || parseInt(amount) < 0) {
+            return [false, "Amount must be a number. greater than 0"];
+        } else if (to == "") {
+            return [false, "From Where Field cannot be empty"];
+        } else {
+            return [true, "Details Correct"];
+        }
+    };
+
+    function payWithPaystack(options) {
+        let handler = PaystackPop.setup({
+            key: options.key,
+            email: options.email,
+            amount: options.amount,
+            ref: options.ref,
+            channels: options.channels,
+            currency: options.currency,
+            onClose: function () {
+                modal_2.modal("hide");
+                Swal.fire({
+                    icon: "error",
+                    title: "Transaction Stopped",
+                    text: "Click OK to proceed to Dashboard",
+                    showCancelButton: false,
+                    confirmButtonText: `OK`,
+                    allowOutsideClick: false,
+                }).then(() => {
+                    location.reload();
+                });
+            },
+            callback: function (response) {
+                modal_2.modal("hide");
+                let url = '/sponsor/payment/verify=' + response.reference + '/wallet=donations/donate=' + true + '/kid='+  options.kidID + '/title=' + options.title;
+                console.log(url);
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        Swal.fire({
+                            title: 'Auto close alert!',
+                            html: 'Please Hold on as Details are being Fetched.',
+                            timer: 40000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        });
+                    },
+                    success: function (data) {
+                        swal.close();
+                        inptArr = {};
+                        console.log(data);
+                        if (data.success) {
+                            modal.modal("hide");
+
+                            Swal.fire({
+                                icon: "success",
+                                title: data.success,
+                                text: "Click OK to proceed to Dashboard",
+                                confirmButtonText: `OK`,
+
+                                allowOutsideClick: false,
+                            }).then(() => {
+                                location.reload();
+                            });
+
+                        } else {
+                            swal.close();
+                            error.html("");
+                            msg = "<span class='alert alert-success text-center'>" + data.error + "</span>";
+                            error.html(msg);
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus + " error encountered: " + errorThrown)
+                    }
+                });
+            }
+        });
+        handler.openIframe();
     }
 
     filterDOB.on("keydown", function (e) {
@@ -52,9 +160,7 @@ jQuery(document).ready(function ($) {
             e.preventDefault()
         }
 
-    })
-
-
+    });
 
     filter.on("click", function (e) {
         e.preventDefault();
@@ -137,6 +243,8 @@ jQuery(document).ready(function ($) {
                 if (data.success) {
                     adopt.attr("data-id", data.success.id);
                     adopt.attr("data-name", data.success.fname);
+                    donate.attr("data-id", data.success.id);
+                    donate.attr("data-name", data.success.fname + " " + data.success.lname);
                     $(".card-modal-title").html(data.success.fname + " " + data.success.lname + " Profile");
                     $(".card-modal-description").html("Who is " + data.success.fname + " " + data.success.lname + "of the Kids To school Foundation.");
                     if (data.success.profile_photo != "") {
@@ -359,4 +467,125 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+    // Function to danote to kid
+    donate.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var ID = $(this).attr("data-id");
+        var full_name = $(this).attr("data-name");
+
+        modal.modal("hide");
+        $(".card-modal-title").html("Donation To " + full_name);
+        $(".card-modal-description").html("Sow into the life of " + full_name + " of the Kids To school Foundation.");
+        $(".donj").removeClass("deactivated");
+        $("#donation_to").val(full_name);
+        next.attr("data-type", "donj");
+        $("#kid_id").val(ID);
+        pay.addClass("deactivated")
+        modal_2.modal("show");
+    });
+
+    //Function to handle next button
+    next.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var type = $(this).attr("data-type");
+        var theta = $(this).html();
+
+        if (type == "donj") {
+            var amount = $("." + type + " #amount").val();
+            var from = $("." + type + " #to").val();
+            var email = $("." + type + " #email").val();
+            var kidID = $("." + type + " #kid_id").val();
+            var title = $("." + type + " #title").val();
+            var [valid, err] = validateInputs1(amount, from, title);
+
+            if (valid) {
+                error.html("");
+                var before = "." + type + " .slide-" + start.toString();
+                start += 1
+                var select = "." + type + " .slide-" + start.toString();
+                inptArr.amount = amount * 100;
+                inptArr.from = from;
+                inptArr.email = email;
+                inptArr.kidID = kidID;
+                inptArr.title = title;
+                var tl = '';
+
+                tl += fillSummary("Donation To", donate.attr("data-name"));
+                tl += fillSummary("Amount", "&#8358;" + (parseInt(inptArr.amount) / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                tl += fillSummary("For", inptArr.title);
+                tl += fillSummary("From", inptArr.from.split("-")[0]);
+
+                $(".summary").html(tl);
+                $(select).removeClass("deactivated");
+                $(before).addClass("deactivated");
+                $(this).addClass("deactivated");
+                pay.removeClass("deactivated")
+
+                if (start > 1) {
+                    back.removeClass("deactivated");
+                }
+
+            } else {
+                msg = "<span class='alert alert-success text-center'>" + err + "</span>";
+                error.html(msg);
+            }
+
+        }
+    });
+
+    //function to handle go back button
+    back.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var type = next.attr("data-type");
+
+        var current = "." + type + " .slide-" + start.toString();
+        start -= 1
+        var select = "." + type + " .slide-" + start.toString();
+        $(select).removeClass("deactivated");
+        $(current).addClass("deactivated");
+
+        if (start == 1) {
+            back.addClass("deactivated");
+            pay.addClass("deactivated");
+            next.removeClass("deactivated");
+        } else {
+            back.removeClass("deactivated");
+        }
+
+
+
+    });
+
+    pay.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (inptArr.from == "new_card") {
+            inptArr.key = "pk_test_d92bb45a27490f6eba1bfd8cd966211c7fcbc0f6";
+            inptArr.ref = '' + Math.floor((Math.random() * 1000000000) + 1);
+            inptArr.channels = ['card'];
+            inptArr.currency = 'NGN';
+
+            console.log(inptArr);
+            payWithPaystack(inptArr);
+        } else if (inptArr.from == "new_bank") {
+            inptArr.key = "pk_test_d92bb45a27490f6eba1bfd8cd966211c7fcbc0f6";
+            inptArr.ref = '' + Math.floor((Math.random() * 1000000000) + 1);
+            inptArr.channels = ['bank'];
+            inptArr.currency = 'NGN';
+
+            console.log(inptArr);
+            payWithPaystack(inptArr);
+        } else {
+            console.log(inptArr);
+        }
+
+
+    })
 });

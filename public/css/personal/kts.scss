@@ -936,7 +936,7 @@ li {
         display: block;
 
         .scroll {
-          overflow-y: scroll;
+          overflow-y: auto;
           scroll-behavior: smooth;
           height: 300px;
         }
@@ -1563,6 +1563,12 @@ li {
   .card-modal-box {
     width: 90%;
     float: center;
+
+    .card-modal-scrollable {
+      height: 560px;
+      overflow-y: auto;
+    }
+
     .card-modal-header {
       position: absolute;
       top: -30px;
@@ -1571,6 +1577,7 @@ li {
       border-radius: 5px;
       padding: 15px;
       color: #fff;
+      z-index: 1800;
       box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
         0 7px 10px -5px rgba(76, 175, 80, 0.4);
 
@@ -1860,6 +1867,28 @@ li {
             font-size: 20px;
             font-weight: 600;
             text-transform: uppercase;
+          }
+        }
+      }
+
+      .summary {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(196, 185, 185, 0.644);
+        border-radius: 10px;
+
+        .field {
+          padding: 10px 20px;
+          display: inline-flex;
+          justify-content: space-between;
+          border-bottom: 1px solid rgba(66, 60, 60, 0.918);
+
+          &:last-child {
+            border-bottom: none;
+          }
+          h5 {
+            font-size: 18px;
+            color: rgba(104, 99, 99, 0.856);
           }
         }
       }

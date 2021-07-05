@@ -1,0 +1,123 @@
+<!-- Over Lay  -->
+<div class="overlay deactivated">
+    <div class="close-sidebar">
+        <i class="fas fa-times"></i>
+    </div>
+</div>
+<!-- Over Lay End -->
+<!-- The Modal -->
+<!-- Kid Form Modal -->
+<div class="modal fade bd-example-modal-xl" id="donateModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="donateModalCenterTitle" aria-hidden="true">
+    <div class="close-modal">
+        <i class="fas fa-times"></i>
+    </div>
+
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content card-modal-box mt-5">
+            <div class="card-modal-header bg-success">
+                <h4 class="card-modal-title"> Donations </h4>
+                <p class="card-modal-description"> Sow into the life of this beautiful child</p>
+
+            </div>
+
+            <div class="modal-body card-modal-body card-modal-scrollable h-auto mt-5">
+                <div class="donj deactivated mt-5">
+                    <div class="slide-1 w-100">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <input type="hidden" class="form-control" id="email" value="<%= user.email %>">
+                                    <input type="hidden" class="form-control" id="kid_id"
+                                        value="">
+                                    <div class="form-group error my-4 d-flex"></div>
+
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Donation To : </label>
+                                        <input type="text" class="form-control" id="donation_to" name="donation_to" placeholder="Donation To" disabled>
+                                        <span class="donation-danger amount-error my-1"></span>
+                                    </div>
+
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Amount : </label>
+                                        <input type="number" class="form-control" id="amount" name="amount"
+                                            placeholder="Amount.....">
+                                        <span class="text-danger amount-error my-1"></span>
+                                    </div>
+
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Title : </label>
+                                        <select class="form-control category" id="title" required>
+                                            <option value="" selected="selected">
+                                                Choose an Option
+                                            </option>
+                                            <option value="School Fees">
+                                                School Fees
+                                            </option>
+                                        </select>
+                                        <span class="title-danger amount-error my-1"></span>
+                                    </div>
+
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">From Where :</label>
+                                        <select class="form-control category" id="to" required>
+                                            <option value="" selected="selected">
+                                                Choose an Option
+                                            </option>
+                                            <option value="wallet">
+                                                KTS-wallet &#8358;<%=  wllt[0].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %>
+                                            </option>
+                                            <option value="new_card">
+                                                Add New Card
+                                            </option>
+                                            <option value="new_bank">
+                                                Add New Bank
+                                            </option>
+                                        <% if (cards && cards.length> 0) { %>
+                                        <% for (var g=0; g < cards.length; g++) { %>
+                                            <option value="<%= cards[g].card_number + '-' + cards[g].id  %>">
+                                                <%= cards[g].card_number + '-' + cards[g].bank + '(' + cards[g].card_type.trim() + ')' %>  %>
+                                            </option>
+                                        <% } %>
+                                        <% } %>
+
+                                        </select>
+                                        <span class="text-danger to-error my-1"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-2 w-100 deactivated">
+                        <div class="container-fluid">
+                            <div class="row mt-5 mb-4">
+                                <div class="col-md-12">
+                                    <div class="summary w-100">
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary rounded-pill back deactivated">
+                    <i class="fas fa-long-arrow-alt-left"></i>
+                    Go Back
+                </button>
+                <button type="button" class="btn btn-outline-kts next" data-type="">
+                    Next
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </button>
+                <button type="button" class="btn btn-outline-kts pay deactivated" data-type="">
+                    Pay
+                    <i class="fas fa-money-bill-wave"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

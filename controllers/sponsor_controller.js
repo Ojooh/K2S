@@ -57,9 +57,11 @@ module.exports.getKids = async (req, res, next) => {
             var [kids, cur_t] = helper.paginateArray(kidsy, count);
             var noty = await DB.getNotys(user[0].user_id);
             var my = await DB.getSPNKids(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: kidsy.length, start: start, section: section };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: kidsy.length, start: start, section: section };
             res.render('sponsor/kids', context);
         } else {
             var url = "/login";
@@ -90,9 +92,11 @@ module.exports.getPage = async (req, res, next) => {
             var [kids, cur_t] = helper.paginateArray(kidsy, count);
             var noty = await DB.getNotys(user[0].user_id);
             var my = await DB.getSPNKids(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: kidsy.length, section: (start + kids.length) - 1 };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: kidsy.length, section: (start + kids.length) - 1 };
             res.render('sponsor/kids', context);
         } else {
             var url = "/login";
@@ -179,12 +183,13 @@ module.exports.filterKids = async (req, res, next) => {
             var [kids, cur_t] = helper.paginateArray(result, count);
             var noty = await DB.getNotys(user[0].user_id);
             var my = await DB.getSPNKids(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var turl = req.originalUrl.split("page")[0];
             console.log(turl)
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            console.log(kids);
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, dor: roder, filt: filtys, url: turl, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, dor: roder, filt: filtys, url: turl, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
             res.render('sponsor/filter', context);
         } else {
             var url = "/login";
@@ -218,9 +223,11 @@ module.exports.searchKids = async (req, res, next) => {
             var [kids, cur_t] = helper.paginateArray(result, count);
             var noty = await DB.getNotys(user[0].user_id);
             var my = await DB.getSPNKids(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
             res.render('sponsor/kids', context);
         } else {
             var url = "/login";
@@ -266,6 +273,8 @@ module.exports.getVerification = async (req, res, next) => {
         var user = await DB.getUserByEmail(email);
         var ref = req.params.ref;
         var wallety = req.params.wllt;
+        var donatey = req.params.val;
+        console.log(donatey);
         let output;
 
 
@@ -305,10 +314,18 @@ module.exports.getVerification = async (req, res, next) => {
                 var c_type = output.data.authorization.card_type
                 var newCrd = helper.newCard(crds, last4);
 
-                await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
+
 
                 if (newCrd) {
                     await DB.addCard(auth, last4, bank, c_type, user[0].user_id);
+                }
+
+                if (donatey !== undefined) {
+                    var kid = await DB.getKidById(req.params.kd);
+                    var title = req.params.ttl;
+                    await DB.addDonation(ref, user[0].user_id, kid[0].kid_id, parseInt(output.data.amount) / 100, title, output.data.channel, '1');
+                } else {
+                    await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
                 }
                 res.json({ success: msg });
 
@@ -612,9 +629,9 @@ module.exports.adoptKid = async (req, res, next) => {
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
             await DB.adoptKid(ID, user[0].user_id);
 
-            res.json({ success : 'You Have Succesfully Adopted ' + edyyy[0].fname})
-            
-            
+            res.json({ success: 'You Have Succesfully Adopted ' + edyyy[0].fname })
+
+
         } else {
             var url = "/login";
             res.json({ url: url });
