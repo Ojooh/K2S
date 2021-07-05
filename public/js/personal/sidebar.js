@@ -12,10 +12,10 @@ jQuery(document).ready(function ($) {
                     <div class="search-area mt-2">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
-                                <i class="fas fa-search"></i>
-                            
-                            <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" class="form-control kwy" placeholder="What are you looking for..." aria-label="Username"
+                            aria-describedby="basic-addon1">
                         </div>
                     </div>
                 </li>
@@ -55,10 +55,10 @@ jQuery(document).ready(function ($) {
                     <div class="search-area mt-2">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
-                                <i class="fas fa-search"></i>
-                            
-                            <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
-                                aria-describedby="basic-addon1">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" class="form-control kwy" placeholder="What are you looking for..." aria-label="Username"
+                            aria-describedby="basic-addon1">
                         </div>
                     </div>
                 </li>
@@ -104,6 +104,14 @@ jQuery(document).ready(function ($) {
         }
 
     });
+
+    //If Over Lay is Clicked
+    $(".overlay").on("click", function (e) {
+        e.preventDefault();
+        sideBar.removeClass("show");
+        $(".overlay").addClass("deactivated");
+    });
+
 
 
 

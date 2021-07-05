@@ -1,12 +1,6 @@
 jQuery(document).ready(function ($) {
     var error = $(".error");
-    var sidebarToggler = $("#sideBarToggler");
-    var closeSidebar = $(".close-sidebar");
     var window_width = $(window).width();
-    var sideBar = $("#sideBar");
-    var mainPanel = $(".main-content");
-    var dates = $(".pretty-date");
-    var currency = $(".pretty-currency");
     var openMdl_4 = $(".mdl-kid-form");
     var modal = $(".modal");
     var closeModl = $(".close-modal");
@@ -25,106 +19,13 @@ jQuery(document).ready(function ($) {
     var nextFieldset = $(".next");
     var prevFieldset = $(".back");
     var profile = $(".profile");
-    var display = $(".list-tab-item");
+   
     var counter = [0];
-
     var inptArr = {};
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var fNames = ['Personal Bio', 'School Details', 'Parent Information', 'Profile Information'];
 
 
 
-    if (window_width <= 991) {
-        if (!$(".side-nav li").hasClass("mob")) {
-            var html = `<li class="nav-item mob">
-                <div class="search-area mt-2">
-                    <div class="input-group">
-                        <span class="input-group-text" id="basic-addon1">
-                            <i class="fas fa-search"></i>
-                        
-                        <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
-                            aria-describedby="basic-addon1">
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item <%= active.usr %> mob">
-                <a class="nav-link" href="sponsors.html">
-                    <i class="fas fa-user"></i>
-                    Profile
-                </a>
-            </li>`;
-            $(".side-nav").prepend(html);
-        }
-    } else {
-        if ($(".side-nav li").length > 6) {
-            $(".side-nav li").eq(0).remove();
-            $(".side-nav li").eq(0).remove();
-        }
-    }
-
-    for (var i = 0; i < $(".card-title").length; i++) {
-        if ($($(".card-title")[i]).html().trim() == "") {
-            $($(".card-title")[i]).html("0");
-            console.log($($(".card-title")[i]).html())
-        }
-    }
-
-
-
-    for (var t = 0; t < dates.length; t++) {
-        var date = prettyDate($(dates[t]).html().trim());
-        $(dates[t]).html(date);
-    }
-
-    for (var t = 0; t < currency.length; t++) {
-        var cur = prettyCurrency($(currency[t]).html().trim());
-        $(currency[t]).html(cur);
-    }
-
-    //function to make date-time pretty
-    function prettyDate(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var day = d.getDate();
-            var dayName = days[d.getDay()];
-            var month = monthNames[d.getMonth()];
-            var year = d.getFullYear();
-            var h = d.getHours()
-            var m = d.getMinutes();
-            var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
-            var result = dayName + " " + day + " " + month + ", " + year + " " + _time;
-            return result
-        } else {
-            return "Never";
-        }
-    }
-
-    //function to format currency
-    function prettyCurrency(amount) {
-        const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'NGN',
-            minimumFractionDigits: 2
-        });
-
-        return formatter.format(amount)
-    }
-
-    //Function to make date pretty
-    function prettyDateOnly(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var day = d.getDate();
-            var dayName = days[d.getDay()];
-            var month = monthNames[d.getMonth()];
-            var year = d.getFullYear();
-            var result = dayName + " " + day + " " + month + ", " + year;
-            return result
-        } else {
-            return "Never";
-        }
-    }
 
     //function for field1 validation
     function field1(inptArr) {
@@ -221,89 +122,6 @@ jQuery(document).ready(function ($) {
             return "Data-Valid";
         }
     }
-
-    //Function to acativate Tool Tip
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
-
-    //Function to adjust sidebar on window size change
-    $(window).on('resize', function () {
-        var width = $(window).width();
-        if (width <= 991) {
-            if (!$(".side-nav li").hasClass("mob")) {
-                var html = `<li class="nav-item mob">
-                    <div class="search-area mt-2">
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1">
-                                <i class="fas fa-search"></i>
-                            
-                            <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item <%= active.usr %> mob">
-                    <a class="nav-link" href="sponsors.html">
-                        <i class="fas fa-user"></i>
-                        Profile
-                    </a>
-                </li>`;
-                $(".side-nav").prepend(html);
-            }
-        } else {
-            if ($(".side-nav li").length > 6) {
-                $(".side-nav li").eq(0).remove();
-                $(".side-nav li").eq(0).remove();
-            }
-
-
-        }
-    });
-
-    //
-    // $(document).on("click",  function(e) {
-    //     // console.log(e.target);
-    // });
-
-    //Function to open and close sidebar in mobile view
-    sidebarToggler.on("click", function (e) {
-        e.preventDefault();
-        sideBar.toggleClass("show");
-        $(".overlay").removeClass("deactivated");
-        if (sidebarToggler.hasClass("show")) {
-            $(".logo").css({ "display": "none" })
-        }
-    });
-
-    //Function To Close Sidebar Mobile VIEW
-    closeSidebar.on("click", function (e) {
-        //console.log("yep");
-        e.preventDefault();
-        sideBar.removeClass("show");
-        $(".overlay").addClass("deactivated");
-    });
-
-    //If Over Lay is Clicked
-    $(".overlay").on("click", function (e) {
-        e.preventDefault();
-        sideBar.removeClass("show");
-        $(".overlay").addClass("deactivated");
-    });
-
-    //
-    mainPanel.on("click", function (e) {
-        // console.log(e.target);
-        if (!$(e.target).hasClass("fa-bars") && !$(e.target).hasClass("icon-reorder")) {
-            sideBar.removeClass("show");
-        }
-
-    });
-
-    //Function to close Modal
-    closeModl.on("click", function (e) {
-        modal.modal("hide");
-    });
 
     //Function to Open Modal
     openMdl_4.on("click", function (e) {
@@ -1006,43 +824,7 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    //Function to change display
-    display.on("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if ($(this).hasClass("grid")) {
-
-            var t = {};
-            t["tab_grid"] = 'active';
-            t["tab_list"] = '';
-            t["row_grid"] = '';
-            t["row_list"] = 'deactivated';
-
-        }
-
-        if ($(this).hasClass("listn")) {
-            var t = {};
-            t["tab_grid"] = '';
-            t["tab_list"] = 'active';
-            t["row_grid"] = 'deactivated';
-            t["row_list"] = '';
-
-        }
-
-        var data = { "pref": JSON.stringify(t) };
-        console.log(data);
-
-        $.ajax({
-            url: "/Sponsor/Preference",
-            type: "POST",
-            data: data,
-            success: function (data) {
-                console.log(data)
-                location.reload();
-            }
-        })
-    });
+    
 
 
 

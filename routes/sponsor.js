@@ -30,5 +30,26 @@ router.get('/payment/verify=:ref/wallet=:wllt', sponsorHandler.getVerification);
 /*charge old card */
 router.post('/charge/', sponsorHandler.chargeCard);
 
+/* GET Notification pagee. */
+router.get('/notifications', sponsorHandler.getNotify);
+
+/* Post Task Complete. */
+router.post('/Task/change_status', sponsorHandler.updateStatus);
+
+/* Post Message seen. */
+router.post('/Message/seen', sponsorHandler.updateMessage);
+
+/* Post Delete Task */
+router.post('/Task/delete_task', sponsorHandler.deleteTask);
+
+/* Post Delete Task */
+router.post('/Task/get_task', sponsorHandler.getTask);
+
+/*GET login page. */
+router.get('/get_chat', sponsorHandler.getChatUsers);
+
+/* POST ADOPTION REQUEST*/
+router.post('/Kid/adopt', sponsorHandler.adoptKid);
+
 
 module.exports = router;

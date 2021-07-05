@@ -86,6 +86,14 @@ jQuery(document).ready(function ($) {
 
     });
 
+    //If Over Lay is Clicked
+    $(".overlay").on("click", function (e) {
+        e.preventDefault();
+        sideBar.removeClass("show");
+        $(".overlay").addClass("deactivated");
+    });
+
+
 
 
 });

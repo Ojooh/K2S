@@ -30,7 +30,7 @@ module.exports.getDash = async (req, res, next) => {
             var cards = await DB.getSPNCards(user[0].user_id);
             var contacts = await DB.getContacts(user[0].user_id);
             var sidebar = { dash: "active", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, noty: noty, cards: cards, wllt: wallet, acts: activities, contacts : contacts };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, noty: noty, cards: cards, wllt: wallet, acts: activities, contacts: contacts };
             res.render('sponsor/dashboard', context);
         } else {
             res.redirect("/login");
@@ -347,7 +347,7 @@ module.exports.chargeCard = async (req, res, next) => {
                 "amount": amount
             };
             console.log(data);
-                     
+
             const params = JSON.stringify({
                 "authorization_code": card_det[0].auth_code,
                 "email": user[0].email,
@@ -388,7 +388,7 @@ module.exports.chargeCard = async (req, res, next) => {
                         }
 
                         var bank = output.data.authorization.bank;
-                        var last4 = output.data.authorization.last4; 
+                        var last4 = output.data.authorization.last4;
                         var c_type = output.data.authorization.card_type
                         var newCrd = helper.newCard(crds, last4);
 
@@ -417,5 +417,210 @@ module.exports.chargeCard = async (req, res, next) => {
     } else {
         var url = "/login";
         res.redirect(url);
+    }
+};
+
+//Function to get notifications
+module.exports.getNotify = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-bell";
+        var title = "Notifications";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
+            var tasks = await DB.getEnvoyTasks(user[0].user_id);
+            var noty = await DB.getNotys(user[0].user_id);
+            var contacts = await DB.getContacts(user[0].user_id);
+
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "active" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tks: tasks, noty: noty, contacts: contacts.slice(0, 4) };
+            res.render('sponsor/notifications', context);
+            // res.send('respond with a resource.');
+        } else {
+            res.redirect("/login");
+        }
+    } else {
+        res.redirect("/login");
+    }
+};
+
+//Function to update task status
+module.exports.updateStatus = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var status = req.body.status;
+        var change, d_done = "";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "SPN")) {
+            if (status == "False") {
+                status = "0";
+                change = " Marked In-complete";
+                d_done = ""
+            } else {
+                status = "1";
+                change = " Marked Complete";
+                d_done = moment().format('YYYY-MM-DD  HH:mm:ss.000');
+            }
+
+            let update = await DB.updateTaskStatus(ID, status, d_done);
+            var editted = await DB.getTaskById(ID);
+            cat = "task_f";
+            let exist = await DB.notyExist(user[0].user_id, cat);
+            if (exist.length > 0) {
+                msg = "You have " + (exist[0].count + 1).toString() + " Finished Task(s)";
+                let update = await DB.updateNoty(user[0].user_id, msg, exist[0].count + 1, cat);
+            } else {
+                msg = "You have 1 Finished Task(s)";
+                let insert_2 = await DB.addNoty(user[0].user_id, msg, cat, "1");
+            }
+            var msg = editted[0].message_topic + "" + change;
+            res.json({ success: msg });
+        } else {
+            var url = "/login"
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login"
+        res.json({ url: url });
+    }
+};
+
+//Function to update task status
+module.exports.updateMessage = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var status = req.body.status;
+        var change = "";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "SPN")) {
+            let update = await DB.updateMessageStatus(ID);
+            res.json({ success: "message seen successfully" });
+        } else {
+            var url = "/login"
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login"
+        res.json({ url: url });
+    }
+};
+
+//Function To Delete User Task
+module.exports.deleteTask = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var editted = await DB.getTaskById(ID);
+        var change = "";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_id == editted[0].sender)) {
+            let update = await DB.deleteUserTask(ID);
+            cat = "task_d";
+            let exist = await DB.notyExist(user[0].user_id, cat);
+            if (exist.length > 0) {
+                msg = "You have " + (exist[0].count + 1).toString() + " Deleted Task(s)";
+                let update = await DB.updateNoty(user[0].user_id, msg, exist[0].count + 1, cat);
+            } else {
+                msg = "You have 1 Deleted Task(s)";
+                let insert_2 = await DB.addNoty(user[0].user_id, msg, cat, "1");
+            }
+            var msg = editted[0].message_topic + " Deleted Successfully";
+            res.json({ success: msg });
+        } else {
+            var url = "/login";
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login";
+        res.json({ url: url });
+    }
+
+};
+
+//Function To get Task
+module.exports.getTask = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var type = req.body.type;
+        var mode = req.body.mode;
+        var task = await DB.getTaskById(ID);
+        console.log(type);
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_id == task[0].sender)) {
+            if (type == "edit") {
+                if (mode == "form") {
+
+                    res.json({ success: "successful", type: mode });
+                } else {
+                    res.json({ success: task[0], type: mode });
+                }
+            }
+
+            if (type == "display") {
+                res.json({ success: task[0], type: mode });
+            }
+
+
+
+
+        } else {
+            var url = "/login"
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login"
+        res.json({ url: url });
+    }
+
+
+};
+
+//Function to get all Users
+module.exports.getChatUsers = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "SPN")) {
+            let result = await DB.getUserByType("ADM");
+            res.json({ success: result });
+        } else {
+            res.json({ url: url });
+        }
+    } else {
+        res.json({ url: url });
+    }
+};
+
+//Function to adopt kid
+module.exports.adoptKid = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var edyyy = await DB.getKidById(ID);
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
+            await DB.adoptKid(ID, user[0].user_id);
+
+            res.json({ success : 'You Have Succesfully Adopted ' + edyyy[0].fname})
+            
+            
+        } else {
+            var url = "/login";
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login";
+        res.json({ url: url });
     }
 };

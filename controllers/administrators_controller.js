@@ -46,10 +46,10 @@ module.exports.getAllUsers = async (req, res, next) => {
             let result = await DB.getAllUsers();
             res.json({ success: result });
         } else {
-            res.redirect("/login");
+            res.json({ url: url });
         }
     } else {
-        res.redirect("/login");
+        res.json({ url: url });
     }
 }
 

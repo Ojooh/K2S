@@ -98,6 +98,14 @@ li {
   }
 }
 
+.h-40 {
+  height: 540px !important;
+}
+
+.hp80 {
+  height: 80% !important;
+}
+
 // .ext-lg-5 {
 //   @media (max-width: 992px) {
 //     .card {
@@ -941,6 +949,10 @@ li {
 
           .box-img {
             width: 40%;
+            @media (max-width: 992px) {
+              width: 20%;
+            }
+            height: 100px;
             border-radius: 50%;
             overflow: hidden;
             padding: 0;

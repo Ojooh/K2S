@@ -2,7 +2,7 @@
     <div class="wrapper">
         <% include includes/sidebar %>
             <div class="main-content">
-                <% include includes/navbar %>
+                <% include includes/navbar2 %>
                     <div class="content">
                         <div class="container-fluid">
 
@@ -11,7 +11,7 @@
                                 <div class="col-12">
                                     <ol class="breadcrumb bg-light-mode">
                                         <li class="breadcrumb-item">
-                                            <a href="">
+                                            <a href="/">
                                                 <i class="fas fa-home"></i> Home
                                             </a>
                                         </li>
@@ -40,8 +40,8 @@
                             <!-- task and chat section -->
                             <div class="row">
                                 <!-- task section -->
-                                <div class="col-md-9">
-                                    <div class="card card-stats mt-5">
+                                <div class="col-lg-8 col-md-12">
+                                    <div class="card card-stats mt-5 h-40">
                                         <div class="card-table-title bg-success">
                                             <h4 class="card-title ">Tasks</h4>
                                             <p class="card-description"> List of Tasks Assigned or Created.</p>
@@ -90,14 +90,14 @@
                                                                         <% if (tks[i].is_complete) { %>
                                                                             <div class="custom-control custom-switch">
                                                                                 <input type="checkbox" class="custom-control-input"
-                                                                                    id="customSwitch-<%= tks[i].id %>" data-url="/envoy/Task/change_status" value="False" checked>
+                                                                                    id="customSwitch-<%= tks[i].id %>" data-url="/sponsor/Task/change_status" value="False" checked>
                                                                                 <label class="custom-control-label"
                                                                                     for="customSwitch-<%= tks[i].id %>"></label>
                                                                             </div>
                                                                         <% } else { %>
                                                                             <div class="custom-control custom-switch">
                                                                                 <input type="checkbox" class="custom-control-input"
-                                                                                    id="customSwitch-<%= tks[i].id %>" data-url="/envoy/Task/change_status" value="True">
+                                                                                    id="customSwitch-<%= tks[i].id %>" data-url="/sponsor/Task/change_status" value="True">
                                                                                 <label class="custom-control-label"
                                                                                     for="customSwitch-<%= tks[i].id %>"></label>
                                                                             </div>
@@ -118,7 +118,7 @@
                                                                         </a>
                                                                         
                                                                     <% }  else {%>
-                                                                        <a href="#" class="task-info text-info mr-4" data-id="<%= tks[i].id %>" data-url="/envoy/Task/get_task"
+                                                                        <a href="#" class="task-info text-info mr-4" data-id="<%= tks[i].id %>" data-url="/sponsor/Task/get_task"
                                                                             data-type="display-modal" data-toggle="tooltip" data-placement="top" title="Task Details">
                                                                             <i class="fas fa-info-circle"></i>
                                                                         </a>
@@ -140,15 +140,15 @@
                                 <!-- task section end -->
 
                                 <!-- chat section  -->
-                                <div class="col-md-3">
-                                    <div class="card card-stats mt-5 chat-contacts">
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="card card-stats mt-5 chat-contacts h-40">
                                         <div class="card-table-title bg-success">
                                             <h4 class="card-title ">Mesages</h4>
                                             <p class="card-description"> List of Chat Conversations.</p>
                                         </div>
                                     
                                         <div class="card-body mt-5">
-                                            <div class="row">
+                                            <div class="row hp80">
                                                 <div class="col-12">
                                                 <% if (contacts.length > 0) {%>
                                                     <div class="convos">
@@ -165,7 +165,7 @@
                                                                         <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
                                                                     </div>
                                                                 <% } %>
-                                                                    <div class="box-content">
+                                                                    <div class="box-content <%= contacts[i].rec_fname %>">
                                                                         <h3><%= contacts[i].rec_fname + " " + contacts[i].rec_lname  %></h3>
                                                                         <span><%= contacts[i].rec_user_id %></span>
                                                                         <span class ="time-only"> <%= contacts[i].date_created %></span>
@@ -180,7 +180,7 @@
                                                                         </div>
                                                                     <% } else { %>
                                                                         <div class="box-img">
-                                                                            <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
+                                                                            <img src="/images/profile/avatar/avatar.png" class="img-fluid">
                                                                         </div>
                                                                     <% } %>
                                                                         <div class="box-content">
@@ -208,7 +208,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="bottom tex-center w-100 mt-4 pt-4 pb-lg-2 pb-md-2">
-                                                        <a href="#"  data-url="/admin/Users/get_all" class="btn btn-kts start-convo">Start Conversation</a>
+                                                        <a href="#" data-url="/sponsor/get_chat" class="btn btn-kts start-convo">Start Conversation</a>
                                                     </div>
                                                 </div>
                                             </div> 
@@ -232,11 +232,11 @@
                                                 <div class="text-center"><span class="between">Call started at 10:47am</span></div>
                                                 <div class="text-center"><span class="between">Call ended at 11:03am</span></div> -->
                                                 
-                                            <nav class="navbar bg-white navbar-expand-sm d-flex justify-content-between w-100"> 
+                                            <nav class="navbar bg-white navbar-expand-sm d-flex justify-content-between rejp w-100"> 
                                                 <input type="text number"name="text" class="form-control w-100" id="send-message" data-rec="" placeholder="Type a message...">
                                                 <div class="icondiv d-flex justify-content-end align-content-center text-center ml-2"> 
                                                     <!-- <i class="fa fa-paperclip icon1 deactivated"></i>  -->
-                                                    <i class="fa fa-arrow-circle-right icon2 warki"></i> 
+                                                    <i class="fa fa-arrow-circle-right icon2 warki" data-id=""></i> 
                                                 </div>
                                             </nav>
                                         
@@ -254,11 +254,13 @@
             </div>
                             
     </div>
-<% include includes/modal_5.ejs %>
+<% include includes/modal_3.ejs %>
 <script>var user_id = "<%= user.user_id %>";</script>
 <script>var user_name = "<%= user.fname + ' ' + user.lname %>";</script>
-<script src="/javascripts/personal/script_5.js"></script>
-<script src="/javascripts/personal/socket_1.js"></script>
+<script src="/js/personal/sidebar-2.js"></script>
+<script src="/js/personal/helper.js"></script>
+<script src="/js/personal/script_5.js"></script>
+<script src="/js/personal/socket_1.js"></script>
 </body>
                             
 </html>

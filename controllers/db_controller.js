@@ -99,6 +99,22 @@ module.exports.getUserByEmail = (email) => {
     });
 };
 
+//GET user by email field
+module.exports.getUserByType = (id) => {
+    const query = "SELECT * FROM users WHERE user_type = '" + id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 //GET kid by email field
 module.exports.getKidByEmail = (email) => {
     const query = "SELECT * FROM kids WHERE email = '" + email + "';";
@@ -355,6 +371,22 @@ module.exports.getAdministrators = () => {
 //GET Last Id
 module.exports.getLastId = () => {
     const query = "SELECT * FROM users ORDER BY id DESC LIMIT 1;";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+//GET Last chatId
+module.exports.getLastChat = () => {
+    const query = "SELECT * FROM notify ORDER BY id DESC LIMIT 1;";
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
             if (err) {
@@ -1072,6 +1104,21 @@ module.exports.addCard = (auth, last4, bank, c_type, owner) => {
         });
     });
 };
+
+module.exports.adoptKid = (id, user) => {
+    const query = "UPDATE kids SET adopted_by = '" + user + "' WHERE id = '" + id + "';";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+}
 
 
 

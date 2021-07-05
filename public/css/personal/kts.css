@@ -96,6 +96,14 @@ li {
   color: #000;
 }
 
+.h-40 {
+  height: 540px !important;
+}
+
+.hp80 {
+  height: 80% !important;
+}
+
 .bg-info {
   background: linear-gradient(60deg, #c4eef3ce, #04c7e0);
 }
@@ -940,12 +948,19 @@ li {
 
 .wrapper .main-content .card .convos .box .box-img {
   width: 40%;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
   padding: 0;
   border: 1px solid #bebaba;
   -webkit-box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
           box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+}
+
+@media (max-width: 992px) {
+  .wrapper .main-content .card .convos .box .box-img {
+    width: 20%;
+  }
 }
 
 .wrapper .main-content .card .convos .box .box-img img {

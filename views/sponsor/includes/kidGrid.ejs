@@ -1,0 +1,77 @@
+<div class="row grid justify-content-space-around <%= tab.row_grid%>">
+    <% if (kds.length> 1) {%>
+        <% for (var i=0; i < kds.length; i++) { %>
+            <div class="col-md-4 my-4">
+                <div class="kid s-profile mb-3" class="" data-id="<%= kds[i].id %>" data-url="/sponsor/Kid/get_profile"
+                    data-type="display-modal" data-toggle="tooltip" data-placement="top">
+                    <img src="<%= kds[i].profile_photo %>" class="img-fluid">
+                    <div class="kid-overlay">
+                        <div class="text-center">
+                            <h3 class="kid-name">
+                                <%= kds[i].fname + " " + kds[i].lname %>
+                            </h3>
+                            <div class="line"></div>
+                            <p class="kid-details">
+                                <%= kds[i].category %>
+                                    <br>
+                                    <%= kds[i].age %> Years
+                                        <br>
+                                        &#8358; 18,000 / &#8358; 70,000
+                                        <br>
+
+                                        <a href="#" class="s-profile btn btn-outline-kid rounded-pill my-2"
+                                            data-id="<%= kds[i].id %>" data-url="/sponsor/Kid/get_profile"
+                                            data-type="display-modal" data-toggle="tooltip" data-placement="top"
+                                            title="Kid Details">
+                                            View More
+                                        </a>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <% } %>
+                <% } else if (kds.length==1) { %>
+                    <% for (var i=0; i < kds[0].length; i++) { %>
+                        <div class="col-md-4 my-4">
+                            <div class="kid s-profile mb-3" class="" data-id="<%= kds[0][i].id %>"
+                                data-url="/sponsor/Kid/get_profile" data-type="display-modal" data-toggle="tooltip"
+                                data-placement="top">
+                                <img src="<%= kds[0][i].profile_photo %>" class="img-fluid">
+                                <div class="kid-overlay">
+                                    <div class="text-center">
+                                        <h3 class="kid-name">
+                                            <%= kds[0][i].fname + " " + kds[0][i].lname %>
+                                        </h3>
+                                        <div class="line"></div>
+                                        <p class="kid-details">
+                                            <%= kds[0][i].category %>
+                                                <br>
+                                                <%= kds[0][i].age %> Years
+                                                    <br>
+                                                    &#8358; 18,000 / &#8358; 70,000
+                                                    <br>
+
+                                                    <a href="#" class="s-profile btn btn-outline-kid rounded-pill my-2"
+                                                        data-id="<%= kds[0][i].id %>"
+                                                        data-url="/sponsor/Kid/get_profile" data-type="display-modal"
+                                                        data-toggle="tooltip" data-placement="top" title="Kid Details">
+                                                        View More
+                                                    </a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="col-md-12 my-5">
+                        <h6 class="text-center text-danger">No Kids Available</h6>
+                    </div>
+                <% } %>
+
+</div>

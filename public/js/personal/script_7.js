@@ -40,7 +40,7 @@ jQuery(document).ready(function ($) {
         if (input_1 == "") {
             return [false, "Start Date is not set, Enter a start Date"];
         } else if (isCurrent(input_1) == false) {
-            return [false, "Start date is set to the past, choose a present or future date"];
+            return [false, "Start date is set to the past, choose a future date"];
         } else if (input_2 == "" || input_2 == undefined) {
             return [false, "Debit Time is compulsory, Select a Debit time"];
         } else {

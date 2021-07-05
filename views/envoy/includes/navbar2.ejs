@@ -37,15 +37,15 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <% if (noty.length> 0) {%>
                         <% for (var i=0; i < noty.length; i++) { %>
-                            <a class="dropdown-item gotty" href="/envoy/notifications" data-id="<%= noty[i].id; %>">
-                                <%= noty[i].msg; %> <span class="ml-5"><i class="fas fa-times"></i></span>
+                            <a class="dropdown-item " href="/envoy/notifications">
+                                <%= noty[i].msg; %> <span class="ml-5 gotty " data-url="/envoy/Message/seen" data-id="<%= noty[i].id; %>"><i class="fas fa-times"></i></span>
                             </a>
-                            <% } %>
-                                <% } else { %>
-                                    <div class="my-5">
-                                        <h6 class="text-center text-danger">No Notifications</h6>
-                                    </div>
-                                    <% } %>
+                        <% } %>
+                    <% } else { %>
+                        <div class="my-5">
+                            <h6 class="text-center text-danger">No Notifications</h6>
+                        </div>
+                    <% } %>
                 </div>
             </li>
             <li class="nav-item dropdown dropdown-place">

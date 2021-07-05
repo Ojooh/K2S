@@ -48,8 +48,8 @@ $(".gotty").on("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
     var id = $(this).attr("data-id");
-    var url_go = $(this).attr("href");
-    var url = "/envoy/Message/seen";
+    var url_go = window.location.href;
+    var url = $(this).attr("data-url");
     var data = { id: id };
 
     $.ajax({

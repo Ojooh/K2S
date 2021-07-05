@@ -7,34 +7,10 @@ jQuery(document).ready(function ($) {
     var search = $("#basic-addon1");
     var modal = $("#viewKidModal");
     var profile = $(".s-profile");
+    var display = $(".list-tab-item");
+    var adopt = $('#adoptKid');
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    //function to format currency
-    function prettyCurrency(amount) {
-        const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'NGN',
-            minimumFractionDigits: 2
-        });
-
-        return formatter.format(amount)
-    };
-
-    //Function to make date pretty
-    function prettyDateOnly(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var day = d.getDate();
-            var dayName = days[d.getDay()];
-            var month = monthNames[d.getMonth()];
-            var year = d.getFullYear();
-            var result = dayName + " " + day + " " + month + ", " + year;
-            return result
-        } else {
-            return "Never";
-        }
-    };
 
     //function to make date-time pretty
     function prettyDate(date) {
@@ -52,9 +28,18 @@ jQuery(document).ready(function ($) {
         } else {
             return "Never";
         }
+    };
+
+    //function to format currency
+    function prettyCurrency(amount) {
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'NGN',
+            minimumFractionDigits: 2
+        });
+
+        return formatter.format(amount)
     }
-
-
 
     filterDOB.on("keydown", function (e) {
 
@@ -150,6 +135,8 @@ jQuery(document).ready(function ($) {
             success: function (data) {
                 swal.close();
                 if (data.success) {
+                    adopt.attr("data-id", data.success.id);
+                    adopt.attr("data-name", data.success.fname);
                     $(".card-modal-title").html(data.success.fname + " " + data.success.lname + " Profile");
                     $(".card-modal-description").html("Who is " + data.success.fname + " " + data.success.lname + "of the Kids To school Foundation.");
                     if (data.success.profile_photo != "") {
@@ -264,6 +251,111 @@ jQuery(document).ready(function ($) {
                 }
 
 
+            }
+        });
+    });
+
+    //Function to change display
+    display.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if ($(this).hasClass("grid")) {
+
+            var t = {};
+            t["tab_grid"] = 'active';
+            t["tab_list"] = '';
+            t["row_grid"] = '';
+            t["row_list"] = 'deactivated';
+
+        }
+
+        if ($(this).hasClass("listn")) {
+            var t = {};
+            t["tab_grid"] = '';
+            t["tab_list"] = 'active';
+            t["row_grid"] = 'deactivated';
+            t["row_list"] = '';
+
+        }
+
+        var data = { "pref": JSON.stringify(t) };
+        console.log(data);
+
+        $.ajax({
+            url: "/Sponsor/Preference",
+            type: "POST",
+            data: data,
+            success: function (data) {
+                console.log(data)
+                location.reload();
+            }
+        })
+    });
+
+    //Function to adopt kid
+    adopt.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var ID = $(this).attr("data-id");
+        var url = $(this).attr("data-url");
+        var fname = $(this).attr("data-name");
+        var sname = $(this).attr("data-sname");
+        var data = { id: ID };
+        var msg = `Dear ` + sname + ` you are about to agree to take on the financial responsibility of ` + fname;
+        msg = msg.toUpperCase();
+
+        modal.modal("hide");
+        Swal.fire({
+            icon: 'question',
+            title: msg,
+            text: 'If you are sure and ready for this financial commitment please click on Yes to confirm or click No to go back',
+            showCancelButton: true,
+            confirmButtonText: `Yes`,
+            cancelButtonText: `No`,
+            allowOutsideClick: false,
+        }).then(async (result) => {
+            console.log(result);
+            if (result.value) {
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: 'Auto close alert!',
+                            html: 'Please Hold on as Details are being Fetched.',
+                            timer: 40000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        });
+                    },
+                    success: function (data) {
+                        swal.close();
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Adoption Operation',
+                                text: data.success,
+                            }).then(
+                                function () {
+                                    location.reload();
+                                }
+                            );
+                        } else if (data.url) {
+                            location.replace(data.url);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Adoption Operation Un-successful',
+                                // text: data.error,
+                            });
+                        }
+                    }
+                });
             }
         });
     });

@@ -14,7 +14,7 @@ var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var adminRouter = require('./routes/admin');
-var sponsorRouter   = require('./routes/sponsor');
+var sponsorRouter = require('./routes/sponsor');
 var envoyRouter = require('./routes/envoy');
 var users = [];
 
@@ -102,7 +102,9 @@ io.on("connection", function (socket) {
       msg = "You have " + (data.count + 1).toString() + " Assigned Task(s)";
     }
 
+
     io.to(socketId).emit("new_task", datas);
+    console.log(data)
 
     //save to database
     let rt = "";
@@ -139,6 +141,7 @@ io.on("connection", function (socket) {
   socket.on("send_message", async function (data) {
     // send event to receiver
     var socketId = users[data.receiver];
+    var gee = users[data.sender];
     var newy = { "sender": data.sender, "receiver": data.receiver, "msg": data.msg, "sender_name": data.send_name, "receiver_name": data.rec_name };
 
     let d_created = moment().format('YYYY-MM-DD  HH:mm:ss.000');
@@ -146,9 +149,8 @@ io.on("connection", function (socket) {
     if (data.id && data.id != "") {
       exist = await DB.getChat(data.id);
       var chat = JSON.parse(exist[0].message);
-      // console.log(chat);
-      // console.log(newy);
-      // chat.push(newy);
+      chat.push(data);
+
       var chat = JSON.stringify(chat);
       let update = await DB.updateChat(chat, exist[0].id);
 
@@ -156,7 +158,10 @@ io.on("connection", function (socket) {
       var chat = [];
       chat.push(newy);
       var chat = JSON.stringify(chat);
-      let insert = await DB.createNewNotification(data.sender, data.receiver, "New Chat", chat, "chat", d_created, "", "");
+      await DB.createNewNotification(data.sender, data.receiver, "New Chat", chat, "chat", d_created, "", "");
+      let lst_id = await DB.getLastChat();
+      let new_id = lst_id[0].id;
+      data.new_id = new_id
 
     }
 
@@ -169,7 +174,12 @@ io.on("connection", function (socket) {
     }
 
     io.to(socketId).emit("new_message", data);
-    console.log(socketId);
+    if (data.id == "" || data.id == undefined) {
+      io.to(gee).emit("new_id", data.new_id);
+      console.log(data.id);
+      console.log(gee);
+    }
+
   });
 
 

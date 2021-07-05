@@ -1,0 +1,42 @@
+<div class="row justify-content-center my-4 p-3">
+    <div class="col-12">
+        <div class="">
+            <% if (points && points> 0) {%>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-lg justify-content-center">
+                        <% if (parseInt(curry) - 1>= 0) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/Sponsor/Kids/page=<%= (parseInt(curry) - 1).toString() %>">
+                                    <i class="fas fa-backward"></i>
+                                </a>
+                            </li>
+                            <% }%>
+                                <% for (var i=0; i < points; i++) { %>
+                                    <% if (i==curry) { %>
+                                        <li class="page-item active">
+                                            <a class="page-link" href="/Sponsor/Kids/page=<%= i %>">
+                                                <%= i + 1 %>
+                                            </a>
+                                        </li>
+                                        <% } else {%>
+                                            <li class="page-item ">
+                                                <a class="page-link" href="/Sponsor/Kids/page=<%= i %>">
+                                                    <%= i + 1 %>
+                                                </a>
+                                            </li>
+                                            <% } %>
+                                                <% } %>
+                                                    <% if (parseInt(curry) + 1 < points) { %>
+                                                        <li class="page-item">
+                                                            <a class="page-link"
+                                                                href="/Sponsor/Kids/page=<%= (parseInt(curry) + 1).toString() %>">
+                                                                <i class="fas fa-forward"></i>
+                                                            </a>
+                                                        </li>
+                                                        <% } %>
+                    </ul>
+                </nav>
+                <% } %>
+        </div>
+    </div>
+</div>

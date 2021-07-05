@@ -11,7 +11,7 @@
                                 <div class="col-12">
                                     <ol class="breadcrumb bg-light-mode">
                                         <li class="breadcrumb-item">
-                                            <a href="">
+                                            <a href="/">
                                                 <i class="fas fa-home"></i> Home
                                             </a>
                                         </li>
@@ -47,326 +47,19 @@
                             <!-- End Kids Tab-->
 
                             <!-- Query summary and filter result -->
-                            <div class="row my-4 px-3">
-                                <div class="col-12">
-                                    <div class="float-left">
-                                        <div class="btn-group dropright">
-                                            <button type="button" class="btn btn-outline-kts dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                Filter
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <!-- Dropdown menu links -->
-                                                <li>
-                                                    <a class="dropdown-item p-3" href="#">
-                                                        <i class="fas fa-check mr-2"></i> 
-                                                        By Gender
-                                                    </a>
-                                                    <ul class="submenu dropdown-menu">
-                                                        <li><a class="dropdown-item" data-data="gender-Male" data-order="ASC" href="#">Male</a></li>
-                                                        <li><a class="dropdown-item" data-data="gender-Female" data-order="ASC" href="#">Female</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item p-3" href="#">
-                                                        <i class=" mr-2 text-left"></i>
-                                                        <span class="text-center">By Category</span>
-                                                    </a>
-                                                    <ul class="submenu dropdown-menu">
-                                                        <li><a class="dropdown-item" data-data="category-Kids To School" data-order="ASC" href="#">Kids To School</a></li>
-                                                        <li><a class="dropdown-item" data-data="category-Kids To Arts" data-order="ASC" href="#">Kids To Arts</a></li>
-                                                        <li><a class="dropdown-item" data-data="category-Kids To Tech" data-order="ASC" href="#">Kids To Tech</a></li>
-                                                        <li><a class="dropdown-item" data-data="category-Kids To Sports" data-order="ASC" href="#">Kids To Sports</a></li>
-                                                    </ul>
-
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item p-3" data-date="date_joined" data-order="ASC" href="#">
-                                                        <i class=" mr-2 text-left"></i> By Date Joined
-                                                    </a>
-
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item p-3" href="#">
-                                                        <i class=" mr-2 text-left"></i>
-                                                        By Date of Birth
-                                                    </a>
-                                                    <ul class="submenu dropdown-menu">
-                                                        <li><a class="" href="#">
-                                                            <input class="form-control filter-dob px-3" type="text" placeholder="Enter year" />
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item dob-btn" data-dob="" data-order="ASC" href="#">
-                                                                <button type="button" class="btn btn-kts">
-                                                                    Enter >>
-                                                                </button>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-
-                                                </li>         
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="float-right">
-                                        <% if (kds.length> 0) {%>
-                                            <h5 class="">
-                                                Showing <%= start %> - <%= section %> of <%= total %> results
-                                            </h5>
-                                        <% } else { %>
-                                            <h5 class="">
-                                                No Results.
-                                            </h5>
-                                        <%  } %>
-                                    </div>
-                                </div>
-                            </div>
+                            <% include includes/kidRow-1 %>
                             <!-- Query summary result  End-->
                             
                             <!-- Grid View -->
-                            <div class="row grid justify-content-space-around <%= tab.row_grid%>">
-                                <% if (kds.length> 1) {%>
-                                    <% for (var i=0; i < kds.length; i++) { %>
-                                        <div class="col-md-4 my-4">
-                                            <div class="kid s-profile mb-3" class="" data-id="<%= kds[i].id %>" data-url="/sponsor/Kid/get_profile" data-type="display-modal" data-toggle="tooltip" data-placement="top">
-                                                <img src="<%= kds[i].profile_photo %>" class="img-fluid">
-                                                <div class="kid-overlay">
-                                                    <div class="text-center">
-                                                        <h3 class="kid-name">
-                                                            <%= kds[i].fname + " " + kds[i].lname %>
-                                                        </h3>
-                                                        <div class="line"></div>
-                                                        <p class="kid-details">
-                                                        <%= kds[i].category %>
-                                                            <br>
-                                                        <%= kds[i].age %> Years
-                                                            <br>
-                                                            &#8358; 18,000 / &#8358; 70,000
-                                                            <br>
-                
-                                                            <a href="#" class="s-profile btn btn-outline-kid rounded-pill my-2" data-id="<%= kds[i].id %>" data-url="/sponsor/Kid/get_profile"
-                                                                data-type="display-modal" data-toggle="tooltip" data-placement="top" title="Kid Details">
-                                                                View More
-                                                            </a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                            
-                                            </div>
-                            
-                                        </div>
-                                    <% } %>
-                                    <% } else if (kds.length==1) { %>
-                                        <% for (var i=0; i < kds[0].length; i++) { %>
-                                            <div class="col-md-4 my-4">
-                                                <div class="kid s-profile mb-3" class="" data-id="<%= kds[0][i].id %>" data-url="/sponsor/Kid/get_profile" data-type="display-modal" data-toggle="tooltip" data-placement="top">
-                                                    <img src="<%= kds[0][i].profile_photo %>" class="img-fluid">
-                                                    <div class="kid-overlay">
-                                                        <div class="text-center">
-                                                            <h3 class="kid-name">
-                                                                <%= kds[0][i].fname + " " + kds[0][i].lname %>
-                                                            </h3>
-                                                            <div class="line"></div>
-                                                            <p class="kid-details">
-                                                            <%= kds[0][i].category %>
-                                                                <br>
-                                                            <%= kds[0][i].age %> Years
-                                                                <br>
-                                                                &#8358; 18,000 / &#8358; 70,000
-                                                                <br>
-            
-                                                                <a href="#" class="s-profile btn btn-outline-kid rounded-pill my-2" data-id="<%= kds[0][i].id %>"
-                                                                    data-url="/sponsor/Kid/get_profile" data-type="display-modal" data-toggle="tooltip" data-placement="top"
-                                                                    title="Kid Details">
-                                                                    View More
-                                                                </a>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                    
-                                                </div>
-                    
-                                            </div>
-                                        <% } %>
-                                    <% } else { %>
-                                        <div class="col-md-12 my-5">
-                                            <h6 class="text-center text-danger">No Kids Available</h6>
-                                        </div>
-                                    <% } %>
-                            
-                            </div>
+                            <% include includes/kidGrid %>
                             <!-- Grid View End-->
                             
                             <!-- Kids Table -->
-                            <div class="row listn <%= tab.row_list%>">
-                                <div class="col-12">
-                                    <!-- List View -->
-                                    <div class="card card-stats mt-5">
-                                        <div class="card-table-title bg-success">
-                                            <h4 class="card-title ">Kids Table</h4>
-                                            <p class="card-description"> List of kids for the Kids To school Foundation.</p>
-                            
-                                        </div>
-                                        <div class="card-body mt-5">
-                                            <% if (kds.length> 1) {%>
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">S/N</th>
-                                                                <th scope="col">Name</th>
-                                                                <th scope="col">Category</th>
-                                                                <th scope="col">Gender</th>
-                                                                <th scope="col">Age</th>
-                                                                <th scope="col">Fees</th>
-                                                                <th scope="col">Date Created</th>
-                                                                <th scope="col">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <% for (var i=0; i < kds.length; i++) { %>
-                                                                <tr>
-                                                                    <th scope="row">
-                                                                        <%= i + 1; %>
-                                                                    </th>
-                                                                    <td>
-                                                                        <%= kds[i].fname + " " + kds[i].lname %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= kds[i].kid_id %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= kds[i].gender %>
-                                                                    </td>
-                            
-                                                                    <td>
-                                                                        <%= kds[i].age %> Years
-                                                                    </td>
-                                                                    <td class="pretty-currency">
-                                                                        <%= kds[i].school_fees %>
-                                                                    </td>
-                                                                    <td class="pretty-date">
-                                                                        <%= kds[i].date_joined %>
-                                                                    </td>
-                                                                    <td class="td-actions">
-                                                                        <a href="#" class="s-profile text-info mr-4" data-id="<%= kds[i].id %>"
-                                                                            data-url="/sponsor/Kid/get_profile" data-type="display-modal"
-                                                                            data-toggle="tooltip" data-placement="top" title="Kid Details">
-                                                                            <i class="fas fa-info-circle"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <% } %>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <% } else if (kds.length==1) { %>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-hover table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">S/N</th>
-                                                                    <th scope="col">Name</th>
-                                                                    <th scope="col">Category</th>
-                                                                    <th scope="col">Gender</th>
-                                                                    <th scope="col">Age</th>
-                                                                    <th scope="col">Fees</th>
-                                                                    <th scope="col">Date Created</th>
-                                                                    <th scope="col">Action</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <% for (var i=0; i < kds[0].length; i++) { %>
-                                                                    <tr>
-                                                                        <th scope="row">
-                                                                            <%= i + 1; %>
-                                                                        </th>
-                                                                        <td>
-                                                                            <%= kds[0][i].fname + " " + kds[0][i].lname %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= kds[0][i].category %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= kds[0][i].gender %>
-                                                                        </td>
-                            
-                                                                        <td>
-                                                                            <%= kds[0][i].age %> Years
-                                                                        </td>
-                                                                        <td class="pretty-currency">
-                                                                            <%= kds[0][i].school_fees %>
-                                                                        </td>
-                                                                        <td class="pretty-date">
-                                                                            <%= kds[0][i].date_joined %>
-                                                                        </td>
-                                                                        <td class="td-actions">
-                                                                            <a href="#" class="s-profile text-info mr-4" data-id="<%= kds[0][i].id %>"
-                                                                                data-url="/sponsor/Kid/get_profile" data-type="display-modal"
-                                                                                data-toggle="tooltip" data-placement="top" title="Kid Details">
-                                                                                <i class="fas fa-info-circle"></i>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <% } %>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                <% } else { %>
-                                                    <div class="my-5">
-                                                        <h6 class="text-center text-danger">No Kids Available</h6>
-                                                    </div>
-                                                <% } %>
-                                        </div>
-                                    </div>
-                            
-                                    <!-- List View End -->
-                                </div>
-                            </div>
+                            <% include includes/KidTable %>
                             <!-- Kids Table End -->
 
                             <!-- Pagination-buttons -->
-                            <div class="row justify-content-center my-4 p-3">
-                                <div class="col-12">
-                                    <div class="">
-                                    <% if (points && points > 0) {%>      
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination pagination-lg justify-content-center">
-                                            <% if (parseInt(curry) - 1 >=  0) { %>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="/Sponsor/Kids/page=<%= (parseInt(curry) - 1).toString() %>">
-                                                        <i class="fas fa-backward"></i>
-                                                    </a>
-                                                </li>
-                                            <% }%>
-                                            <% for (var i=0; i < points; i++) { %>
-                                                <% if (i == curry) { %>
-                                                    <li class="page-item active">
-                                                        <a class="page-link" href="/Sponsor/Kids/page=<%= i %>">
-                                                            <%= i + 1 %>
-                                                        </a>
-                                                    </li>
-                                                <%  } else {%>
-                                                    <li class="page-item ">
-                                                        <a class="page-link" href="/Sponsor/Kids/page=<%= i %>">
-                                                            <%= i + 1 %>
-                                                        </a>
-                                                    </li>
-                                                <% } %>
-                                            <% } %>
-                                            <% if (parseInt(curry) + 1 < points) { %>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="/Sponsor/Kids/page=<%= (parseInt(curry) + 1).toString() %>">
-                                                        <i class="fas fa-forward"></i>
-                                                    </a>
-                                                </li>
-                                            <% } %>
-                                            </ul>
-                                        </nav>
-                                    <% } %>
-                                    </div>
-                                </div>
-                            </div>
+                            <% include includes/kidPagination %>
                             <!-- Pagination-buttons End-->
                         </div>
                     </div>
@@ -374,10 +67,11 @@
             </div>
 
     </div>
-    <% include includes/modal_1.ejs %>
+<% include includes/modal_1.ejs %>
 <script>var user_id = "<%= user.user_id %>";</script>
-<script src="/js/personal/script_4.js"></script>
+<script src="/js/personal/sidebar.js"></script>
 <script src="/js/personal/script_6.js"></script>
+<script src="/js/personal/helper.js"></script>
 <script src="/js/personal/socket_1.js"></script>
 </body>
 
