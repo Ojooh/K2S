@@ -1135,6 +1135,21 @@ module.exports.addDonation = (ref, user, kid, amount, title, type, status) => {
     });
 };
 
+module.exports.addPerecntage = (kid, percent, remd) => {
+    const query = "UPDATE kids SET percent = '" + percent + "', remaining = '" + remd + "' WHERE kid_id = '" + kid + "';";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 
 
 

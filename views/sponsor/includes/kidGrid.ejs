@@ -15,9 +15,13 @@
                                 <%= kds[i].category %>
                                     <br>
                                     <%= kds[i].age %> Years
-                                        <br>
-                                        &#8358; 18,000 / &#8358; 70,000
-                                        <br>
+                                    <br>
+                                    <% if (parseInt(kds[i].remaining) == 0 ) { %>
+                                        &#8358; 0.00
+                                    <% } else { %>
+                                        &#8358; <%= kds[i].school_fees - kds[i].remaining %> / &#8358; <%= kds[i].school_fees %>
+                                    <% } %>
+                                    <br>
 
                                         <a href="#" class="s-profile btn btn-outline-kid rounded-pill my-2"
                                             data-id="<%= kds[i].id %>" data-url="/sponsor/Kid/get_profile"

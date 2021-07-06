@@ -356,7 +356,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         inptArr.key = "pk_test_d92bb45a27490f6eba1bfd8cd966211c7fcbc0f6";
         inptArr.ref = '' + Math.floor((Math.random() * 1000000000) + 1).toString();
-        var url = "sponsor/charge";
+        var url = "/sponsor/charge";
         var data = { card_no: $(this).attr("data-no"), amount: inptArr.amount, wllt: inptArr.to };
 
         modal.modal("hide");

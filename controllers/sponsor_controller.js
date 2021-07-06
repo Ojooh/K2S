@@ -323,7 +323,21 @@ module.exports.getVerification = async (req, res, next) => {
                 if (donatey !== undefined) {
                     var kid = await DB.getKidById(req.params.kd);
                     var title = req.params.ttl;
+
+                    if (kid[0].remaining == 0) {
+                        var set = parseFloat(kid[0].school_fees);
+                        var remaining = parseFloat(kid[0].school_fees) - (parseFloat(output.data.amount) / 100);
+                    } else {
+                        var remaining = parseFloat(kid[0].remaining) - (parseFloat(output.data.amount) / 100);
+                        var set = parseFloat(kid[0].remaining);
+                    }
+                    var percentage = ((parseFloat(output.data.amount) / 100) * 100) / set;
                     await DB.addDonation(ref, user[0].user_id, kid[0].kid_id, parseInt(output.data.amount) / 100, title, output.data.channel, '1');
+                    await DB.addPerecntage(kid[0].kid_id, percentage, remaining)
+
+                    if (remaining <= 0) {
+                        await DB.updateKidStatus(kid[0].id, '0');
+                    }
                 } else {
                     await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
                 }
@@ -357,6 +371,7 @@ module.exports.chargeCard = async (req, res, next) => {
             var card_det = await DB.getSPNCardByNo(card_no, user[0].user_id)
             var wallety = req.body.wllt;
             var amount = req.body.amount;
+            var donatey = req.body.val;
             var url = "https://api.paystack.co/transaction/charge_authorization";
             var data = {
                 "authorization_code": card_det[0].auth_code,
@@ -394,7 +409,7 @@ module.exports.chargeCard = async (req, res, next) => {
                         var crds = await DB.getSPNCards(user[0].user_id);
                         var quick = parseFloat(wallet[0].quick);
                         var donate = parseFloat(wallet[0].donate);
-                        var msg = output.message;
+                        var msg = output.message + "Sucessfully";
                         var auth = output.data.authorization.authorization_code;
                         var amount = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].amount);
 
@@ -409,10 +424,36 @@ module.exports.chargeCard = async (req, res, next) => {
                         var c_type = output.data.authorization.card_type
                         var newCrd = helper.newCard(crds, last4);
 
-                        await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
+
 
                         if (newCrd) {
                             await DB.addCard(auth, last4, bank, c_type, user[0].user_id);
+                        }
+
+                        if (donatey !== undefined) {
+                            console.log(req.body.kidID);
+                            var kid = await DB.getKidById(req.body.kidID);
+                            var title = req.body.title;
+                            var ref = req.body.ref;
+
+                            if (kid[0].remaining == 0) {
+                                var set = parseFloat(kid[0].school_fees);
+                                var remaining = parseFloat(kid[0].school_fees) - (parseFloat(output.data.amount) / 100);
+                            } else {
+                                var remaining = parseFloat(kid[0].remaining) - (parseFloat(output.data.amount) / 100);
+                                var set = parseFloat(kid[0].remaining);
+                            }
+                            var percentage = ((parseFloat(output.data.amount) / 100) * 100) / set;
+                            await DB.addDonation(ref, user[0].user_id, kid[0].kid_id, parseInt(output.data.amount) / 100, title, output.data.channel, '1');
+                            await DB.addPerecntage(kid[0].kid_id, percentage, remaining)
+
+                            if (remaining <= 0) {
+                                await DB.updateKidStatus(kid[0].id, '0');
+                            }
+
+                            msg = "Donation Transaction Successful";
+                        } else {
+                            await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
                         }
                         res.json({ success: msg });
 

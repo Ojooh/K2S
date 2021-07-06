@@ -19,6 +19,7 @@
                                     <th scope="col">Gender</th>
                                     <th scope="col">Age</th>
                                     <th scope="col">Fees</th>
+                                    <th scope="col">Available</th>
                                     <th scope="col">Date Created</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -44,6 +45,13 @@
                                         </td>
                                         <td class="pretty-currency">
                                             <%= kds[i].school_fees %>
+                                        </td>
+                                        <td class="pretty-currency">
+                                            <% if (parseInt(kds[i].remaining)==0 ) { %>
+                                                0.00
+                                            <% } else { %>
+                                                <%= kds[i].school_fees - kds[i].remaining %>
+                                            <% } %>
                                         </td>
                                         <td class="pretty-date">
                                             <%= kds[i].date_joined %>
@@ -71,6 +79,7 @@
                                         <th scope="col">Gender</th>
                                         <th scope="col">Age</th>
                                         <th scope="col">Fees</th>
+                                        <th scope="col">Available</th>
                                         <th scope="col">Date Created</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -96,6 +105,13 @@
                                             </td>
                                             <td class="pretty-currency">
                                                 <%= kds[0][i].school_fees %>
+                                            </td>
+                                            <td class="pretty-currency">
+                                            <% if (parseInt(kds[i].remaining)==0 ) { %>
+                                                 0.00
+                                            <% } else { %>
+                                                <%= kds[i].school_fees - kds[i].remaining %>
+                                            <% } %>
                                             </td>
                                             <td class="pretty-date">
                                                 <%= kds[0][i].date_joined %>

@@ -61,10 +61,20 @@ jQuery(document).ready(function ($) {
     };
 
     // function to validate a set of inputs
-    function validateInputs1(amount, to, title) {
+    function validateInputs1(amount, to, title, remd, fees) {
+        remd = parseFloat(remd);
+        fees = parseFloat(fees)
+        var str_1 = (fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        var str_2 = (remd).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
         if (amount == "") {
             return [false, "Amount Field cannot be empty"];
-        } if (title == "") {
+        } else if (remd == 0 && parseInt(amount) > fees) {
+            return [false, "Amount Input is greater than what is required &#8358; " + str_1];
+        } else if (remd != 0 && parseInt(amount) > remd) {
+            return [false, "Amount Input is greater than what is required &#8358; " + str_2];
+        }
+        else if (title == "") {
             return [false, "Title Field cannot be empty"];
         } else if (isNaN(amount) || parseInt(amount) < 0) {
             return [false, "Amount must be a number. greater than 0"];
@@ -98,7 +108,7 @@ jQuery(document).ready(function ($) {
             },
             callback: function (response) {
                 modal_2.modal("hide");
-                let url = '/sponsor/payment/verify=' + response.reference + '/wallet=donations/donate=' + true + '/kid='+  options.kidID + '/title=' + options.title;
+                let url = '/sponsor/payment/verify=' + response.reference + '/wallet=donations/donate=' + true + '/kid=' + options.kidID + '/title=' + options.title;
                 console.log(url);
                 $.ajax({
                     url: url,
@@ -245,6 +255,8 @@ jQuery(document).ready(function ($) {
                     adopt.attr("data-name", data.success.fname);
                     donate.attr("data-id", data.success.id);
                     donate.attr("data-name", data.success.fname + " " + data.success.lname);
+                    next.attr("data-remd", data.success.remaining);
+                    next.attr("data-fees", data.success.school_fees);
                     $(".card-modal-title").html(data.success.fname + " " + data.success.lname + " Profile");
                     $(".card-modal-description").html("Who is " + data.success.fname + " " + data.success.lname + "of the Kids To school Foundation.");
                     if (data.success.profile_photo != "") {
@@ -493,7 +505,8 @@ jQuery(document).ready(function ($) {
         e.stopPropagation();
 
         var type = $(this).attr("data-type");
-        var theta = $(this).html();
+        var remd = $(this).attr("data-remd");
+        var fees = $(this).attr("data-fees");
 
         if (type == "donj") {
             var amount = $("." + type + " #amount").val();
@@ -501,7 +514,7 @@ jQuery(document).ready(function ($) {
             var email = $("." + type + " #email").val();
             var kidID = $("." + type + " #kid_id").val();
             var title = $("." + type + " #title").val();
-            var [valid, err] = validateInputs1(amount, from, title);
+            var [valid, err] = validateInputs1(amount, from, title, remd, fees);
 
             if (valid) {
                 error.html("");
@@ -562,6 +575,7 @@ jQuery(document).ready(function ($) {
 
     });
 
+
     pay.on("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -582,8 +596,63 @@ jQuery(document).ready(function ($) {
 
             console.log(inptArr);
             payWithPaystack(inptArr);
-        } else {
-            console.log(inptArr);
+        } else if (inptArr.from == "wallet") {
+            console.log(inptArr)
+        }else {
+            inptArr.ref = '' + Math.floor((Math.random() * 1000000000) + 1);
+            var url = "/sponsor/charge";
+            var card_no = inptArr.from.split("-")[0]
+            inptArr.card_no = card_no;
+            inptArr.wllt = "donations";
+            inptArr.val = "true";
+            var data = inptArr;
+
+            modal_2.modal("hide");
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Auto close alert!',
+                        html: 'Please Hold on as Details are being Fetched.',
+                        timer: 40000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                    });
+                },
+                success: function (data) {
+                    swal.close();
+                    inptArr = {};
+                    console.log(data);
+                    if (data.success) {
+                        modal.modal("hide");
+
+                        Swal.fire({
+                            icon: "success",
+                            title: data.success,
+                            text: "Click OK to proceed to Dashboard",
+                            confirmButtonText: `OK`,
+                            allowOutsideClick: false,
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        modal.modal("show");
+                        swal.close();
+                        error.html("");
+                        msg = "<span class='alert alert-success text-center'>" + data.error + "</span>";
+                        error.html(msg);
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + " error encountered: " + errorThrown)
+                }
+            });
+            
         }
 
 
