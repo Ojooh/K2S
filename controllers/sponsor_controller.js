@@ -8,6 +8,7 @@ const fs = require('fs');
 const axios = require('axios')
 var helper = require("./helper");
 const https = require('https');
+const { parse } = require('path');
 const publik_Key = '';
 const secret_key = 'sk_test_c7b91dc0708b793851c1239d211bf04a89d01da6';
 
@@ -56,13 +57,46 @@ module.exports.getKids = async (req, res, next) => {
             var kidsy = await DB.getKidsSPN();
             var [kids, cur_t] = helper.paginateArray(kidsy, count);
             var noty = await DB.getNotys(user[0].user_id);
-            var my = await DB.getSPNKids(user[0].user_id);
             var wallet = await DB.getSPNWallet(user[0].user_id);
             var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: kidsy.length, start: start, section: section };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, start: start, section: section };
             res.render('sponsor/kids', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+
+};
+
+//Function To Render Kids
+module.exports.getMyKids = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "My Kids";
+        var count = 0;
+        var start = 1;
+        var section = 12;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "SPN")) {
+            var kidsy = await DB.getSPNKids(user[0].user_id);
+            var [kids, cur_t] = helper.paginateArray(kidsy, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, start: start, section: section };
+            res.render('sponsor/mykids', context);
         } else {
             var url = "/login";
             res.redirect(url);
@@ -96,8 +130,40 @@ module.exports.getPage = async (req, res, next) => {
             var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: kidsy.length, section: (start + kids.length) - 1 };
-            res.render('sponsor/kids', context);
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, section: (start + kids.length) - 1 };
+            res.render('sponsor/mykids', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+};
+
+//Function To Render Page:id
+module.exports.getMyPage = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "My Kids";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        // var section = 12 * (count + 1)
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "SPN")) {
+            var kidsy = await DB.getSPNKids(user[0].user_id);
+            var [kids, cur_t] = helper.paginateArray(kidsy, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, section: (start + kids.length) - 1 };
+            res.render('sponsor/mykids', context);
         } else {
             var url = "/login";
             res.redirect(url);
@@ -202,6 +268,78 @@ module.exports.filterKids = async (req, res, next) => {
 
 };
 
+//Method to handle filtering of data
+module.exports.filterMyKids = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "My Kids";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        var stat = parseInt(req.params.date);
+        var filter = req.params.filter;
+        var order = req.params.order;
+        var dob = parseInt(req.params.dob);
+        if (order == "ASC") {
+            var roder = { order: "DESC", class: "fa-long-arrow-alt-up" };
+        } else {
+            var roder = { order: "ASC", class: "fa-long-arrow-alt-down" };
+        }
+        var filtys = { gender: "", male: "", female: "", date_joined: "", dob: "", category: "", kts: "", ktss: "", ktt: "", kta: "" };
+        let result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
+            if (stat == 0 && dob == 0) {
+                var [k, v] = filter.split("-");
+                // console.log(v);
+                filtys[k] = "fas fa-check";
+                if (v == "Male") {
+                    filtys.male = "fas fa-check";
+                } else if (v == "Female") {
+                    filtys.female = "fas fa-check";
+                } else if (v == "Kids To School") {
+                    filtys.kts = "fas fa-check";
+                } else if (v == "Kids To Sports") {
+                    filtys.ktss = "fas fa-check";
+                } else if (v == "Kids To Art") {
+                    filtys.kta = "fas fa-check";
+                } else if (v == "Kids To Tech") {
+                    filtys.ktt = "fas fa-check";
+                }
+                result = await DB.sponsorFilterMyKidsBy(k, v, order, user[0].user_id)
+
+            } else if (stat == 1 && dob == 0) {
+                filtys.date_joined = "fas fa-check";
+                result = await DB.sponsorFilterMyKidsByDate(order, user[0].user_id);
+            } else {
+                filtys.dob = "fas fa-check";
+                result = await DB.sponsorFilterMyKidsByDOB(parseInt(filter), order, user[0].user_id)
+            }
+
+            var [kids, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var my = await DB.getSPNKids(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, dor: roder, filt: filtys, url: turl, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            res.render('sponsor/myfilter', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+};
+
 //Method to handle search for sponsors
 module.exports.searchKids = async (req, res, next) => {
     if (req.session.loggedin) {
@@ -229,6 +367,45 @@ module.exports.searchKids = async (req, res, next) => {
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
             res.render('sponsor/kids', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+
+};
+
+//Method to handle search for sponsors
+module.exports.searchMyKids = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "My Kids";
+        var count = req.params.id;
+        var [mesc, kwy] = req.params.kwy.split("-");
+        var start = (12 * count) + 1;
+        var result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
+            if (mesc == "kids") {
+                result = await DB.getSPNMySearch(kwy, user[0].user_id);
+            }
+
+            var [kids, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var my = await DB.getSPNKids(user[0].user_id);
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var cards = await DB.getSPNCards(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            res.render('sponsor/mykids', context);
         } else {
             var url = "/login";
             res.redirect(url);
@@ -301,11 +478,12 @@ module.exports.getVerification = async (req, res, next) => {
                 var donate = parseFloat(wallet[0].donate);
                 var msg = output.message;
                 var auth = output.data.authorization.authorization_code;
-                var amount = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].amount);
 
                 if (wallety == "wallet") {
+                    var amount = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].amount);
                     quick = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].quick);
                 } else {
+                    var amount = parseFloat(wallet[0].amount);
                     donate = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].donate);
                 }
 
@@ -411,11 +589,12 @@ module.exports.chargeCard = async (req, res, next) => {
                         var donate = parseFloat(wallet[0].donate);
                         var msg = output.message + "Sucessfully";
                         var auth = output.data.authorization.authorization_code;
-                        var amount = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].amount);
 
                         if (wallety == "wallet") {
+                            var amount = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].amount);
                             quick = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].quick);
                         } else {
+                            var amount = parseFloat(wallet[0].amount);
                             donate = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].donate);
                         }
 
@@ -680,5 +859,71 @@ module.exports.adoptKid = async (req, res, next) => {
     } else {
         var url = "/login";
         res.json({ url: url });
+    }
+};
+
+// Function to charge user wallet
+module.exports.chargeWallet = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        let msg;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
+            var wallet = await DB.getSPNWallet(user[0].user_id);
+            var wallety = req.body.wllt;
+            var amount = parseFloat(req.body.amount) / 100;
+            var donatey = req.body.val;
+            var ref = req.body.ref;
+            var kid = await DB.getKidById(req.body.kidID);
+            var title = req.body.title;
+
+            if ((wallet.length > 0 && wallet[0].is_active == '1') && (user[0].user_id == wallet[0].owner)) {
+                var avail = parseFloat(wallet[0].amount);
+
+                if ((avail - 1000) > (amount)) {
+                    var quicky = ((parseFloat(wallet[0].quick) > amount) ? parseFloat(wallet[0].quick) : parseFloat(wallet[0].auto));
+                    var key = ((parseFloat(wallet[0].quick) > amount) ? "quick" : "auto");
+                    var newBlanace = avail - amount;
+                    var quick = quicky - amount;
+
+                    if (kid[0].remaining == 0) {
+                        var set = parseFloat(kid[0].school_fees);
+                        var remaining = parseFloat(kid[0].school_fees) - (amount);
+                    } else {
+                        var remaining = parseFloat(kid[0].remaining) - (amount);
+                        var set = parseFloat(kid[0].remaining);
+                    }
+                    var percentage = ((amount) * 100) / set;
+                    await DB.addDonation(ref, user[0].user_id, kid[0].kid_id, amount, title, wallety, '1');
+                    await DB.addPerecntage(kid[0].kid_id, percentage, remaining);
+
+                    if (remaining <= 0) {
+                        await DB.updateKidStatus(kid[0].id, '0');
+                    }
+
+                    await DB.updateEwalletG(newBlanace, key, quick, user[0].user_id);
+                    msg = "Donation Transaction Successful";
+                    res.json({ success: msg });
+
+
+                } else {
+                    msg = "Insufficient Funds, Wallet Balance not enough to Perform Transaction";
+                    res.json({ error: msg });
+                }
+
+            } else {
+                msg = "Your wallet is In-Active, cannot Perform Transaction";
+                res.json({ error: msg });
+            }
+
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
     }
 };

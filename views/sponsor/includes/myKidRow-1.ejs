@@ -6,7 +6,7 @@
                     aria-haspopup="true" aria-expanded="false">
                     Filter
                 </button>
-                <ul class="dropdown-menu bingo" data-url="/sponsor/Kids/Filter">
+                <ul class="dropdown-menu bingo" data-url="/sponsor/myKids/Filter">
                     <!-- Dropdown menu links -->
                     <li>
                         <a class="dropdown-item p-3" href="#">
@@ -69,11 +69,11 @@
                 <h5 class="">
                     Showing <%= start %> - <%= section %> of <%= total %> results
                 </h5>
-            <% } else { %>
-                <h5 class="">
-                    No Results.
-                </h5>
-            <% } %>
+                <% } else { %>
+                    <h5 class="">
+                        No Results.
+                    </h5>
+                    <% } %>
         </div>
     </div>
 </div>

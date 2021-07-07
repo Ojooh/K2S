@@ -15,6 +15,7 @@ jQuery(document).ready(function ($) {
     var next = $(".next");
     var back = $(".back");
     var pay = $(".pay");
+    var kidsn = $(".get-kids");
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var inptArr = {};
@@ -180,8 +181,7 @@ jQuery(document).ready(function ($) {
         var param_2 = $(this).attr("data-date");
         var param_3 = $(this).attr("data-dob");
         var order = $(this).attr("data-order");
-        var url = "/sponsor/Kids/Filter";
-        var data = {};
+        var url = $(".bingo").attr("data-url");
 
         if (param_1 != undefined) {
             url = url + "/filter=" + param_1 + "/date=0" + "/dob=0" + "/order=" + order + "/page=0";
@@ -217,7 +217,8 @@ jQuery(document).ready(function ($) {
         var valhala = $(".kwy").val();
         if (valhala != "" && valhala != undefined) {
             var new_val = "kids-" + valhala;
-            var url = "/sponsor/Kids/search/keyword=" + new_val + "/page=0";
+            var first = $(".active.get-kids").attr("data-url").trim();
+            var url = first + "/search/keyword=" + new_val + "/page=0";
             location.replace(url);
         }
 
@@ -597,8 +598,63 @@ jQuery(document).ready(function ($) {
             console.log(inptArr);
             payWithPaystack(inptArr);
         } else if (inptArr.from == "wallet") {
-            console.log(inptArr)
-        }else {
+            var url = "/sponsor/charge/wallet";
+            inptArr.ref = '' + Math.floor((Math.random() * 1000000000) + 1);
+            inptArr.wllt = "wallet";
+            inptArr.val = "true";
+            var data = inptArr;
+            console.log(data);
+
+            modal_2.modal("hide");
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Auto close alert!',
+                        html: 'Please Hold on as Details are being Fetched.',
+                        timer: 40000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                    });
+                },
+                success: function (data) {
+                    swal.close();
+                    inptArr = {};
+                    console.log(data);
+                    if (data.success) {
+                        modal.modal("hide");
+
+                        Swal.fire({
+                            icon: "success",
+                            title: data.success,
+                            text: "Click OK to proceed to Dashboard",
+                            confirmButtonText: `OK`,
+                            allowOutsideClick: false,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: data.error,
+                            // text: "Pleas",
+                            confirmButtonText: `OK`,
+                            allowOutsideClick: false,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus + " error encountered: " + errorThrown)
+                }
+            });
+        } else {
             inptArr.ref = '' + Math.floor((Math.random() * 1000000000) + 1);
             var url = "/sponsor/charge";
             var card_no = inptArr.from.split("-")[0]
@@ -640,11 +696,15 @@ jQuery(document).ready(function ($) {
                         });
 
                     } else {
-                        modal.modal("show");
-                        swal.close();
-                        error.html("");
-                        msg = "<span class='alert alert-success text-center'>" + data.error + "</span>";
-                        error.html(msg);
+                        Swal.fire({
+                            icon: "error",
+                            title: data.error,
+                            // text: "Pleas",
+                            confirmButtonText: `OK`,
+                            allowOutsideClick: false,
+                        }).then(() => {
+                            location.reload();
+                        });
                     }
 
                 },
@@ -652,9 +712,16 @@ jQuery(document).ready(function ($) {
                     console.log(textStatus + " error encountered: " + errorThrown)
                 }
             });
-            
+
         }
 
 
-    })
+    });
+
+    kidsn.on("click", function (e) {
+        console.log("here");
+        var url = $(this).attr("data-url");
+
+        location.replace(url);
+    });
 });

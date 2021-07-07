@@ -107,10 +107,10 @@
                                                 <%= kds[0][i].school_fees %>
                                             </td>
                                             <td class="pretty-currency">
-                                            <% if (parseInt(kds[i].remaining)==0 ) { %>
+                                            <% if (parseInt(kds[0][i].remaining)==0 ) { %>
                                                  0.00
                                             <% } else { %>
-                                                <%= kds[i].school_fees - kds[i].remaining %>
+                                                <%= kds[0][i].school_fees - kds[0][i].remaining %>
                                             <% } %>
                                             </td>
                                             <td class="pretty-date">

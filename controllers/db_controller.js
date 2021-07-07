@@ -958,10 +958,43 @@ module.exports.sponsorFilterKidsBy = (k, v, order) => {
     });
 };
 
+// SPONSOR FILTER 
+module.exports.sponsorFilterMyKidsBy = (k, v, order, user) => {
+    console.log(v);
+    const query = "SELECT * FROM kids WHERE " + k + " = '" + v + "' AND is_paid = 0 AND adopted_by = '" + user + "' AND is_active = 1 ORDER BY " + k + " " + order + ";";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 
 //SPONSOR FILTER by date joined
 module.exports.sponsorFilterKidsByDate = (order) => {
     const query = "SELECT * FROM kids WHERE is_paid = 0 AND adopted_by IS NULL AND is_active = 1 ORDER BY date_joined " + order + ";";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//SPONSOR FILTER by date joined
+module.exports.sponsorFilterMyKidsByDate = (order, user) => {
+    const query = "SELECT * FROM kids WHERE is_paid = 0 AND adopted_by = " + user + " AND is_active = 1 ORDER BY date_joined " + order + ";";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -991,10 +1024,42 @@ module.exports.sponsorFilterKidsByDOB = (yr, order) => {
     });
 };
 
+//SPONSOR FILTER by date joined
+module.exports.sponsorFilterMyKidsByDOB = (yr, order, user) => {
+    const query = "SELECT * FROM kids where YEAR(dob) = '" + yr + "' AND is_paid = 0 AND adopted_by = '" + user + "' AND is_active = 1 ORDER BY dob " + order + " ;";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 
 //SPONSOR search
 module.exports.getSPNSearch = (kwy) => {
     const query = "SELECT * FROM kids WHERE (category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%') AND (is_paid = 0 AND adopted_by IS NULL AND is_active = 1);";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//SPONSOR search
+module.exports.getSPNMySearch = (kwy, user) => {
+    const query = "SELECT * FROM kids WHERE (category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%') AND (is_paid = 0 AND adopted_by = '" + user + "' AND is_active = 1);";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -1077,6 +1142,22 @@ module.exports.getSPNCardByNo = (id, user) => {
 //SPONSOR q-wallet update
 module.exports.updateEwalletQ = (amount, qk, don, owner) => {
     const query = "UPDATE wallet SET amount = '" + amount + "', quick = '" + qk + "', donate = '" + don + "' WHERE owner = '" + owner + "';";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//SPONSOR G-wallet update
+module.exports.updateEwalletG = (amount, key, quick, owner) => {
+    const query = "UPDATE wallet SET amount = '" + amount + "', " + key + " = '" + quick + "' WHERE owner = '" + owner + "';";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {

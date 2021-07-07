@@ -9,8 +9,14 @@ router.get('/', sponsorHandler.getDash);
 /* GET Kids page. */
 router.get('/Kids', sponsorHandler.getKids);
 
+/* GET MyKids page. */
+router.get('/MyKids', sponsorHandler.getMyKids);
+
 /* GET page */
 router.get('/Kids/page=:id', sponsorHandler.getPage);
+
+/* GET page */
+router.get('/MyKids/page=:id', sponsorHandler.getMyPage);
 
 /*POST page */
 router.post('/Preference', sponsorHandler.changePreference);
@@ -19,7 +25,13 @@ router.post('/Preference', sponsorHandler.changePreference);
 router.get('/Kids/Filter/filter=:filter/date=:date/dob=:dob/order=:order/page=:id', sponsorHandler.filterKids);
 
 /*GET page */
+router.get('/myKids/Filter/filter=:filter/date=:date/dob=:dob/order=:order/page=:id', sponsorHandler.filterMyKids);
+
+/*GET page */
 router.get('/Kids/search/keyword=:kwy/page=:id', sponsorHandler.searchKids);
+
+/*GET page */
+router.get('/myKids/search/keyword=:kwy/page=:id', sponsorHandler.searchMyKids);
 
 /* GET Kids Details. */
 router.post('/Kid/get_profile', sponsorHandler.getProfile);
@@ -53,6 +65,9 @@ router.get('/get_chat', sponsorHandler.getChatUsers);
 
 /* POST ADOPTION REQUEST*/
 router.post('/Kid/adopt', sponsorHandler.adoptKid);
+
+/* Payment with wallet. */
+router.post('/charge/wallet', sponsorHandler.chargeWallet);
 
 
 module.exports = router;

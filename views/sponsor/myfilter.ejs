@@ -15,6 +15,11 @@
                                                 <i class="fas fa-home"></i> Home
                                             </a>
                                         </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="/sponsor/kids">
+                                                <i class='fas fa-child'></i> My Kids
+                                            </a>
+                                        </li>
                                         <li class="breadcrumb-item active" aria-current="page">
                                             <i class='fas fa-child'></i> Kids
                                         </li>
@@ -30,8 +35,8 @@
                                         <div class="row justify-content-space-between">
                                             <div class="col-md-6">
                                                 <ul class="list-tab float-left">
-                                                    <li class="active  get-kids" data-url="/sponsor/Kids">All Kids</li>
-                                                    <li class="get-kids" data-url="/sponsor/MyKids">My Kids</li>
+                                                    <li class="get-kids" data-url="/sponsor/Kids">All Kids</li>
+                                                    <li class="active get-kids" data-url="/sponsor/MyKids">My Kids</li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-6">
@@ -49,9 +54,9 @@
                             <!-- End Kids Tab-->
 
                             <!-- Query summary and filter result -->
-                            <% include includes/kidRow-1 %>
-                            <!-- Query summary result  End-->
-
+                            <% include includes/myKidRow-1 %>
+                                <!-- Query summary result  End-->
+                            
                             <!-- Grid View -->
                             <% include includes/kidGrid %>
                             <!-- Grid View End-->
@@ -59,15 +64,15 @@
                             <!-- Kids Table -->
                             <% include includes/KidTable %>
                             <!-- Kids Table End -->
-                            
+                
                             <!-- Pagination-buttons -->
-                            <% include includes/kidPagination %>
+                            <% include includes/myKidPagination %>
                             <!-- Pagination-buttons End-->
                         </div>
                     </div>
-                            
+
             </div>
-                            
+
     </div>
     <% include includes/modal_1.ejs %>
     <% include includes/modal_4.ejs %>
@@ -77,6 +82,6 @@
     <script src="/js/personal/script_6.js"></script>
     <script src="/js/personal/helper.js"></script>
     <script src="/js/personal/socket_1.js"></script>
-    </body>
+</body>
 
 </html>
