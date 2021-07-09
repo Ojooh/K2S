@@ -1,9 +1,13 @@
 jQuery(document).ready(function ($) {
     var error = $(".error");
-    var window_width = $(window).width();
+    var filter = $(".deep");
+    var filterDOB = $(".filter-dob");
+    var dobBtn = $(".dob-btn");
+    var vl = "";
+    var order = $(".order");
+    var search = $("#basic-addon1");
     var openMdl_4 = $(".mdl-kid-form");
     var modal = $(".modal");
-    var closeModl = $(".close-modal");
     var dob = $("#dob");
     var age = $("#age");
     var deleteImage = $(".delete-image");
@@ -19,7 +23,7 @@ jQuery(document).ready(function ($) {
     var nextFieldset = $(".next");
     var prevFieldset = $(".back");
     var profile = $(".profile");
-   
+
     var counter = [0];
     var inptArr = {};
     var fNames = ['Personal Bio', 'School Details', 'Parent Information', 'Profile Information'];
@@ -42,7 +46,7 @@ jQuery(document).ready(function ($) {
             return [$(".mname-error"), "Invalid or No Value for Middle Name Field."];
         } else if (inptArr.dob == "") {
             return [$(".dob-error"), "Invalid or No DOB Field."];
-        } else if (inptArr.age == "" || parseInt(inptArr.age) < 4) {
+        } else if (inptArr.age == "" || parseInt(inptArr.age) < 1) {
             return [$(".age-error"), "Age Field Not Calculated Properly. Re-enter DOB."];
         } else if (inptArr.gender == "") {
             return [$(".gender-error"), "Invalid or No Value for Gender Field."];
@@ -76,8 +80,6 @@ jQuery(document).ready(function ($) {
         } else if (inptArr.sname != "" && inptArr.saddress == "") {
             return [$(".saddress-error"), "Invalid or No Value for School Address Field."];
         } else if (inptArr.sname != "" && inptArr.sfees == "") {
-            return [$(".sfees-error"), "Invalid or No Value for School Fees."];
-        } else if (inptArr.sfees != "" && isNaN(inptArr.sfees)) {
             return [$(".sfees-error"), "Invalid or No Value for School Fees."];
         } else if (inptArr.sother != "" && inptArr.sother.split(" ").length > 501) {
             return [$(".sother-error"), "Only 500 words Allowed."];
@@ -130,7 +132,9 @@ jQuery(document).ready(function ($) {
 
         var mdl = $("#addKidModalForm");
         mdl.modal("show");
-        //content.css({"position":"static", "top" : "none"});
+        $("input").val(" ")
+        $(".card-modal-title").html("Kids Form");
+        $(".card-modal-description").html("Add a Child for the Kids To school Foundation.");
     });
 
     //Function To calculate and display age
@@ -241,7 +245,6 @@ jQuery(document).ready(function ($) {
             inptArr.los = $("#los").val();
             inptArr.class = $("#class").val();
             inptArr.saddress = $("#saddress").val();
-            inptArr.sfees = $("#sfees").val();
             inptArr.sother = $("#sother").val();
             $(".text-danger").html("");
             // valid = "Data-Valid"
@@ -523,7 +526,7 @@ jQuery(document).ready(function ($) {
                 if (data.success) {
 
                     if (type[1] == "modal") {
-                        $(".card-modal-title").html(data.success.fname + " Kid Profile Form ");
+                        $(".card-modal-title").html(data.success.fname + " " + data.success.lname + " Profile Form");
                         $(".card-modal-description").html("Edit " + data.success.fname + "'s Kid Profile");
                         $("#category").val(data.success.category);
                         $("#fname").val(data.success.fname)
@@ -703,6 +706,8 @@ jQuery(document).ready(function ($) {
             success: function (data) {
                 swal.close();
                 if (data.success) {
+                    $(".card-modal-title").html(data.success.fname + " " + data.success.lname + " Profile");
+                    $(".card-modal-description").html("Who is " + data.success.fname + " " + data.success.lname + "of the Kids To school Foundation.");
                     var info = [{
                         'category': data.success.category,
                         'name': data.success.lname + " " + data.success.mname + " " + data.success.fname,
@@ -824,7 +829,72 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    
+    filterDOB.on("keydown", function (e) {
+
+        var keys = [8, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105]
+
+        if (keys.includes(parseInt(e.keyCode))) {
+            vl += String.fromCharCode(e.keyCode)
+            dobBtn.attr("data-dob", vl);
+        } else {
+            e.preventDefault()
+        }
+
+    });
+
+    filter.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("yep");
+
+        var param_1 = $(this).attr("data-data");
+        var param_2 = $(this).attr("data-date");
+        var param_3 = $(this).attr("data-dob");
+        var order = $(this).attr("data-order");
+        var url = $(".bingo").attr("data-url");
+
+        if (param_1 != undefined) {
+            url = url + "/filter=" + param_1 + "/date=0" + "/dob=0" + "/order=" + order + "/page=0";
+            location.replace(url);
+        } else if (param_2 != undefined) {
+            url = url + "/filter=" + param_2 + "/date=1" + "/dob=0" + "/order=" + order + "/page=0";
+            location.replace(url);
+        } else if (param_3 != undefined) {
+            url = url + "/filter=" + param_3 + "/date=0" + "/dob=1" + "/order=" + order + "/page=0";
+            location.replace(url);
+        }
+
+    });
+
+
+    order.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation()
+        var action = $(this).attr("data-data");
+        var url = window.location.href.split("order=");
+        var fp = url[0] + "order=" + action + "/";
+        var sp = url[1].split("/")[1]
+        var new_url = fp + sp
+        location.replace(new_url)
+
+    });
+
+
+    search.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var valhala = $(".kwy").val();
+        if (valhala != "" && valhala != undefined) {
+            var new_val = "kids-" + valhala;
+            var first = $(".active.get-kids").attr("data-url").trim();
+            var url = first + "/search/keyword=" + new_val + "/page=0";
+            location.replace(url);
+        }
+
+    });
+
+
 
 
 

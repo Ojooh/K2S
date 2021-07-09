@@ -1,10 +1,7 @@
 const DB = require('./db_controller');
-const validator = require('./validator');
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
 const moment = require('moment');
 const path = require('path');
-const fs = require('fs');
 const axios = require('axios')
 var helper = require("./helper");
 const https = require('https');
@@ -125,7 +122,6 @@ module.exports.getPage = async (req, res, next) => {
             var kidsy = await DB.getKidsSPN();
             var [kids, cur_t] = helper.paginateArray(kidsy, count);
             var noty = await DB.getNotys(user[0].user_id);
-            var my = await DB.getSPNKids(user[0].user_id);
             var wallet = await DB.getSPNWallet(user[0].user_id);
             var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
@@ -247,15 +243,14 @@ module.exports.filterKids = async (req, res, next) => {
             }
 
             var [kids, cur_t] = helper.paginateArray(result, count);
-            var noty = await DB.getNotys(user[0].user_id);
-            var my = await DB.getSPNKids(user[0].user_id);
+            var noty = await DB.getNotys(user[0].user_id);;
             var wallet = await DB.getSPNWallet(user[0].user_id);
             var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var turl = req.originalUrl.split("page")[0];
             console.log(turl)
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, dor: roder, filt: filtys, url: turl, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, dor: roder, filt: filtys, turl: turl, start: start, kds: kids, noty: noty, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
             res.render('sponsor/filter', context);
         } else {
             var url = "/login";
@@ -320,14 +315,13 @@ module.exports.filterMyKids = async (req, res, next) => {
 
             var [kids, cur_t] = helper.paginateArray(result, count);
             var noty = await DB.getNotys(user[0].user_id);
-            var my = await DB.getSPNKids(user[0].user_id);
             var wallet = await DB.getSPNWallet(user[0].user_id);
             var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var turl = req.originalUrl.split("page")[0];
             console.log(turl)
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, dor: roder, filt: filtys, url: turl, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, dor: roder, filt: filtys, turl: turl, start: start, kds: kids, noty: noty, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
             res.render('sponsor/myfilter', context);
         } else {
             var url = "/login";
@@ -357,16 +351,17 @@ module.exports.searchKids = async (req, res, next) => {
             if (mesc == "kids") {
                 result = await DB.getSPNSearch(kwy);
             }
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
 
             var [kids, cur_t] = helper.paginateArray(result, count);
             var noty = await DB.getNotys(user[0].user_id);
-            var my = await DB.getSPNKids(user[0].user_id);
             var wallet = await DB.getSPNWallet(user[0].user_id);
             var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
-            res.render('sponsor/kids', context);
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, turl: turl, kds: kids, noty: noty, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            res.render('sponsor/filter', context);
         } else {
             var url = "/login";
             res.redirect(url);
@@ -396,16 +391,17 @@ module.exports.searchMyKids = async (req, res, next) => {
             if (mesc == "kids") {
                 result = await DB.getSPNMySearch(kwy, user[0].user_id);
             }
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
 
             var [kids, cur_t] = helper.paginateArray(result, count);
             var noty = await DB.getNotys(user[0].user_id);
-            var my = await DB.getSPNKids(user[0].user_id);
             var wallet = await DB.getSPNWallet(user[0].user_id);
             var cards = await DB.getSPNCards(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, my: my, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
-            res.render('sponsor/mykids', context);
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, wllt: wallet, cards: cards, tab: tab, start: start, kds: kids, noty: noty, turl: turl, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            res.render('sponsor/myfilter', context);
         } else {
             var url = "/login";
             res.redirect(url);

@@ -10,11 +10,11 @@
                     <div class="row">
                         <div class="col-12">
                             <ol class="breadcrumb bg-light-mode">
-                                <li class="breadcrumb-item">
-                                    <a href="">
+                                <!-- <li class="breadcrumb-item">
+                                    <a href="/dashboard">
                                         <i class="fas fa-home"></i> Home
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="breadcrumb-item active" aria-current="page">
                                     <i class="fas fa-th-large"></i> Dashboard
                                 </li>
@@ -34,7 +34,7 @@
                     <!-- Pie and task percentage -->
                     <div class="row">
                         <!-- Pie Chart -->
-                        <div class="col-lg-9 col-md-12 col-sm-12 ext-lg-5">
+                        <div class="col-lg-8 col-md-12 col-sm-12 ext-lg-5">
                             <div class="card card-stats pb-4 pt-1 px-md-2 px-sm-1">
                                 <div class="container">
                                     <div class="row">
@@ -184,7 +184,7 @@
                         <!-- Pie Chart End -->
 
                         <!-- Task Percentage -->
-                        <div class="col-lg-3 col-md-12 col-sm-12 red-lg-2">
+                        <div class="col-lg-4 col-md-12 col-sm-12 red-lg-2">
                             <div class="card card-stats px-3">
                                 <div class="container">
                                     <div class="row">
@@ -199,7 +199,7 @@
                                                 <div class="col-md-12">
                                                     <canvas id="taskChart"></canvas>
                                                     <div class="percent-text w-100 text-center my-4">
-                                                        <div class="inner-text text-center">
+                                                        <div class="inner-mn-text text-center">
                                                             <h3>40%</h3><br>
                                                             <span> Completed</span>
                                                         </div>
@@ -239,6 +239,4 @@
 
 
 <script>var user_id = "<%= user.user_id %>";</script>
-<script src="/js/personal/graph_1.js"></script>
-<script src="/js/personal/socket_1.js"></script>
 <% include includes/foot.ejs%>

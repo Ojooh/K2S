@@ -1,10 +1,6 @@
 const DB = require('./db_controller');
-const validator = require('./validator');
-const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
 const moment = require('moment');
-const path = require('path');
-const fs = require('fs');
+var helper = require("./helper");
 
 
 //Function To Render Dashboard
@@ -30,7 +26,7 @@ module.exports.getDash = async (req, res, next) => {
             var count = { kids: Kids[0].total, activeKids: activeKids[0].total, inactiveKids: inactiveKids[0].total, sponsKids: sponsKids };
             var graph = { kts: kts[0].total, ktsp: ktsp[0].total, kta: kta[0].total, ktt: ktt[0].total };
             var chart = { kts_m: kts[0].male, kts_f: kts[0].female, ktsp_m: ktsp[0].male, ktsp_f: ktsp[0].female, kta_m: kta[0].male, kta_f: kta[0].female, ktt_m: ktt[0].male, ktt_f: ktt[0].female };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, count: count, graph: graph, chart, chart, noty: noty, contacts: contacts};
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, count: count, graph: graph, chart, chart, noty: noty, contacts: contacts };
             res.render('envoy/Dashboard', context);
         } else {
             res.redirect("/login");
@@ -47,14 +43,155 @@ module.exports.getEnvoyKids = async (req, res, next) => {
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-child";
         var title = "Kids";
+        var count = 0;
+        var start = 1;
+        var section = 12;
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
-            var kids = await DB.getEnvoyKids(user[0].user_id);
+            var kidsy = await DB.getEnvoyKids(user[0].user_id);
+            var [kids, cur_t] = helper.paginateArray(kidsy, count);
             var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, kds: kids, noty: noty };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, start: start, section: section };
             res.render('envoy/kids', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+
+};
+
+//Function To Render Page:id
+module.exports.getPage = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "Kids";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        // var section = 12 * (count + 1)
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
+            var kidsy = await DB.getEnvoyKids(user[0].user_id);
+            var [kids, cur_t] = helper.paginateArray(kidsy, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, start: start, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, section: (start + kids.length) - 1 };
+            res.render('envoy/kids', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+};
+
+//Method to handle filtering of data
+module.exports.filterMyKids = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "Kids";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        var stat = parseInt(req.params.date);
+        var filter = req.params.filter;
+        var order = req.params.order;
+        var dob = parseInt(req.params.dob);
+        if (order == "ASC") {
+            var roder = { order: "DESC", class: "fa-long-arrow-alt-up" };
+        } else {
+            var roder = { order: "ASC", class: "fa-long-arrow-alt-down" };
+        }
+        var filtys = { gender: "", male: "", female: "", date_joined: "", dob: "", category: "", kts: "", ktss: "", ktt: "", kta: "" };
+        let result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ENV")) {
+            if (stat == 0 && dob == 0) {
+                var [k, v] = filter.split("-");
+                // console.log(v);
+                filtys[k] = "fas fa-check";
+                if (v == "Male") {
+                    filtys.male = "fas fa-check";
+                } else if (v == "Female") {
+                    filtys.female = "fas fa-check";
+                } else if (v == "Kids To School") {
+                    filtys.kts = "fas fa-check";
+                } else if (v == "Kids To Sports") {
+                    filtys.ktss = "fas fa-check";
+                } else if (v == "Kids To Art") {
+                    filtys.kta = "fas fa-check";
+                } else if (v == "Kids To Tech") {
+                    filtys.ktt = "fas fa-check";
+                }
+                result = await DB.envoyFilterMyKidsBy(k, v, order, user[0].user_id)
+
+            } else if (stat == 1 && dob == 0) {
+                filtys.date_joined = "fas fa-check";
+                result = await DB.envoyFilterMyKidsByDate(order, user[0].user_id);
+            } else {
+                filtys.dob = "fas fa-check";
+                result = await DB.envoyFilterMyKidsByDOB(parseInt(filter), order, user[0].user_id)
+            }
+
+            var [kids, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, dor: roder, filt: filtys, turl: turl, start: start, kds: kids, noty: noty,  points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            res.render('envoy/filter', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+};
+
+//Method to handle search for sponsors
+module.exports.searchMyKids = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "Kids";
+        var count = req.params.id;
+        var [mesc, kwy] = req.params.kwy.split("-");
+        var start = (12 * count) + 1;
+        var result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ENV")) {
+            if (mesc == "kids") {
+                result = await DB.getENVMySearch(kwy, user[0].user_id);
+            }
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
+            var [kids, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, start: start, kds: kids, noty: noty, turl: turl, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            res.render('envoy/filter', context);
         } else {
             var url = "/login";
             res.redirect(url);
@@ -90,6 +227,28 @@ module.exports.getNotify = async (req, res, next) => {
     } else {
         res.redirect("/login");
     }
+};
+
+// Method to handle change of tab prefrence
+module.exports.changePreference = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.pref;
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ENV")) {
+            let update = await DB.updateUserPrefrence(ID, user[0].id);
+            var msg = user[0].fname + " Preference Changed Successfully";
+            res.json({ success: msg });
+        } else {
+            var url = "/login";
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login";
+        res.json({ url: url });
+    }
+
 };
 
 

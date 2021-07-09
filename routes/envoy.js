@@ -9,6 +9,15 @@ router.get('/', envoyHandler.getDash);
 /* GET Kids page. */
 router.get('/Kids', envoyHandler.getEnvoyKids);
 
+/* GET page */
+router.get('/Kids/page=:id', envoyHandler.getPage);
+
+/*GET page */
+router.get('/Kids/Filter/filter=:filter/date=:date/dob=:dob/order=:order/page=:id', envoyHandler.filterMyKids);
+
+/*GET page */
+router.get('/Kids/search/keyword=:kwy/page=:id', envoyHandler.searchMyKids);
+
 /* POST add Kid Profile. */
 router.post('/Kids/add_kid', adminHandler.createKidProfile);
 
@@ -17,6 +26,9 @@ router.post('/Kids/chnage_status', adminHandler.updateKidStatus);
 
 /* GET Notification pagee. */
 router.get('/notifications', envoyHandler.getNotify);
+
+/*POST page */
+router.post('/Preference', envoyHandler.changePreference);
 
 /* Post Task Complete. */
 router.post('/Task/change_status', envoyHandler.updateStatus);

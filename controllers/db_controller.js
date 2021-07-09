@@ -958,10 +958,29 @@ module.exports.sponsorFilterKidsBy = (k, v, order) => {
     });
 };
 
+
 // SPONSOR FILTER 
 module.exports.sponsorFilterMyKidsBy = (k, v, order, user) => {
     console.log(v);
     const query = "SELECT * FROM kids WHERE " + k + " = '" + v + "' AND is_paid = 0 AND adopted_by = '" + user + "' AND is_active = 1 ORDER BY " + k + " " + order + ";";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+// SPONSOR FILTER 
+module.exports.envoyFilterMyKidsBy = (k, v, order, user) => {
+    console.log(v);
+    const query = "SELECT * FROM kids WHERE " + k + " = '" + v + "' AND created_by = '" + user + "' ORDER BY " + k + " " + order + ";";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -1009,6 +1028,22 @@ module.exports.sponsorFilterMyKidsByDate = (order, user) => {
 };
 
 //SPONSOR FILTER by date joined
+module.exports.envoyFilterMyKidsByDate = (order, user) => {
+    const query = "SELECT * FROM kids WHERE created_by = '" + user + "' ORDER BY date_joined " + order + ";";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//SPONSOR FILTER by date joined
 module.exports.sponsorFilterKidsByDOB = (yr, order) => {
     const query = "SELECT * FROM kids where YEAR(dob) = '" + yr + "'AND is_paid = 0 AND adopted_by IS NULL AND is_active = 1 ORDER BY dob " + order + " ;";
     console.log(query)
@@ -1027,6 +1062,22 @@ module.exports.sponsorFilterKidsByDOB = (yr, order) => {
 //SPONSOR FILTER by date joined
 module.exports.sponsorFilterMyKidsByDOB = (yr, order, user) => {
     const query = "SELECT * FROM kids where YEAR(dob) = '" + yr + "' AND is_paid = 0 AND adopted_by = '" + user + "' AND is_active = 1 ORDER BY dob " + order + " ;";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//SPONSOR FILTER by date joined
+module.exports.envoyFilterMyKidsByDOB = (yr, order, user) => {
+    const query = "SELECT * FROM kids where YEAR(dob) = '" + yr + "' AND created_by = '" + user + "' ORDER BY dob " + order + " ;";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -1060,6 +1111,22 @@ module.exports.getSPNSearch = (kwy) => {
 //SPONSOR search
 module.exports.getSPNMySearch = (kwy, user) => {
     const query = "SELECT * FROM kids WHERE (category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%') AND (is_paid = 0 AND adopted_by = '" + user + "' AND is_active = 1);";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//SPONSOR search
+module.exports.getENVMySearch = (kwy, user) => {
+    const query = "SELECT * FROM kids WHERE (category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%') AND (created_by = '" + user + "');";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {

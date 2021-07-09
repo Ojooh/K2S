@@ -106,13 +106,13 @@
                                                                     <td class="td-actions">
                                                                     <% if (user.user_type=="ADMS" || tks[i].sender == user.user_id) { %>
                                                                         <a href="#" class="edit-task text-primary mr-4" data-id="<%= tks[i].id %>"
-                                                                            data-url="/envoy/Task/get_task" data-type="edit-modal"
+                                                                            data-url="/sposnor/Task/get_task" data-type="edit-modal"
                                                                             data-toggle="tooltip" data-placement="top" title="Edit Task">
                                                                             <i class="fas fa-pencil-alt"></i>
                                                                         </a>
                                                                         
                                                                         <a href="#" class="delete-task text-danger" data-id="<%= tks[i].id %>"
-                                                                            data-url="/envoy/Task/delete_task" data-toggle="tooltip"
+                                                                            data-url="/sposnor/Task/delete_task" data-toggle="tooltip"
                                                                             data-placement="top" title="Remove Task">
                                                                             <i class="fas fa-times"></i>
                                                                         </a>

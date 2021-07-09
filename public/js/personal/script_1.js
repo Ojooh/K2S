@@ -1,14 +1,7 @@
 jQuery(document).ready(function ($) {
     var error = $(".error");
-    var sidebarToggler = $("#sideBarToggler");
-    var closeSidebar = $(".close-sidebar");
-    var window_width = $(window).width();
-    var sideBar = $("#sideBar");
-    var mainPanel = $(".main-content");
-    var dates = $(".pretty-date");
     var openMdl_1 = $(".mdl-admin-form");
     var modal = $(".modal");
-    var closeModl = $(".close-modal");
     var dob = $("#dob");
     var age = $("#age");
     var deleteImage = $(".delete-image");
@@ -20,162 +13,14 @@ jQuery(document).ready(function ($) {
     var profile = $(".profile");
     var viewPassword = $("#basic-addon12");
     var genPassword = $("#basic-addon2");
-    var startConvo = $(".start-convo");
     var send = $(".icon2");
-    var timeO = $(".time-only");
     // var socket = io('http://localhost:3000');
     // var user_id = user_id;
     // console.log(user_id);
     // socket.emit("user_connected", user_id);
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    if (window_width <= 991) {
-        if (!$(".side-nav li").hasClass("mob")) {
-            var html = `<li class="nav-item mob">
-                    <div class="search-area mt-2">
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1">
-                                <i class="fas fa-search"></i>
-                            
-                            <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item <%= active.usr %> mob">
-                    <a class="nav-link" href="sponsors.html">
-                        <i class="fas fa-user"></i>
-                        Profile
-                    </a>
-                </li>`;
-            $(".side-nav").prepend(html);
-        }
-    } else {
-        if ($(".side-nav li").length > 6) {
-            $(".side-nav li").eq(0).remove();
-            $(".side-nav li").eq(0).remove();
-        }
-    }
-
-    for (var i = 0; i < $(".card-title").length; i++) {
-        if ($($(".card-title")[i]).html().trim() == "") {
-            $($(".card-title")[i]).html("0");
-            console.log($($(".card-title")[i]).html())
-        }
-    }
 
 
-
-    for (var t = 0; t < dates.length; t++) {
-        var date = prettyDate($(dates[t]).html().trim());
-        $(dates[t]).html(date);
-    }
-
-    for (var t = 0; t < timeO.length; t++) {
-        var time = prettyTime($(timeO[t]).html().trim());
-        $(timeO[t]).html(time);
-    }
-
-
-    //function to make date-time pretty
-    function prettyDate(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var day = d.getDate();
-            var dayName = days[d.getDay()];
-            var month = monthNames[d.getMonth()];
-            var year = d.getFullYear();
-            var h = d.getHours()
-            var m = d.getMinutes();
-            var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
-            var result = dayName + " " + day + " " + month + ", " + year + " " + _time;
-            return result
-        } else {
-            return "Never";
-        }
-    }
-
-
-    //function to make date-time pretty
-    function prettyTime(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var h = d.getHours()
-            var m = d.getMinutes();
-            var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
-            var result = _time;
-            return result
-        } else {
-            return "Never";
-        }
-    }
-
-    //Function to make date pretty
-    function prettyDateOnly(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var day = d.getDate();
-            var dayName = days[d.getDay()];
-            var month = monthNames[d.getMonth()];
-            var year = d.getFullYear();
-            var result = dayName + " " + day + " " + month + ", " + year;
-            return result
-        } else {
-            return "Never";
-        }
-    }
-
-
-
-    //Function to acativate Tool Tip
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
-
-    //
-    $(document).on("click", function (e) {
-        console.log(e.target);
-    });
-
-    //Function to open and close sidebar in mobile view
-    sidebarToggler.on("click", function (e) {
-        e.preventDefault();
-        sideBar.toggleClass("show");
-        $(".overlay").removeClass("deactivated");
-        if (sidebarToggler.hasClass("show")) {
-            $(".logo").css({ "display": "none" })
-        }
-    });
-
-    //Function To Close Sidebar Mobile VIEW
-    closeSidebar.on("click", function (e) {
-        //console.log("yep");
-        e.preventDefault();
-        sideBar.removeClass("show");
-        $(".overlay").addClass("deactivated");
-    });
-
-    //If Over Lay is Clicked
-    $(".overlay").on("click", function (e) {
-        e.preventDefault();
-        sideBar.removeClass("show");
-        $(".overlay").addClass("deactivated");
-    });
-
-    //
-    mainPanel.on("click", function (e) {
-        // console.log(e.target);
-        if (!$(e.target).hasClass("fa-bars") && !$(e.target).hasClass("icon-reorder")) {
-            sideBar.removeClass("show");
-        }
-
-    });
-
-    //Function to close Modal
-    closeModl.on("click", function (e) {
-        modal.modal("hide");
-    });
+    
 
     //Function to Open Modal
     openMdl_1.on("click", function (e) {

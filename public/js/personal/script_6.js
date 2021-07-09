@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
     var error = $(".error");
-    var filter = $(".dropdown-item");
+    var filter = $(".deep");
     var filterDOB = $(".filter-dob");
     var dobBtn = $(".dob-btn");
     var vl = "";
@@ -9,7 +9,6 @@ jQuery(document).ready(function ($) {
     var modal = $("#viewKidModal");
     var modal_2 = $("#donateModal");
     var profile = $(".s-profile");
-    var display = $(".list-tab-item");
     var adopt = $('#adoptKid');
     var donate = $("#donateKid");
     var next = $(".next");
@@ -374,44 +373,6 @@ jQuery(document).ready(function ($) {
 
             }
         });
-    });
-
-    //Function to change display
-    display.on("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if ($(this).hasClass("grid")) {
-
-            var t = {};
-            t["tab_grid"] = 'active';
-            t["tab_list"] = '';
-            t["row_grid"] = '';
-            t["row_list"] = 'deactivated';
-
-        }
-
-        if ($(this).hasClass("listn")) {
-            var t = {};
-            t["tab_grid"] = '';
-            t["tab_list"] = 'active';
-            t["row_grid"] = 'deactivated';
-            t["row_list"] = '';
-
-        }
-
-        var data = { "pref": JSON.stringify(t) };
-        console.log(data);
-
-        $.ajax({
-            url: "/Sponsor/Preference",
-            type: "POST",
-            data: data,
-            success: function (data) {
-                console.log(data)
-                location.reload();
-            }
-        })
     });
 
     //Function to adopt kid

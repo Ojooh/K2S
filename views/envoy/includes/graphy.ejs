@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-lg-9 col-md-12 col-sm-12 ext-lg-5">
+    <div class="col-lg-8 col-md-12 col-sm-12 ext-lg-5">
         <div class="card card-stats pb-4 pt-1 px-md-3 px-sm-1">
             <div class="container">
-                <div class="row">
+                <div class="row hp80">
                     <div class="graph-top mb-3">
                         <div class="float-left">
                             <h3>Kids Category Distribution</h3>
@@ -82,9 +82,9 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-12 col-sm-12 red-lg-2">
-        <div class="card card-stats">
-            <div class="container">
+    <div class="col-lg-4 col-md-12 col-sm-12 red-lg-2">
+        <div class="card card-stats h-40">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="graph-top mb-3  px-3">
                         <div class="float-left">
@@ -92,43 +92,46 @@
                         </div>
                     </div>
                 </div>
-
-                
-                <div class="card-body mt-5 w-100">
-                    <div class="row">
+    
+    
+                <div class="card-body w-100">
+                    <div class="row hp80">
                         <div class="col-12">
                             <% if (contacts.length> 0) {%>
                                 <div class="convos">
                                     <div class="scroll">
                                         <% for (var i=0; i < contacts.length; i++) { %>
-                                            <% if (contacts[0].sender==user.user_id ) {%>
+                                            <% if (contacts[0].sender==user.user_id ) { %>
                                                 <a href="/envoy/notifications">
                                                     <div class="box my-2" data-id="<%= contacts[0].id %>"
-                                                        data-name="<%= contacts[0].rec_fname + ' ' + contacts[0].rec_lname  %>" data-user="<%= contacts[0].rec_user_id %>"
+                                                        data-name="<%= contacts[0].rec_fname + ' ' + contacts[0].rec_lname  %>"
+                                                        data-user="<%= contacts[0].rec_user_id %>"
                                                         data-convo="<%= contacts[0].message %>">
                                                         <% if (contacts[0].rec_pp !="" ) {%>
                                                             <div class="box-img">
                                                                 <img src="<%= contacts[0].rec_pp %>" class="img-fluid">
                                                             </div>
-                                                        <% } else { %>
-                                                            <div class="box-img">
-                                                                <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
-                                                            </div>
-                                                        <% } %>
-                                                            <div class="box-content">
-                                                                <h3>
-                                                                    <%= contacts[0].rec_fname + " " + contacts[0].rec_lname %>
-                                                                </h3>
-                                                                <span>
-                                                                    <%= contacts[0].rec_user_id %>
-                                                                </span>
-                                                                <span class="time-only">
-                                                                    <%= contacts[0].date_created %>
-                                                                </span>
-                                                            </div>
+                                                            <% } else { %>
+                                                                <div class="box-img">
+                                                                    <img src="/images/profile/avatar/avatar_1.jpg"
+                                                                        class="img-fluid">
+                                                                </div>
+                                                                <% } %>
+                                                                    <div class="box-content">
+                                                                        <h3>
+                                                                            <%= contacts[0].rec_fname + " " +
+                                                                                contacts[0].rec_lname %>
+                                                                        </h3>
+                                                                        <span>
+                                                                            <%= contacts[0].rec_user_id %>
+                                                                        </span>
+                                                                        <span class="time-only">
+                                                                            <%= contacts[0].date_created %>
+                                                                        </span>
+                                                                    </div>
                                                     </div>
                                                 </a>
-                                                
+    
                                                 <% } else { %>
                                                     <div class="box my-2" data-id="<%= contacts[0].id %>"
                                                         data-name="<%= contacts[0].send_fname + ' ' + contacts[0].send_lname  %>"
@@ -140,12 +143,14 @@
                                                             </div>
                                                             <% } else { %>
                                                                 <div class="box-img">
-                                                                    <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
+                                                                    <img src="/images/profile/avatar/avatar_1.jpg"
+                                                                        class="img-fluid">
                                                                 </div>
                                                                 <% } %>
                                                                     <div class="box-content">
                                                                         <h3>
-                                                                            <%= contacts[0].send_fname + " " + contacts[0].send_lname %>
+                                                                            <%= contacts[0].send_fname + " " +
+                                                                                contacts[0].send_lname %>
                                                                         </h3>
                                                                         <span>
                                                                             <%= contacts[0].send_user_id %>
@@ -159,7 +164,6 @@
                                                         <% } %>
                                     </div>
                                 </div>
-                
                                 <% } else { %>
                                     <div class="my-5">
                                         <h6 class="text-center text-danger">No Conversations Yet</h6>
@@ -174,8 +178,8 @@
                             </div>
                         </div>
                     </div>
-                
-                
+    
+    
                 </div>
             </div>
         </div>

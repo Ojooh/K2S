@@ -1,0 +1,81 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar %>
+            <div class="main-content">
+                <% include includes/navbar %>
+                    <div class="content">
+                        <div class="container-fluid">
+
+                            <!-- BreadCrumb -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb bg-light-mode">
+                                        <li class="breadcrumb-item">
+                                            <a href="/envoy">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <i class='fas fa-child'></i> Kids
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <!-- BreadCrumb End -->
+
+                            <!-- Kids Tab -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="w-100 py-0 mt-4 border-bottom ">
+                                        <div class="row justify-content-space-between">
+                                            <div class="col-md-6">
+                                                <ul class="list-tab float-left">
+                                                    <li class="active get-kids" data-url="/envoy/Kids">All Kids</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="list-tab float-right">
+                                                    <li class="<%= tab.tab_grid %> grid list-tab-item" data-url="/envoy/Preference"><i
+                                                            class="fas fa-th"></i></li>
+                                                    <li class="<%= tab.tab_list %> list-tab-item listn" data-url="/envoy/Preference"><i
+                                                            class="fas fa-list-ul"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Kids Tab-->
+                            
+                            <!-- Row 1 -->
+                            <% include includes/envoyRow-1 %>
+                            <!-- Row 2 -->
+                            
+                            <!-- Grid View -->
+                            <% include includes/envoyGrid %>
+                                <!-- Grid View End-->
+                        
+                            <!-- Kids Table -->
+                            <% include includes/envoyTable %>
+                            <!-- Kids Table End -->
+                
+                            <!-- Pagination-buttons -->
+                            <% include includes/envoyPagination_f %>
+                            <!-- Pagination-buttons End-->
+                        </div>
+                    </div>
+
+             </div>
+
+    </div>
+    <% include includes/modal_1.ejs %>
+    <% include includes/modal_2.ejs %>
+    <script>var user_id = "<%= user.user_id %>";</script>
+    <script src="/js/personal/sidebar.js"></script>
+    <script src="/js/personal/display.js"></script>
+    <script src="/js/personal/script_4.js"></script>
+    <script src="/js/personal/helper.js"></script>
+    <script src="/js/personal/socket_1.js"></script>
+</body>
+
+</html>

@@ -40,6 +40,7 @@ socket.on("new_message", function (data) {
                 </div>`;
     }
     // console.log(html)
+    chat_area.html("");
     chat_area.html(html);
 });
 
