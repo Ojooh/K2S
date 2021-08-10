@@ -12,6 +12,7 @@ jQuery(document).ready(function ($) {
     var age = $("#age");
     var deleteImage = $(".delete-image");
     var deleteFile = $(".delete-file");
+    var expenseFieldsCount = parseInt($("#expyy").html());
     // var submitKid = $('#submitKid');
     var profilePic = $("#profilePic");
     var status = $(".custom-control-input")
@@ -23,10 +24,13 @@ jQuery(document).ready(function ($) {
     var nextFieldset = $(".next");
     var prevFieldset = $(".back");
     var profile = $(".profile");
+    var createExpenseField = $("#createExpense");
+    // var removeExpenseField = $(".remove-expense");
+    // console.log(removeExpenseField)
 
     var counter = [0];
     var inptArr = {};
-    var fNames = ['Personal Bio', 'School Details', 'Parent Information', 'Profile Information'];
+    var fNames = ['Personal Bio', 'School Details', 'Expense Information', 'Parent Information', 'Profile Information'];
 
 
 
@@ -79,8 +83,6 @@ jQuery(document).ready(function ($) {
             return [$(".class-error"), "Invalid or No Value for Class Field."];
         } else if (inptArr.sname != "" && inptArr.saddress == "") {
             return [$(".saddress-error"), "Invalid or No Value for School Address Field."];
-        } else if (inptArr.sname != "" && inptArr.sfees == "") {
-            return [$(".sfees-error"), "Invalid or No Value for School Fees."];
         } else if (inptArr.sother != "" && inptArr.sother.split(" ").length > 501) {
             return [$(".sother-error"), "Only 500 words Allowed."];
         } else {
@@ -118,12 +120,103 @@ jQuery(document).ready(function ($) {
             return [$(".goal-error"), "Only 500 words Allowed."];
         } else if (inptArr.bc !== undefined && inptArr.bc != "" && validDocTypes.includes(inptArr.bc.type) == false) {
             return [$(".bc-error"), "Only Image, pdf or docx files Allowed."];
-        } else if (inptArr.pp !== undefined && inptArr.pp != "" && validImageTypes.includes(inptArr.pp.type) == false) {
+        } else if (((inptArr.pp == undefined) || (inptArr.pp == "") || (inptArr.pp == null)) && $("#frame").attr("src") === undefined) {
+            return [$(".pp-error"), "Profile Image is compulsory."];
+        }
+        else if ((inptArr.pp !== undefined && inptArr.pp != "" && validImageTypes.includes(inptArr.pp.type) == false)) {
             return [$(".pp-error"), "Only Image Files are Allowed."];
         } else {
             return "Data-Valid";
         }
     }
+
+    // Function for expense validation
+    function field5(expy) {
+        let tot = 0;
+        let elem;
+        expenseFieldsCount = parseInt($("#expyy").html());
+        console.log(expenseFieldsCount)
+        for (var f = 0; f <= expenseFieldsCount - 1; f++) {
+            if ($($(".ename")[f]).val() != "" && $($(".ename")[f]).val() !== undefined && $($(".evalue")[f]).val() != "" && $($(".evalue")[f]).val() != undefined && $($(".edesc")[f]).val() != "" && $($(".edesc")[f]).val() != undefined) {
+                var expense = {};
+                expense["ename"] = $($(".ename")[f]).val();
+                expense["evalue"] = $($(".evalue")[f]).val();
+                expense["edesc"] = $($(".edesc")[f]).val();
+                tot = parseFloat(tot) + parseFloat($($(".evalue")[f]).val());
+                expy.push(expense)
+
+            }
+            else {
+
+                if ($($(".ename")[f]).val() == "" || $($(".ename")[f]).val() === undefined) {
+                    console.log(f);
+                    elem = $($(".ename-error")[f]);
+                }
+                else if ($($(".evalue")[f]).val() == "" || $($(".evalue")[f]).val() === undefined || parseInt($($(".evalue")[f]).val()) <= 0) {
+                    console.log(f);
+                    elem = $($(".evalue-error")[f])
+                }
+                else if ($($(".edesc")[f]).val() == "" || $($(".edesc")[f]).val() === undefined) {
+                    console.log(f);
+                    elem = $($(".edesc-error")[f])
+                }
+                return ["error", elem, "This field is compulsory."];
+            }
+
+        }
+
+        return ["Data-Valid", expy, tot];
+    }
+
+    function editExpenseField(expy, tot) {
+        var pary = $(".expense-home");
+        expy = expy.expenses
+
+        $(".tot").html("&#8358; " + (tot.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")))
+        var addHTML = ``;
+
+        if (expy != undefined && expy != "" && expy.length > 0) {
+            expenseFieldsCount = expy.length;
+            $("#expyy").html(expenseFieldsCount);
+            for (var k = 0; k < expy.length; k++) {
+                var cur_exp = expy[k];
+                var last_id = ((k + 1) * 4)
+
+                addHTML += `<div class="row rw-` + last_id + `">
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Expense Name</label>
+                                        <input type="text" class="form-control ename" name="ename" value="` + cur_exp.ename + `" placeholder="Expense Name....">
+                                        <span class="text-danger ename-error my-1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-12">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Expense Value</label>
+                                        <input type="number" min="0" class="form-control evalue" name="evalue" value="` + cur_exp.evalue + `" placeholder="Expense Value....">
+                                        <span class="text-danger evalue-error my-1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group bmd-form-group">
+                                        <label class="bmd-label-floating">Expense Descroption</label>
+                                        <textarea class="form-control edesc" name="edesc" placeholder="Expense Description....">` + cur_exp.edesc + `</textarea>
+                                        <span class="text-danger edesc-error my-1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 col-md-12">
+                                    <a href="#" id="remove-` + last_id + `" onclick="removeExpenseField(event)" class="btn btn-primary remove-expense">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>`;
+
+            }
+        }
+
+        pary.append(addHTML);
+    }
+
 
     //Function to Open Modal
     openMdl_4.on("click", function (e) {
@@ -132,7 +225,15 @@ jQuery(document).ready(function ($) {
 
         var mdl = $("#addKidModalForm");
         mdl.modal("show");
-        $("input").val(" ")
+        $("input").val("")
+        $("select").val("")
+        $("textarea").val("")
+        var fieldsets = $("fieldset")
+        fieldsets.css({ 'display': "none" })
+        $(fieldsets[0]).removeClass("deactivated");
+        $(fieldsets[0]).css({ 'display': "block" })
+        counter = [0];
+        $(".fieldset-name").html(fNames[0]);
         $(".card-modal-title").html("Kids Form");
         $(".card-modal-description").html("Add a Child for the Kids To school Foundation.");
     });
@@ -193,6 +294,47 @@ jQuery(document).ready(function ($) {
 
     });
 
+    // function to add expense fields
+    createExpenseField.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation()
+        var par = $(".expense-home");
+        var last_id = ((expenseFieldsCount + 1) * 4)
+        expenseFieldsCount = parseInt($("#expyy").html());
+        var addHTML = ` <div class="row rw-` + last_id + `">
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Expense Name</label>
+                                    <input type="text" class="form-control ename" name="ename" placeholder="Expense Name....">
+                                    <span class="text-danger ename-error my-1"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Expense Value</label>
+                                    <input type="number" min="0" class="form-control evalue" name="evalue" placeholder="Expense Value....">
+                                    <span class="text-danger evalue-error my-1"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Expense Descroption</label>
+                                    <textarea class="form-control edesc" name="edesc" placeholder="Expense Description...."></textarea>
+                                    <span class="text-danger edesc-error my-1"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-md-12">
+                                <a href="#" id="remove-` + last_id + `" onclick="removeExpenseField(event)" class="btn btn-primary remove-expense">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                        </div>`;
+        par.append(addHTML);
+        expenseFieldsCount++;
+        $("#expyy").html(expenseFieldsCount);
+
+    });
+
     //function to move to the next fieldset
     nextFieldset.on("click", function (e) {
         e.preventDefault();
@@ -205,6 +347,7 @@ jQuery(document).ready(function ($) {
         var nextField = fieldsets[indx + 1];
         var FieldsetName = $(".fieldset-name");
         var url = $(this).attr("data-url");
+        $(".text-danger").html("");
 
 
         if (indx == 0) {
@@ -236,11 +379,12 @@ jQuery(document).ready(function ($) {
 
 
             } else {
-                console.log(valid);
+                // console.log(valid);
                 valid[0].html(valid[1]);
             }
 
-        } else if (indx == 1) {
+        }
+        else if (indx == 1) {
             inptArr.sname = $("#sname").val();
             inptArr.los = $("#los").val();
             inptArr.class = $("#class").val();
@@ -262,7 +406,34 @@ jQuery(document).ready(function ($) {
                 valid[0].html(valid[1]);
             }
 
-        } else if (indx == 2) {
+        }
+        else if (indx == 2) {
+            var expenseArray = [];
+            if (expenseFieldsCount <= 0) {
+                error.html("");
+                msg = "<span class='alert alert-success text-center'>No Expense Fields have been created</span>";
+                error.html(msg);
+            } else {
+                valid = field5(expenseArray);
+
+                if (valid[0] == "Data-Valid") {
+                    inptArr.expenses = valid[1];
+                    inptArr.totalExpense = valid[2];
+                    console.log(inptArr);
+                    counter[0] = indx + 1;
+                    $(prevField).css({ 'display': "none" });
+                    $(nextField).css({ 'display': 'block' });
+                    FieldsetName.html(fNames[indx + 1]);
+                    prevFieldset.removeClass("deactivated");
+                }
+                else {
+                    console.log(valid);
+                    valid[1].html(valid[2])
+                }
+            }
+
+        }
+        else if (indx == 3) {
 
             if ($("#ptitle").val() == "Other") {
                 inptArr.ptitle = $("#ptitle2").val();
@@ -290,7 +461,8 @@ jQuery(document).ready(function ($) {
                 console.log(valid);
                 valid[0].html(valid[1]);
             }
-        } else if (indx == 3) {
+        }
+        else if (indx == 4) {
             inptArr.story = $("#story").val();
             inptArr.goal = $("#goal").val();
             if ($("#bc")[0].files[0] === undefined) {
@@ -310,6 +482,7 @@ jQuery(document).ready(function ($) {
             valid = field4(inptArr);
 
             if (valid == "Data-Valid") {
+                console.log(inptArr)
                 var fd = new FormData();
                 fd.append("category", inptArr.category);
                 fd.append("fname", inptArr.fname.charAt(0).toUpperCase() + inptArr.fname.substr(1).toLowerCase());
@@ -334,8 +507,11 @@ jQuery(document).ready(function ($) {
                 fd.append("saddress", inptArr.saddress.charAt(0).toUpperCase() + inptArr.saddress.substr(1).toLowerCase());
                 fd.append("los", inptArr.los);
                 fd.append("class", inptArr.class);
-                fd.append("sfees", inptArr.sfees);
+                // fd.append("sfees", inptArr.sfees);
                 fd.append("sother", inptArr.sother);
+                fd.append("expenses", JSON.stringify({ "expenses": inptArr.expenses }));
+                console.log(JSON.stringify({ "expenses": inptArr.expenses }))
+                fd.append("totalExpense", inptArr.totalExpense)
                 fd.append("pname", inptArr.pname.charAt(0).toUpperCase() + inptArr.pname.substr(1).toLowerCase());
                 fd.append("ptitle", inptArr.ptitle.charAt(0).toUpperCase() + inptArr.ptitle.substr(1).toLowerCase());
                 fd.append("pemail", inptArr.pemail);
@@ -536,7 +712,8 @@ jQuery(document).ready(function ($) {
                         $("#age").val(data.success.age);
                         $("#gender").val(data.success.gender);
                         $("#country").val(data.success.country);
-                        var cix = $("#country").val().split("-");
+                        var cix = data.success.country.split("-");
+                        console.log(cix)
                         if (cix[1] == "" || cix[1] == undefined) {
                             var states = countries["131"].states;
                         } else {
@@ -551,31 +728,36 @@ jQuery(document).ready(function ($) {
                             html_state += "<option value='" + ste + "'>" + ste + "</option>";
                         }
 
-                        $("#state-o").append(html_state);
-                        $("#state-r").append(html_state);
-                        $("#state-o").val(data.success.state_o);
-                        $("#state-r").val(data.success.state_r);
+
+                        $("#state-o").html(html_state);
+                        $("#state-r").html(html_state);
+
+                        $("#state-o").val(data.success.state_o.trim());
+                        $("#state-r").val(data.success.state_r.trim());
+
                         $("#lga").val(data.success.lga);
                         $("#email").val(data.success.email);
                         $("#telephone").val(data.success.telephone.split("-")[1]);
                         $("#countryCode").val(data.success.telephone.split("-")[0]);
                         $("#sname").val(data.success.school_name);
                         $("#los").val(data.success.los);
-                        var cix = $("#los").val().split("-");
-                        var classes = levels[cix[1]].class;
-                        $("#class").empty();
-                        html_class = "<option value=''><!-----choose----></option>";
-                        for (var u = 0; u < classes.length; u++) {
-                            var ste = classes[u];
-                            html_class += "<option value='" + ste + "'>" + ste + "</option>";
+                        if (data.success.los && data.success.los != "") {
+                            var cix = $("#los").val().split("-");
+                            var classes = levels[cix[1]].class;
+                            $("#class").empty();
+                            html_class = "<option value=''><!-----choose----></option>";
+                            for (var u = 0; u < classes.length; u++) {
+                                var ste = classes[u];
+                                html_class += "<option value='" + ste + "'>" + ste + "</option>";
+                            }
+                            $("#class").append(html_class);
+                            $("#class").val(data.success.class);
                         }
-                        $("#class").append(html_class);
-                        $("#class").val(data.success.class);
+
                         $("#saddress").val(data.success.school_address);
-                        $("#sfees").val(data.success.school_fees);
                         $("#sother").val(data.success.other_school_details);
+                        editExpenseField(data.success.expenses, data.success.school_fees)
                         $('#ptitle option').each(function () {
-                            console.log(this.value);
                             if (this.value.trim() == data.success.parent_title.trim()) {
                                 $("#ptitle").val(data.success.parent_title)
                             }
@@ -815,6 +997,32 @@ jQuery(document).ready(function ($) {
                         }
                         $(".pro-info").html(data_html);
 
+                        if (data.success.expenses && data.success.expenses != null && data.success.expenses != "" && data.success.expenses != undefined) {
+                            var darkside = data.success.expenses.expenses;
+                            var data_html = "";
+                            for (var b = 0; b < darkside.length; b++) {
+                                var _html = `  <div class="row ml-3 my-4">
+                                                    <div class="col-md-4">
+                                                        <span class="frera">` + darkside[b].ename.toUpperCase() + `</span>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <span class="text-black mr-2 nigs">`+ prettyCurrency(darkside[b].evalue) + `</span>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="data-sub bera">
+                                                            <span>`+ darkside[b].edesc.toUpperCase() + `</span>
+                                                        </div>
+                                                    </div>
+                                                </div >`;
+                                data_html += _html
+                            }
+                        } else {
+                            var data_html = `<span class=text-danger">No Expenses set Yet</span>`;
+                        }
+                        $(".exp-info").html(data_html);
+
                         mdl.modal("show");
                     } else {
                         location.replace(data.success);
@@ -900,3 +1108,21 @@ jQuery(document).ready(function ($) {
 
 
 });
+
+function removeExpenseField(e) {
+    console.log("here")
+    var expenseFieldsCount = parseInt($("#expyy").html());
+    e.preventDefault();
+    e.stopPropagation();
+
+    if ($(e.target).hasClass("remove-expense")) {
+        var no = e.target.id.split("-")[1];
+    } else {
+        console.log($(e.target).parent())
+        var no = $(e.target).parent().attr("id").split("-")[1];
+    }
+    var ky = ".rw-" + no;
+    expenseFieldsCount--;
+    $("#expyy").html(expenseFieldsCount)
+    $(ky).remove();
+};

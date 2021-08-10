@@ -14,6 +14,7 @@ jQuery(document).ready(function ($) {
     var next = $(".next");
     var back = $(".back");
     var pay = $(".pay");
+    var titlesy = [];
     var kidsn = $(".get-kids");
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -159,6 +160,21 @@ jQuery(document).ready(function ($) {
         handler.openIframe();
     }
 
+    function addTitles() {
+        var naira = `&#8358; `;
+        for (var j = 0; j < titlesy.length; j++) {
+            var fi = titlesy[j].split("-")
+            var ti = fi[0];
+            var pri = fi[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            var tl = `<option value="` + ti + `">
+                           ` + ti + `(` + naira + pri + `)
+                        </option>`;
+
+            $("#title").append(tl);
+        }
+    }
+
+
     filterDOB.on("keydown", function (e) {
 
         var keys = [8, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105]
@@ -251,6 +267,7 @@ jQuery(document).ready(function ($) {
             success: function (data) {
                 swal.close();
                 if (data.success) {
+                    console.log(data.success)
                     adopt.attr("data-id", data.success.id);
                     adopt.attr("data-name", data.success.fname);
                     donate.attr("data-id", data.success.id);
@@ -364,6 +381,33 @@ jQuery(document).ready(function ($) {
                     }
                     $(".pro-info").html(data_html);
 
+                    if (data.success.expenses && data.success.expenses != null && data.success.expenses != "" && data.success.expenses != undefined) {
+                        var darkside = JSON.parse(data.success.expenses).expenses;
+                        var data_html = "";
+                        for (var b = 0; b < darkside.length; b++) {
+                            titlesy.push(darkside[b].ename + "-" + darkside[b].evalue)
+                            var _html = `  <div class="row ml-3 my-4">
+                                                    <div class="col-md-4">
+                                                        <span class="frera">` + darkside[b].ename.toUpperCase() + `</span>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <span class="text-black mr-2 nigs">`+ prettyCurrency(darkside[b].evalue) + `</span>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <div class="data-sub bera">
+                                                            <span>`+ darkside[b].edesc.toUpperCase() + `</span>
+                                                        </div>
+                                                    </div>
+                                                </div >`;
+                            data_html += _html
+                        }
+                    } else {
+                        var data_html = `<span class=text-danger">No Expenses set Yet</span>`;
+                    }
+                    $(".exp-info").html(data_html);
+
                     mdl.modal("show");
 
                 } else if (data.url) {
@@ -458,6 +502,7 @@ jQuery(document).ready(function ($) {
         next.attr("data-type", "donj");
         $("#kid_id").val(ID);
         pay.addClass("deactivated")
+        addTitles();
         modal_2.modal("show");
     });
 

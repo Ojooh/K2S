@@ -36,6 +36,28 @@ module.exports.getDash = async (req, res, next) => {
     }
 };
 
+//Function to render Profile Page
+module.exports.getProfile = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "far fa-user";
+        var title = "Profile";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ENV")) {
+            title = user[0].fname + " " + title;
+            var noty = await DB.getNotys(user[0].user_id);
+            var sidebar = { dash: "", usr: "active", adm: "", kds: "", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, noty: noty };
+            res.render('envoy/Profile', context);
+        } else {
+            res.redirect("/login");
+        }
+    } else {
+        res.redirect("/login");
+    }
+};
+
 //Function To Render Envoys Kids
 module.exports.getEnvoyKids = async (req, res, next) => {
     if (req.session.loggedin) {
@@ -154,7 +176,7 @@ module.exports.filterMyKids = async (req, res, next) => {
             var turl = req.originalUrl.split("page")[0];
             console.log(turl)
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, dor: roder, filt: filtys, turl: turl, start: start, kds: kids, noty: noty,  points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, dor: roder, filt: filtys, turl: turl, start: start, kds: kids, noty: noty, points: cur_t, curry: count, total: result.length, section: (start + kids.length) - 1 };
             res.render('envoy/filter', context);
         } else {
             var url = "/login";

@@ -17,10 +17,10 @@
                                     <%= kds[i].age %> Years
                                         <br>
                                         <% if (parseInt(kds[i].remaining)==0 ) { %>
-                                            &#8358; 0.00 / &#8358; <%= kds[i].school_fees %>
+                                            &#8358; 0.00 / &#8358; <%= (kds[i].school_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
                                             <% } else { %> 
                                                 &#8358; <%= kds[i].school_fees - kds[i].remaining %> / &#8358; <%=
-                                                        kds[i].school_fees %>
+                                                        (kds[i].school_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
                                                         <% } %>
                                                             <br>
 
@@ -65,7 +65,7 @@
                                 <%= kds[0][i].category %>
                                     <br>
                                     <% if (parseInt(kds[0][i].remaining)==0 ) { %>
-                                        &#8358; 0.00 / &#8358; <%= kds[0][i].school_fees %>
+                                        &#8358; 0.00 / &#8358; <%= (kds[0][i].school_fees).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
                                         <% } else { %>
                                             &#8358; <%= (kds[0][i].school_fees -
                                                 kds[0][i].remaining).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","

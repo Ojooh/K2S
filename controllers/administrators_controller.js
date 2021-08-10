@@ -46,10 +46,10 @@ module.exports.getAllUsers = async (req, res, next) => {
             let result = await DB.getAllUsers();
             res.json({ success: result });
         } else {
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
-        res.json({ url: url });
+        res.redirect(url)
     }
 }
 
@@ -138,11 +138,11 @@ module.exports.createAdminProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login"
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login"
-        res.json({ url: url });
+        res.redirect(url)
     }
 };
 
@@ -169,11 +169,11 @@ module.exports.updateProfileStatus = async (req, res, next) => {
             res.json({ success: msg });
         } else {
             var url = "/login"
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login"
-        res.json({ url: url });
+        res.redirect(url)
     }
 
 };
@@ -210,11 +210,11 @@ module.exports.getProfile = async (req, res, next) => {
 
         } else {
             var url = "/login"
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login"
-        res.json({ url: url });
+        res.redirect(url)
     }
 
 
@@ -232,7 +232,7 @@ module.exports.getKidProfile = async (req, res, next) => {
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
             let edittee = await DB.getKidById(ID);
-            //console.log(edittee);
+            edittee[0].expenses = ((edittee[0].expenses != "") ? JSON.parse(edittee[0].expenses) : "");
 
             if (type == "edit") {
                 if (mode == "form") {
@@ -252,11 +252,11 @@ module.exports.getKidProfile = async (req, res, next) => {
 
         } else {
             var url = "/login"
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login"
-        res.json({ url: url });
+        res.redirect(url)
     }
 
 
@@ -320,11 +320,11 @@ module.exports.updateAdminProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login"
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login"
-        res.json({ url: url });
+        res.redirect(url)
     }
 }
 
@@ -368,11 +368,11 @@ module.exports.deleteProfile = async (req, res, next) => {
             res.json({ success: msg });
         } else {
             var url = "/login";
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login";
-        res.json({ url: url });
+        res.redirect(url)
     }
 
 };
@@ -465,11 +465,11 @@ module.exports.createSponsorProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login";
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login";
-        res.json({ url: url });
+        res.redirect(url)
     }
 }
 
@@ -556,11 +556,11 @@ module.exports.updateSponsorProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login";
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login";
-        res.json({ url: url });
+        res.redirect(url)
     }
 }
 
@@ -651,11 +651,11 @@ module.exports.createEnvoyProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login";
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login";
-        res.json({ url: url });
+        res.redirect(url)
     }
 }
 
@@ -740,11 +740,11 @@ module.exports.updateEnvoyProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login";
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login";
-        res.json({ url: url });
+        res.redirect(url)
     }
 }
 
@@ -800,29 +800,38 @@ module.exports.createKidProfile = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
         var user = await DB.getUserByEmail(email);
-
+        // console.log(req.body)
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
-            console.log(req);
             var [raby, state, message] = await validator.validKid(req, "add");
 
             if (state) {
+                // console.log(req.body.expenses);
+                // console.log(JSON.stringify(req.body.expenses));
                 if (!req.files) {
-                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id);
+                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id, req.body.expenses);
                 } else {
-                    let avatar_1 = req.files.pp;
-                    let avatar_2 = req.files.bc
+                    let db_path_2 = ""
+                    let avatar_1 = ((req.files.pp) ? req.files.pp : "");
+                    let avatar_2 = ((req.files.bc) ? req.files.bc : "")
                     let [name_1, ext_1] = avatar_1.name.split(".");
-                    let [name_2, ext_2] = avatar_2.name.split(".");
-                    let new_name_1 = uuidv4() + "." + ext_1
-                    let new_name_2 = uuidv4() + "." + ext_2
-                    let dir_1 = "public/images/profile/kids/" + new_name_1;
-                    let dir_2 = "public/doc/bc/" + new_name_2;
-                    let db_path_1 = "/images/profile/kids/" + new_name_1;
-                    let db_path_2 = "/doc/bc/" + new_name_2;
+                    if (avatar_2 != "") {
+                        let [name_2, ext_2] = avatar_2.name.split(".");
+                        let new_name_2 = uuidv4() + "." + ext_2
+                        let dir_2 = "public/doc/bc/" + new_name_2;
+                        db_path_2 = "/doc/bc/" + new_name_2;
+                    }
 
-                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id);
+                    let new_name_1 = uuidv4() + "." + ext_1
+                    let dir_1 = "public/images/profile/kids/" + new_name_1;
+                    let db_path_1 = "/images/profile/kids/" + new_name_1;
+
+
+                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id, req.body.expenses);
                     avatar_1.mv(dir_1);
-                    avatar_2.mv(dir_2);
+
+                    if (avatar_2 != "") {
+                        avatar_2.mv(dir_2);
+                    }
 
                 }
                 res.json({ success: message.message });
@@ -834,11 +843,11 @@ module.exports.createKidProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login";
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login";
-        res.json({ url: url });
+        res.redirect(url)
     }
 }
 
@@ -865,11 +874,11 @@ module.exports.updateKidStatus = async (req, res, next) => {
             res.json({ success: msg });
         } else {
             var url = "/login"
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login"
-        res.json({ url: url });
+        res.redirect(url)
     }
 
 }
@@ -911,9 +920,14 @@ module.exports.updateKidProfile = async (req, res, next) => {
             var [raby, state, message] = await validator.validKid(req, "edit");
 
             if (state) {
+                console.log(req.body.expenses);
+                // console.log(JSON.parse(req.body.expenses));
+                // req.body.expenses = JSON.parse(req.body.expenses)
                 if (!req.files) {
+                    let pp = edittee[0].profile_photo;
+                    let bc = edittee[0].bc;
                     let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                    let update = DB.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id, datetime);
+                    let update = DB.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, bc, pp, user[0].user_id, datetime, req.body.expenses);
                 } else {
                     if (edittee[0].profile_photo != "" && req.body.pp) {
                         fs.unlinkSync(path.join(__dirname, '..', 'public', edittee[0].profile_photo));
@@ -946,7 +960,7 @@ module.exports.updateKidProfile = async (req, res, next) => {
                     }
 
                     let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
-                    let update = DB.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.sfees, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id, datetime);
+                    let update = DB.updateKidProfile(ID, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id, datetime, req.body.expenses);
                     if (req.files.pp) {
                         req.files.pp.mv(dir_1);
                     }
@@ -965,11 +979,11 @@ module.exports.updateKidProfile = async (req, res, next) => {
             // res.render('admin/addAdministrator', context);
         } else {
             var url = "/login"
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login"
-        res.json({ url: url });
+        res.redirect(url)
     }
 };
 
@@ -988,11 +1002,11 @@ module.exports.deleteKidProfile = async (req, res, next) => {
             res.json({ success: msg });
         } else {
             var url = "/login";
-            res.json({ url: url });
+            res.redirect(url)
         }
     } else {
         var url = "/login";
-        res.json({ url: url });
+        res.redirect(url)
     }
 
 };

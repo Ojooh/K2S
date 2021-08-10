@@ -63,7 +63,7 @@ jQuery(document).ready(function ($) {
                     </div>
                 </li>
                 <li class="nav-item <%= active.usr %> mob">
-                    <a class="nav-link" href="sponsors.html">
+                   <a class="nav-link" href="/envoy/profile">
                         <i class="fas fa-user"></i>
                         Profile
                     </a>

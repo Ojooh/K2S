@@ -66,6 +66,7 @@ function prettyDateOnly(date) {
 
 jQuery(document).ready(function ($) {
     var dates = $(".pretty-date");
+    var datesO = $(".pretty-date-only");
     var timeO = $(".time-only");
     var closeModal = $(".close-modal");
     var modal = $(".modal");
@@ -79,6 +80,11 @@ jQuery(document).ready(function ($) {
     for (var t = 0; t < dates.length; t++) {
         var date = prettyDate($(dates[t]).html().trim());
         $(dates[t]).html(date);
+    }
+
+    for (var t = 0; t < datesO.length; t++) {
+        var date = prettyDateOnly($(datesO[t]).html().trim());
+        $(datesO[t]).html(date);
     }
 
     for (var t = 0; t < currency.length; t++) {

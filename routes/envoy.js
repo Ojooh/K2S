@@ -6,6 +6,9 @@ var adminHandler = require('../controllers/administrators_controller');
 /* GET login page. */
 router.get('/', envoyHandler.getDash);
 
+/* GET login page. */
+router.get('/profile', envoyHandler.getProfile);
+
 /* GET Kids page. */
 router.get('/Kids', envoyHandler.getEnvoyKids);
 

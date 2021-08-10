@@ -772,6 +772,18 @@ jQuery(document).ready(function ($) {
   var state = $('#state');
   var state_R = $('#state-r');
   var state_O = $('#state-o');
+  var html_ctry = "<option value=''>Select Country .....</option>";
+
+
+
+  for (var t = 0; t < countries.length; t++) {
+    var ctry = countries[t].country;
+    var ctry_val = ctry + "-" + t
+    html_ctry += "<option value='" + ctry_val + "'>" + ctry + "</option>";
+  }
+  country.append(html_ctry);
+  // var cix = c.split("-");
+  // var states = countries[cix[1]].states;
 
 
 

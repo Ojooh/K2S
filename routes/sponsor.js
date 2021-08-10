@@ -6,6 +6,9 @@ var sponsorHandler = require('../controllers/sponsor_controller');
 /* GET login page. */
 router.get('/', sponsorHandler.getDash);
 
+/* GET login page. */
+router.get('/profile', sponsorHandler.getMyProfile);
+
 /* GET Kids page. */
 router.get('/Kids', sponsorHandler.getKids);
 

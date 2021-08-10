@@ -459,13 +459,13 @@ jQuery(document).ready(function ($) {
                         $("#country").val(data.success.country);
                         var cix = $("#country").val().split("-");
                         var states = countries[cix[1]].states;
-                        $("#state").empty();
+                        $("#state").html("");
                         html_state = "<option value=''><!-----choose----></option>";
                         for (var u = 0; u < states.length; u++) {
                             var ste = states[u];
                             html_state += "<option value='" + ste + "'>" + ste + "</option>";
                         }
-                        $("#state").append(html_state);
+                        $("#state").html(html_state);
                         $("#state").val(data.success.state);
                         $("#email").val(data.success.email);
                         $("#telephone").val(data.success.telephone.split("-")[1]);

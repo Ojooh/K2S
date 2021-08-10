@@ -24,16 +24,17 @@
                 <form class=" mt-4" method="POST" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="col-12">
-                            <div class="form-group my-4">
+                            <div class="form-group">
                                 <h3 class="fieldset-name text-center">Personal Bio</h3>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-12">
-                            <div class="form-group error my-4"></div>
+                            <div class="form-group error my-2"></div>
                         </div>
                     </div>
+                    
                     <fieldset>
                         <div class="form-row">
                             <div class="col-lg-3 col-md-6">
@@ -49,55 +50,50 @@
                                     <span class="text-danger category-error my-1"></span>
                                 </div>
                             </div>
-
+                    
                             <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">First Name</label>
-                                    <input type="text" class="form-control" id="fname" name="fname"
-                                        placeholder="First Name.....">
+                                    <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name.....">
                                     <span class="text-danger fname-error my-1"></span>
                                 </div>
-
+                    
                             </div>
-
+                    
                             <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Middle Name</label>
-                                    <input type="text" class="form-control" id="mname" name="mname"
-                                        placeholder="Middle Name.....">
+                                    <input type="text" class="form-control" id="mname" name="mname" placeholder="Middle Name.....">
                                     <span class="text-danger mname-error my-1"></span>
                                 </div>
-
+                    
                             </div>
-
+                    
                             <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Last Name</label>
-                                    <input type="text" class="form-control" id="lname" name="lname"
-                                        placeholder="Last Name.....">
+                                    <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name.....">
                                     <span class="text-danger lname-error my-1"></span>
                                 </div>
                             </div>
                         </div>
-
+                    
                         <div class="form-row">
                             <div class="col-lg-4 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">DOB</label>
-                                    <input type="date" class="form-control" id="dob" name="dob"
-                                        placeholder="Date of Birth">
+                                    <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of Birth">
                                     <span class="text-danger dob-error my-1"></span>
                                 </div>
-
+                    
                             </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Age</label>
-                                    <input type="text" class="form-control" id="age" name="age" placeholder="Age....."
-                                        disabled>
+                                    <input type="text" class="form-control" id="age" name="age" placeholder="Age....." disabled>
                                     <span class="text-danger age-error my-1"></span>
                                 </div>
-
+                    
                             </div>
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-group bmd-form-group">
@@ -111,13 +107,12 @@
                                 </div>
                             </div>
                         </div>
-
+                    
                         <div class="form-row">
                             <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Country of residence</label>
-                                    <input class="form-control" id="country" name="country" placeholder="country....."
-                                        value="Nigeria" disabled>
+                                    <select class="form-control" id="country" placeholder="country....."></select>
                                     <span class="text-danger country-error my-1"></span>
                                 </div>
                             </div>
@@ -125,7 +120,7 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">State of Origin</label>
                                     <select class="form-control" id="state-o">
-
+                    
                                     </select>
                                     <span class="text-danger state-o-error my-1"></span>
                                 </div>
@@ -134,7 +129,7 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">State of Resdence</label>
                                     <select class="form-control" id="state-r">
-
+                    
                                     </select>
                                     <span class="text-danger state-r-error my-1"></span>
                                 </div>
@@ -142,13 +137,12 @@
                             <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Local Government Area</label>
-                                    <input type="text" class="form-control" id="lga" name="lga"
-                                        placeholder="Local Government Area....">
+                                    <input type="text" class="form-control" id="lga" name="lga" placeholder="Local Government Area....">
                                     <span class="text-danger lga-error my-1"></span>
                                 </div>
                             </div>
                         </div>
-
+                    
                         <div class="form-row">
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
@@ -169,23 +163,22 @@
                                     <div class="col-8">
                                         <div class="form-group bmd-form-group">
                                             <label class="bmd-label-floating">Telephone</label>
-                                            <input type="tel" class="form-control" id="telephone"
-                                                placeholder="Phone Number....">
+                                            <input type="tel" class="form-control" id="telephone" placeholder="Phone Number....">
                                             <span class="text-danger tely-error my-1"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                    
                     </fieldset>
+
                     <fieldset>
                         <div class="form-row">
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">School Name</label>
-                                    <input type="text" class="form-control" id="sname" name="sname"
-                                        placeholder="School Name....">
+                                    <input type="text" class="form-control" id="sname" name="sname" placeholder="School Name....">
                                     <span class="text-danger sname-error my-1"></span>
                                 </div>
                             </div>
@@ -193,7 +186,7 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Level of Study</label>
                                     <select class="form-control" id="los">
-
+                    
                                     </select>
                                     <span class="text-danger los-error my-1"></span>
                                 </div>
@@ -202,41 +195,69 @@
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Class</label>
                                     <select class="form-control" id="class">
-
+                    
                                     </select>
                                     <span class="text-danger class-error my-1"></span>
                                 </div>
                             </div>
-
+                    
                         </div>
                         <div class="form-row">
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">School Address</label>
-                                    <textarea class="form-control" id="saddress" placeholder="School Address..."
-                                        row="2"></textarea>
+                                    <textarea class="form-control" id="saddress" placeholder="School Address..." row="2"></textarea>
                                     <span class="text-danger saddress-error my-1"></span>
                                 </div>
                             </div>
                             <!-- <div class="col-md-6">
-                                <div class="form-group bmd-form-group">
-                                    <label class="bmd-label-floating">School Fees</label>
-                                    <input type="number" class="form-control" id="sfees" placeholder="School Fees ....."
-                                        min="0">
-                                    <span class="text-danger sfees-error my-1"></span>
-                                </div>
-                            </div> -->
+                                                    <div class="form-group bmd-form-group">
+                                                        <label class="bmd-label-floating">School Fees</label>
+                                                        <input type="number" class="form-control" id="sfees" placeholder="School Fees ....."
+                                                            min="0">
+                                                        <span class="text-danger sfees-error my-1"></span>
+                                                    </div>
+                                                </div> -->
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Other Details</label>
-                                    <textarea class="form-control" id="sother" placeholder="School Address..."
-                                        rows="6"></textarea>
+                                    <textarea class="form-control" id="sother" placeholder="School Address..." rows="6"></textarea>
                                     <span class="text-danger sother-error my-1"></span>
                                 </div>
                             </div>
-
+                    
                         </div>
                     </fieldset>
+
+                    <fieldset>
+                        <div class="form-row">
+                            <div class="col-lg-12 col-md-12 my-3">
+                                <div class="text-center">
+                                    Start by creating an expense field, where you input an expense name, expense cost in Naira (&#8358;) and expense description for the child.
+                                    You can create multiple fields by clicking on the create button.
+                                </div>
+                                <span id="expyy" class="deactivated">0</span>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 mdl-kid-form my-4">
+                                <a href="#" id="createExpense" class="btn btn-outline-kts">
+                                    <i class="fas fa-plus"></i>
+                                    Create an Expense Field
+                                </a>
+
+                                <div class="float-right">
+                                    <h3 class="tot"></h3>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="form-row expense-home">
+
+                            
+                                  
+                        </div>  
+                    </fieldset>
+
                     <fieldset>
                         <div class="form-row">
                             <div class="col-lg-6 col-md-12">
@@ -288,6 +309,7 @@
 
                         </div>
                     </fieldset>
+
                     <fieldset>
                         <div class="form-row">
                             <div class="col-md-12">

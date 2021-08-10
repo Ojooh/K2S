@@ -110,6 +110,7 @@ module.exports.validEnvoy = async (req, type) => {
 
 //Function To Validate Kid Profile Entry
 module.exports.validKid = async (req, type) => {
+    console.log(type)
     var exist = await helper.kidIsEmailExist(req.body.email);
 
     if (helper.isEmpty(req.body.category)) {
@@ -146,10 +147,6 @@ module.exports.validKid = async (req, type) => {
         return [null, false, { message: 'Invalid or No Value for Class Field.' }];
     } else if (!helper.isEmpty(req.body.sname) && helper.isEmpty(req.body.saddress)) {
         return [null, false, { message: 'Invalid or No Value for School Address Field.' }];
-    } else if (!helper.isEmpty(req.body.sname) && helper.isEmpty(req.body.sfees)) {
-        return [null, false, { message: 'Invalid or No Value for School Fees.' }];
-    } else if (!helper.isEmpty(req.body.sfees) && isNaN(req.body.sfees)) {
-        return [null, false, { message: 'Invalid or No Value for School Fees' }];
     } else if (!helper.isEmpty(req.body.sother) && req.body.sother.split(" ").length > 501) {
         return [null, false, { message: 'Only 500 words Allowed for school detials.' }];
     } else if (helper.isEmpty(req.body.ptitle) || helper.validateName(req.body.ptitle) == false) {
@@ -166,7 +163,9 @@ module.exports.validKid = async (req, type) => {
         return [null, false, { message: 'Only 500 words Allowed.' }];
     } else if (req.files && req.files.bc && helper.isDoc(req.files.bc) == false) {
         return [null, false, { message: 'Only Image, pdf or docx files Allowed.' }];
-    } else if (req.files && req.files.pp && helper.isImage(req.files.pp) == false) {
+    } else if (!req.files && type == "add") {
+        return [null, false, { message: 'Profile Image is compulsory' }];
+    } else if (req.files && !req.files.pp && helper.isImage(req.files.pp) == false) {
         return [null, false, { message: 'File Sent is not an Image' }];
     } else {
         var user_id = await helper.generateUserId(req.body.title, 5)
