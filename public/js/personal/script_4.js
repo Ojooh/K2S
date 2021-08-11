@@ -25,6 +25,7 @@ jQuery(document).ready(function ($) {
     var prevFieldset = $(".back");
     var profile = $(".profile");
     var createExpenseField = $("#createExpense");
+    var total_expyr = 0;
     // var removeExpenseField = $(".remove-expense");
     // console.log(removeExpenseField)
 
@@ -170,9 +171,8 @@ jQuery(document).ready(function ($) {
 
     function editExpenseField(expy, tot) {
         var pary = $(".expense-home");
-        expy = expy.expenses
+        expy = expy.expenses;
 
-        $(".tot").html("&#8358; " + (tot.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")))
         var addHTML = ``;
 
         if (expy != undefined && expy != "" && expy.length > 0) {
@@ -181,6 +181,7 @@ jQuery(document).ready(function ($) {
             for (var k = 0; k < expy.length; k++) {
                 var cur_exp = expy[k];
                 var last_id = ((k + 1) * 4)
+                total_expyr = parseFloat(total_expyr) + parseFloat(cur_exp.evalue);
 
                 addHTML += `<div class="row rw-` + last_id + `">
                                 <div class="col-lg-4 col-md-12">
@@ -212,6 +213,8 @@ jQuery(document).ready(function ($) {
                             </div>`;
 
             }
+
+            $(".tot").html("&#8358; " + (total_expyr.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")))
         }
 
         pary.append(addHTML);
@@ -301,6 +304,15 @@ jQuery(document).ready(function ($) {
         var par = $(".expense-home");
         var last_id = ((expenseFieldsCount + 1) * 4)
         expenseFieldsCount = parseInt($("#expyy").html());
+        if (expenseFieldsCount >= 1) {
+            expy = $(".evalue")
+            total_expyr = 0;
+            for (var k = 0; k < expy.length; k++) {
+                var cur_exp = $(expy[k]);
+                total_expyr = parseFloat(total_expyr) + parseFloat(cur_exp.val());
+                $(".tot").html("&#8358; " + (total_expyr.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")))
+            }
+        }
         var addHTML = ` <div class="row rw-` + last_id + `">
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-group bmd-form-group">

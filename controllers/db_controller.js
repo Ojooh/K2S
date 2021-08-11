@@ -1283,8 +1283,8 @@ module.exports.addDonation = (ref, user, kid, amount, title, type, status) => {
     });
 };
 
-module.exports.addPerecntage = (kid, percent, remd) => {
-    const query = "UPDATE kids SET percent = '" + percent + "', remaining = '" + remd + "' WHERE kid_id = '" + kid + "';";
+module.exports.addPerecntage = (kid, percent, remd, expenses) => {
+    const query = "UPDATE kids SET percent = '" + percent + "', expenses = '" + expenses + "', remaining = '" + remd + "' WHERE kid_id = '" + kid + "';";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {

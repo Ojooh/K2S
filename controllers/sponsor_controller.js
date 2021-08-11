@@ -519,6 +519,26 @@ module.exports.getVerification = async (req, res, next) => {
                 if (donatey !== undefined) {
                     var kid = await DB.getKidById(req.params.kd);
                     var title = req.params.ttl;
+                    var expenses = JSON.parse(kid[0].expenses).expenses;
+
+
+                    if (expenses.length > 0) {
+                        for (var h = 0; h < expenses.length; h++) {
+                            console.log(title)
+                            if (expenses[h].ename == title) {
+                                if ((parseFloat(expenses[h].evalue) > (parseFloat(output.data.amount) / 100))) {
+                                    expenses[h].evalue = (parseFloat(expenses[h].evalue) - (parseFloat(output.data.amount) / 100)).toString()
+                                    console.log(expenses[h].evalue)
+                                }
+                                else {
+                                    expenses[h].evalue = "0";
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    var texpy = JSON.stringify({ "expenses": expenses });
 
                     if (kid[0].remaining == 0) {
                         var set = parseFloat(kid[0].school_fees);
@@ -528,8 +548,10 @@ module.exports.getVerification = async (req, res, next) => {
                         var set = parseFloat(kid[0].remaining);
                     }
                     var percentage = ((parseFloat(output.data.amount) / 100) * 100) / set;
+
+
                     await DB.addDonation(ref, user[0].user_id, kid[0].kid_id, parseInt(output.data.amount) / 100, title, output.data.channel, '1');
-                    await DB.addPerecntage(kid[0].kid_id, percentage, remaining)
+                    await DB.addPerecntage(kid[0].kid_id, percentage, remaining, texpy)
 
                     if (remaining <= 0) {
                         await DB.updateKidStatus(kid[0].id, '0');
@@ -632,6 +654,25 @@ module.exports.chargeCard = async (req, res, next) => {
                             var kid = await DB.getKidById(req.body.kidID);
                             var title = req.body.title;
                             var ref = req.body.ref;
+                            var expensez = JSON.parse(kid[0].expenses).expenses;
+
+
+                            if (expensez.length > 0) {
+                                for (var h = 0; h < expensez.length; h++) {
+                                    if (expensez[h].ename == title) {
+                                        if ((parseFloat(expensez[h].evalue) > (parseFloat(output.data.amount) / 100))) {
+                                            expensez[h].evalue = (parseFloat(expensez[h].evalue) - (parseFloat(output.data.amount) / 100)).toString()
+                                            console.log(expensez[h].evalue)
+                                        }
+                                        else {
+                                            expensez[h].evalue = "0";
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+
+                            var texpy = JSON.stringify({ "expenses": expensez });
 
                             if (kid[0].remaining == 0) {
                                 var set = parseFloat(kid[0].school_fees);
@@ -642,7 +683,7 @@ module.exports.chargeCard = async (req, res, next) => {
                             }
                             var percentage = ((parseFloat(output.data.amount) / 100) * 100) / set;
                             await DB.addDonation(ref, user[0].user_id, kid[0].kid_id, parseInt(output.data.amount) / 100, title, output.data.channel, '1');
-                            await DB.addPerecntage(kid[0].kid_id, percentage, remaining)
+                            await DB.addPerecntage(kid[0].kid_id, percentage, remaining, texpy)
 
                             if (remaining <= 0) {
                                 await DB.updateKidStatus(kid[0].id, '0');
@@ -896,6 +937,28 @@ module.exports.chargeWallet = async (req, res, next) => {
             var ref = req.body.ref;
             var kid = await DB.getKidById(req.body.kidID);
             var title = req.body.title;
+            var expenses = JSON.parse(kid[0].expenses).expenses;
+
+            if (expenses.length > 0) {
+
+                for (var h = 0; h < expenses.length; h++) {
+                    if (expenses[h].ename.trim() == title.trim()) {
+
+                        if ((parseFloat(expenses[h].evalue) > amount)) {
+                            expenses[h].evalue = (parseFloat(expenses[h].evalue) - amount).toString()
+                            console.log(expenses[h].evalue)
+                        }
+                        else {
+                            expenses[h].evalue = "0";
+                        }
+                        break;
+                    }
+
+                }
+            }
+
+            var texpy = JSON.stringify({ "expenses": expenses });
+
 
             if ((wallet.length > 0 && wallet[0].is_active == '1') && (user[0].user_id == wallet[0].owner)) {
                 var avail = parseFloat(wallet[0].amount);
@@ -915,7 +978,7 @@ module.exports.chargeWallet = async (req, res, next) => {
                     }
                     var percentage = ((amount) * 100) / set;
                     await DB.addDonation(ref, user[0].user_id, kid[0].kid_id, amount, title, wallety, '1');
-                    await DB.addPerecntage(kid[0].kid_id, percentage, remaining);
+                    await DB.addPerecntage(kid[0].kid_id, percentage, remaining, texpy);
 
                     if (remaining <= 0) {
                         await DB.updateKidStatus(kid[0].id, '0');
