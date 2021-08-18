@@ -153,7 +153,7 @@ module.exports.validKid = async (req, type) => {
         return [null, false, { message: 'Invalid or No Value for Parent Title Field.' }];
     } else if (helper.isEmpty(req.body.pname) || helper.validateName(req.body.pname) == false) {
         return [null, false, { message: 'Invalid or No Value for Parent Name Field.' }];
-    } else if (helper.isEmpty(req.body.pemail) || helper.validateEmail(req.body.pemail) == false) {
+    } else if (!helper.isEmpty(req.body.pemail) && helper.validateEmail(req.body.pemail) == false) {
         return [null, false, { message: 'Invalid or No Value for Parent Email Field.' }];
     } else if (helper.isEmpty(req.body.ptel) || helper.validateTel(req.body.ptel) == false) {
         return [null, false, { message: 'Invalid or No Value for Telephone Field.' }];

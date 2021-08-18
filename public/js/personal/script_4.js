@@ -19,8 +19,8 @@ jQuery(document).ready(function ($) {
     var editKid = $(".edit-kid");
     var deleteKid = $(".delete-kid");
     var profile = $(".profile");
-    var viewPassword = $("#basic-addon12");
-    var genPassword = $("#basic-addon2");
+    // var viewPassword = $("#basic-addon12");
+    // var genPassword = $("#basic-addon2");
     var nextFieldset = $(".next");
     var prevFieldset = $(".back");
     var profile = $(".profile");
@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
             return [$(".ptitle-error"), "Invalid or No Value for Parent Title Field."];
         } else if (inptArr.pname == "" || nameRegex.test(inptArr.pname) == false) {
             return [$(".pname-error"), "Invalid or No Value for Parent Name Field."];
-        } else if (inptArr.pemail == "" || emailRegex.test(inptArr.pemail) == false) {
+        } else if (inptArr.pemail != "" && emailRegex.test(inptArr.pemail) == false) {
             return [$(".pemail-error"), "Invalid or No Value for Parent Email Field."];
         } else if (inptArr.ptel == "" || telRegex.test(inptArr.ptel) == false) {
             return [$(".ptel-error"), "Invalid or No Value for Telephone Field."];
@@ -360,6 +360,7 @@ jQuery(document).ready(function ($) {
         var FieldsetName = $(".fieldset-name");
         var url = $(this).attr("data-url");
         $(".text-danger").html("");
+        $(".error").html("");
 
 
         if (indx == 0) {
@@ -714,6 +715,11 @@ jQuery(document).ready(function ($) {
                 if (data.success) {
 
                     if (type[1] == "modal") {
+                        var fieldsets = $("fieldset")
+                        fieldsets.css({ 'display': "none" })
+                        $(fieldsets[0]).removeClass("deactivated");
+                        $(fieldsets[0]).css({ 'display': "block" })
+                        counter = [0];
                         $(".card-modal-title").html(data.success.fname + " " + data.success.lname + " Profile Form");
                         $(".card-modal-description").html("Edit " + data.success.fname + "'s Kid Profile");
                         $("#category").val(data.success.category);
@@ -776,6 +782,7 @@ jQuery(document).ready(function ($) {
                         });
 
                         if ($("#ptitle").val() == "") {
+                            $("#ptitle").val("Other")
                             $("#ptitle2").attr("type", "text");
                             $("#ptitle2").val(data.success.parent_title);
                         }

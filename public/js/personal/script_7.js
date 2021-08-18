@@ -156,7 +156,7 @@ jQuery(document).ready(function ($) {
             next.attr("data-type", "qky");
         } else if ($(this).hasClass("dn")) {
             $(".card-modal-title").html("Donations");
-            $(".card-modal-description").html("Money put in this wallet can be used to attend to other kids that are not focused on");
+            $(".card-modal-description").html("Money in this wallet is used to attend to kids that are not focused on.");
             $(".dny").removeClass("deactivated");
             $(".qky").addClass("deactivated");
             $(".asy").addClass("deactivated");
@@ -416,6 +416,6 @@ jQuery(document).ready(function ($) {
         $(this).toggleClass("selected");
     });
 
-    
+
 
 });

@@ -805,10 +805,14 @@ module.exports.createKidProfile = async (req, res, next) => {
             var [raby, state, message] = await validator.validKid(req, "add");
 
             if (state) {
+                var is_active = '1';
+                if (user[0].user_type == "ENV") {
+                    is_active = '0'
+                }
                 // console.log(req.body.expenses);
                 // console.log(JSON.stringify(req.body.expenses));
                 if (!req.files) {
-                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id, req.body.expenses);
+                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, req.body.bc, req.body.pp, user[0].user_id, req.body.expenses, is_active);
                 } else {
                     let db_path_2 = ""
                     let avatar_1 = ((req.files.pp) ? req.files.pp : "");
@@ -826,7 +830,7 @@ module.exports.createKidProfile = async (req, res, next) => {
                     let db_path_1 = "/images/profile/kids/" + new_name_1;
 
 
-                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id, req.body.expenses);
+                    let insert = await DB.insertKidProfile(message.user_id, req.body.category, req.body.fname, req.body.lname, req.body.mname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state_o, req.body.state_r, req.body.lga, req.body.email, req.body.tely, req.body.sname, req.body.saddress, req.body.los, req.body.class, req.body.totalExpense, req.body.sother, req.body.pname, req.body.ptitle, req.body.pemail, req.body.ptel, req.body.story, req.body.goal, db_path_2, db_path_1, user[0].user_id, req.body.expenses, is_active);
                     avatar_1.mv(dir_1);
 
                     if (avatar_2 != "") {
@@ -860,7 +864,7 @@ module.exports.updateKidStatus = async (req, res, next) => {
         var status = req.body.status;
         var change = "";
 
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
             if (status == "False") {
                 status = "0";
                 change = "Deactivated";

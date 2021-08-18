@@ -55,14 +55,14 @@
                                                             <div class="custom-control custom-switch">
                                                                 <input type="checkbox" class="custom-control-input"
                                                                     id="customSwitch-<%= kds[i].id %>" value="False"
-                                                                    checked>
+                                                                    checked disabled>
                                                                 <label class="custom-control-label"
                                                                     for="customSwitch-<%= kds[i].id %>"> Active</label>
                                                             </div>
                                                             <% } else { %>
                                                                 <div class="custom-control custom-switch">
                                                                     <input type="checkbox" class="custom-control-input"
-                                                                        id="customSwitch-<%= kds[i].id %>" value="True">
+                                                                        id="customSwitch-<%= kds[i].id %>" value="True" disabled>
                                                                     <label class="custom-control-label"
                                                                         for="customSwitch-<%= kds[i].id %>">
                                                                         In-Active</label>
@@ -127,14 +127,14 @@
                                                         <% if (kds[0][i].is_active) { %>
                                                             <div class="custom-control custom-switch">
                                                                 <input type="checkbox" class="custom-control-input"
-                                                                    id="customSwitch-<%= kds[0][i].id %>" value="False" checked>
+                                                                    id="customSwitch-<%= kds[0][i].id %>" value="False" checked disabled>
                                                                 <label class="custom-control-label" for="customSwitch-<%= kds[0][i].id %>">
                                                                     Active</label>
                                                             </div>
                                                             <% } else { %>
                                                                 <div class="custom-control custom-switch">
                                                                     <input type="checkbox" class="custom-control-input"
-                                                                        id="customSwitch-<%= kds[0][i].id %>" value="True">
+                                                                        id="customSwitch-<%= kds[0][i].id %>" value="True" disabled>
                                                                     <label class="custom-control-label" for="customSwitch-<%= kds[0][i].id %>">
                                                                         In-Active</label>
                                                                 </div>
