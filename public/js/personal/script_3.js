@@ -1,14 +1,7 @@
 jQuery(document).ready(function ($) {
     var error = $(".error");
-    var sidebarToggler = $("#sideBarToggler");
-    var closeSidebar = $(".close-sidebar");
-    var window_width = $(window).width();
-    var sideBar = $("#sideBar");
-    var mainPanel = $(".main-content");
-    var dates = $(".pretty-date");
     var openMdl_3 = $(".mdl-envoy-form");
     var modal = $(".modal");
-    var closeModl = $(".close-modal");
     var dob = $("#dob");
     var age = $("#age");
     var deleteImage = $(".delete-image");
@@ -20,157 +13,9 @@ jQuery(document).ready(function ($) {
     var profile = $(".profile");
     var viewPassword = $("#basic-addon12");
     var genPassword = $("#basic-addon2");
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var search = $("#basic-addon1");
 
 
-    if (window_width <= 991) {
-        if (!$(".side-nav li").hasClass("mob")) {
-            var html = `<li class="nav-item mob">
-                    <div class="search-area mt-2">
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1">
-                                <i class="fas fa-search"></i>
-                            
-                            <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item <%= active.usr %> mob">
-                    <a class="nav-link" href="sponsors.html">
-                        <i class="fas fa-user"></i>
-                        Profile
-                    </a>
-                </li>`;
-            $(".side-nav").prepend(html);
-        }
-    } else {
-        if ($(".side-nav li").length > 6) {
-            $(".side-nav li").eq(0).remove();
-            $(".side-nav li").eq(0).remove();
-        }
-    }
-
-
-    for (var t = 0; t < dates.length; t++) {
-        var date = prettyDate($(dates[t]).html().trim());
-        $(dates[t]).html(date);
-    }
-
-    //function to make date-time pretty
-    function prettyDate(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var day = d.getDate();
-            var dayName = days[d.getDay()];
-            var month = monthNames[d.getMonth()];
-            var year = d.getFullYear();
-            var h = d.getHours()
-            var m = d.getMinutes();
-            var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM');
-            var result = dayName + " " + day + " " + month + ", " + year + " " + _time;
-            return result
-        } else {
-            return "Never";
-        }
-    }
-
-    //Function to make date pretty
-    function prettyDateOnly(date) {
-        if (date != "0000-00-00 00:00:00") {
-            var d = new Date(date);
-            var day = d.getDate();
-            var dayName = days[d.getDay()];
-            var month = monthNames[d.getMonth()];
-            var year = d.getFullYear();
-            var result = dayName + " " + day + " " + month + ", " + year;
-            return result
-        } else {
-            return "Never";
-        }
-    }
-
-    //Function to acativate Tool Tip
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
-
-    //Function to adjust sidebar on window size change
-    $(window).on('resize', function () {
-        var width = $(window).width();
-        if (width <= 991) {
-            if (!$(".side-nav li").hasClass("mob")) {
-                var html = `<li class="nav-item mob">
-                    <div class="search-area mt-2">
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1">
-                                <i class="fas fa-search"></i>
-                            
-                            <input type="text" class="form-control" placeholder="What are you looking for..." aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item <%= active.usr %> mob">
-                    <a class="nav-link" href="sponsors.html">
-                        <i class="fas fa-user"></i>
-                        Profile
-                    </a>
-                </li>`;
-                $(".side-nav").prepend(html);
-            }
-        } else {
-            if ($(".side-nav li").length > 6) {
-                $(".side-nav li").eq(0).remove();
-                $(".side-nav li").eq(0).remove();
-            }
-
-
-        }
-    });
-
-    //
-    // $(window).on("click",  function(e) {
-    // });
-
-    //Function to open and close sidebar in mobile view
-    sidebarToggler.on("click", function (e) {
-        e.preventDefault();
-        sideBar.toggleClass("show");
-        $(".overlay").removeClass("deactivated");
-        if (sidebarToggler.hasClass("show")) {
-            $(".logo").css({ "display": "none" })
-        }
-    });
-
-    //Function To Close Sidebar Mobile VIEW
-    closeSidebar.on("click", function (e) {
-        //console.log("yep");
-        e.preventDefault();
-        sideBar.removeClass("show");
-        $(".overlay").addClass("deactivated");
-    });
-
-    //If Over Lay is Clicked
-    $(".overlay").on("click", function (e) {
-        e.preventDefault();
-        sideBar.removeClass("show");
-        $(".overlay").addClass("deactivated");
-    });
-
-    //
-    mainPanel.on("click", function (e) {
-        if (!$(e.target).hasClass("fa-bars") && !$(e.target).hasClass("icon-reorder")) {
-            sideBar.removeClass("show");
-        }
-
-    });
-
-    //Function to close Modal
-    closeModl.on("click", function (e) {
-        modal.modal("hide");
-    });
 
     //Function to Open Modal
     openMdl_3.on("click", function (e) {
@@ -179,6 +24,15 @@ jQuery(document).ready(function ($) {
 
         var mdl = $("#addEnvoyModalForm");
         mdl.modal("show");
+        $("input").val("")
+        $("select").val("")
+        $("textarea").val("")
+        submitEnvoy.attr("data-url", "/admin/Envoys/add_envoy");
+        submitEnvoy.attr("data-type", "add");
+        profilePic.val("");
+        $("#frame").attr("src", '');
+        $(".filly").removeClass("deactivated");
+        $(".prev").addClass("deactivated");
     });
 
     //Function To calculate and display age
@@ -312,35 +166,20 @@ jQuery(document).ready(function ($) {
                                 Swal.fire({
                                     icon: "success",
                                     title: data.success,
-                                    text: "Click OK to proceed to Dashboard or Add to Add Another Envoy",
-                                    showCancelButton: true,
+                                    text: "Click OK to proceed",
+                                    showCancelButton: false,
                                     confirmButtonText: `OK`,
-                                    cancelButtonText: `Add`,
                                     allowOutsideClick: false,
-                                }).then((result) => {
-                                    if (result.value) {
-                                        location.replace("/admin/Envoys");
-                                    } else {
-                                        if (modal != undefined) {
-                                            $("#addEnvoyModalForm").modal("show");
-                                            $("input, textarea, select").val("");
-                                            $("#frame").attr('src', "");
-                                            $(".prev").addClass("deactivated");
-                                        } else {
-                                            location.replace("/admin/Envoys/add_envoy");
-                                        }
-                                    }
-                                });
+                                }).then(() => { location.reload() });
                             } else if (data.url) {
                                 location.replace(data.url);
                             } else {
                                 Swal.fire({
                                     icon: "success",
                                     title: data.success,
-                                    text: "Click OK to proceed to Dashboard or Edit to Edit Envoy",
-                                    showCancelButton: true,
+                                    text: "Click OK to proceed",
+                                    showCancelButton: false,
                                     confirmButtonText: `OK`,
-                                    cancelButtonText: `Add`,
                                     allowOutsideClick: false,
                                 }).then((result) => {
                                     location.reload();
@@ -477,6 +316,11 @@ jQuery(document).ready(function ($) {
                             $("#frame").attr("src", data.success.profile_photo);
                             $(".filly").addClass("deactivated");
                             $(".prev").removeClass("deactivated");
+                        } else {
+                            profilePic.val("");
+                            $("#frame").attr("src", data.success.profile_photo);
+                            $(".filly").removeClass("deactivated");
+                            $(".prev").addClass("deactivated");
                         }
                         submitEnvoy.attr("data-url", "/admin/Envoys/edit_profile");
                         submitEnvoy.attr("data-type", "edit");
@@ -649,4 +493,20 @@ jQuery(document).ready(function ($) {
         rands = gen + rands;
         $("#password").val(rands);
     });
+
+    search.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var valhala = $(".kwy").val();
+        if (valhala != "" && valhala != undefined) {
+            var new_val = "envoys-" + valhala;
+            var first = $(".active.get-kids").attr("data-url").trim();
+            // console.log(first)
+            var url = first + "/search/keyword=" + new_val + "/page=0";
+            location.replace(url);
+        }
+
+    });
+
 });

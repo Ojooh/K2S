@@ -5,12 +5,54 @@
                 <div class="card-icon bg-warning">
                     <i class="fas fa-child"></i>
                 </div>
-                <p class="card-category">Kids</p>
-                <h3 class="card-title"><%= count.kids %>
+                <p class="card-category">Kids Enrolled</p>
+                <h3 class="card-title">
+                    <%= count.kids %>
                 </h3>
             </div>
         </div>
-
+    
+    </div>
+    <!-- <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-warning">
+                    <i class="fas fa-child"></i>
+                </div>
+                <p class="card-category">Kids Enrolled</p>
+                <h3 class="card-title">
+                    <%= count.kids %>
+                </h3>
+            </div>
+        </div>
+    
+    </div> -->
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-success">
+                    <i class="fas fa-user"></i>
+                </div>
+                <p class="card-category">Kids Active</p>
+                <h3 class="card-title">
+                    <%= count.activeKids %>
+                </h3>
+            </div>
+        </div>
+    
+    </div>
+    <div class="col-lg col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon bg-danger">
+                    <i class="fas fa-user-slash"></i>
+                </div>
+                <p class="card-category">Kids In-active</p>
+                <h3 class="card-title">
+                    <%= count.inactiveKids %>
+                </h3>
+            </div>
+        </div>
     </div>
     <div class="col-lg col-md-6 col-sm-6">
         <div class="card card-stats">

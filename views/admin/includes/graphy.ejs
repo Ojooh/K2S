@@ -1,0 +1,186 @@
+<div class="row">
+    <div class="col-lg-8 col-md-12 col-sm-12 ext-lg-5">
+        <div class="card card-stats pb-4 pt-1 px-md-3 px-sm-1">
+            <div class="container">
+                <div class="row hp80">
+                    <div class="graph-top mb-3">
+                        <div class="float-left">
+                            <h3>Kids Category Distribution</h3>
+                        </div>
+                    </div>
+                    <div class="category-chart my-3">
+                        <div class="data deactivated">
+                            <span class="A">
+                                <%= graph.kts %>
+                            </span>
+                            <span class="B">
+                                <%= graph.ktsp %>
+                            </span>
+                            <span class="C">
+                                <%= graph.kta %>
+                            </span>
+                            <span class="D">
+                                <%= graph.ktt %>
+                            </span>
+                        </div>
+                        <div class="yart">
+                            <ul class="numbers">
+                                <li class="max"><span></span></li>
+                                <li class="half"><span></span></li>
+                                <li class="zero"><span>0</span></li>
+                            </ul>
+                            
+                            <ul class="bars">
+                                <li>
+                                    <div data-height="0" class="bar">
+                                        <div class="per"></div>
+                                    </div>
+                                    <span></span>
+                                </li>
+                            </ul>
+                        </div>i
+                        <div class="yart-no-data deactivated text-center mt-4">
+                            <h4 class="text-danger">No Data</h4>
+                        </div>
+                        
+
+                    </div>
+                    <div class="explain mt-5">
+                        <ul class="explain-list">
+                            <li>
+                                <div class="set">
+                                    <span>A : </span>
+                                    <span>Kids To School</span>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="set">
+                                    <span>B : </span>
+                                    <span>Kids To Sports</span>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="set">
+                                    <span>C : </span>
+                                    <span>Kids To Arts</span>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="set">
+                                    <span>D : </span>
+                                    <span>Kids To Tech</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 red-lg-2">
+        <div class="card card-stats h-40">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="graph-top mb-3  px-3">
+                        <div class="float-left">
+                            <h3>Recent Messages</h3>
+                        </div>
+                    </div>
+                </div>
+    
+    
+                <div class="card-body w-100">
+                    <div class="row hp80">
+                        <div class="col-12">
+                            <% if (contacts.length> 0) {%>
+                                <div class="convos">
+                                    <div class="scroll">
+                                        <% for (var i=0; i < contacts.length; i++) { %>
+                                            <% if (contacts[0].sender==user.user_id ) { %>
+                                                <a href="/admin/notifications">
+                                                    <div class="box my-2" data-id="<%= contacts[0].id %>"
+                                                        data-name="<%= contacts[0].rec_fname + ' ' + contacts[0].rec_lname  %>"
+                                                        data-user="<%= contacts[0].rec_user_id %>"
+                                                        data-convo="<%= contacts[0].message %>">
+                                                        <% if (contacts[0].rec_pp !="" ) {%>
+                                                            <div class="box-img">
+                                                                <img src="<%= contacts[0].rec_pp %>" class="img-fluid">
+                                                            </div>
+                                                            <% } else { %>
+                                                                <div class="box-img">
+                                                                    <img src="/images/profile/avatar/avatar_1.jpg"
+                                                                        class="img-fluid">
+                                                                </div>
+                                                                <% } %>
+                                                                    <div class="box-content">
+                                                                        <h3>
+                                                                            <%= contacts[0].rec_fname + " " +
+                                                                                contacts[0].rec_lname %>
+                                                                        </h3>
+                                                                        <span>
+                                                                            <%= contacts[0].rec_user_id %>
+                                                                        </span>
+                                                                        <span class="time-only">
+                                                                            <%= contacts[0].date_created %>
+                                                                        </span>
+                                                                    </div>
+                                                    </div>
+                                                </a>
+    
+                                                <% } else { %>
+                                                    <div class="box my-2" data-id="<%= contacts[0].id %>"
+                                                        data-name="<%= contacts[0].send_fname + ' ' + contacts[0].send_lname  %>"
+                                                        data-user="<%= contacts[0].send_user_id %>"
+                                                        data-convo="<%= contacts[0].message %>">
+                                                        <% if (contacts[0].send_pp !="" ) {%>
+                                                            <div class="box-img">
+                                                                <img src="<%= contacts[0].send_pp %>" class="img-fluid">
+                                                            </div>
+                                                            <% } else { %>
+                                                                <div class="box-img">
+                                                                    <img src="/images/profile/avatar/avatar_1.jpg"
+                                                                        class="img-fluid">
+                                                                </div>
+                                                                <% } %>
+                                                                    <div class="box-content">
+                                                                        <h3>
+                                                                            <%= contacts[0].send_fname + " " +
+                                                                                contacts[0].send_lname %>
+                                                                        </h3>
+                                                                        <span>
+                                                                            <%= contacts[0].send_user_id %>
+                                                                        </span>
+                                                                        <span class="time-only">
+                                                                            <%= contacts[0].date_created %>
+                                                                        </span>
+                                                                    </div>
+                                                    </div>
+                                                    <% } %>
+                                                        <% } %>
+                                    </div>
+                                </div>
+                                <% } else { %>
+                                    <div class="my-5">
+                                        <h6 class="text-center text-danger">No Conversations Yet</h6>
+                                    </div>
+                                    <% } %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="bottom tex-center w-100 mt-4 pt-4 pb-lg-2 pb-md-2">
+                                <a href="/admin/notifications" class="btn btn-kts start-convo">Start Conversation</a>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

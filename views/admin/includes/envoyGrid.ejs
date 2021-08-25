@@ -1,0 +1,95 @@
+<div class="row grid justify-content-space-around <%= tab.row_grid%>">
+    <% if (envs.length > 1) {%>
+        <% for (var i=0; i < envs.length; i++) { %>
+            <div class="col-md-4 my-4">
+
+                <div class="kid profile  mb-3" data-type="display-modal" data-id="<%= envs[i].id %>" data-url="/admin/User/get_profile">
+                <img src="<%= (envs[i].profile_photo != '' ? envs[i].profile_photo : '/images/profile/team/base.jpg' ) %>"
+                    class="img-fluid">
+                    <div class="kid-overlay">
+                        <div class="text-center">
+                            <h3 class="kid-name">
+                                <%= envs[i].fname + " " + envs[i].lname %>
+                            </h3>
+                            <div class="line"></div>
+                            <p class="kid-details">
+                                <%= envs[i].category %>
+                                <br>
+                                <%= envs[i].age %> Years
+                                <br>
+        
+
+                                <a href="#"
+                                    class="edit-envoy btn btn-outline-kid rounded-pill my-2"
+                                    data-id="<%= envs[i].id %>"
+                                    data-url="/admin/User/get_profile"
+                                    data-type="edit-modal" data-toggle="tooltip"
+                                    data-placement="top" title="Edit Envoy">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            <% if (user.user_type=="ADMS" ) { %>
+                                <a href="#"
+                                    class="delete-envoy btn btn-outline-kid rounded-pill my-2"
+                                    data-id="<%= envs[i].id %>"
+                                    data-url="/admin/User/delete_profile"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="Remove Envoy">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            <% } %>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        <% } %>
+    <% } else if (envs.length==1) { %>
+        <% for (var i=0; i < envs[0].length; i++) { %>
+            <div class="col-md-4 my-4">
+                <div class="kid profile  mb-3" data-type="display-modal" data-id="<%= envs[0][i].id %>" data-url="/admin/User/get_profile">
+                    <img src="<%= (envs[0][i].profile_photo != '' ? envs[0][i].profile_photo : '/images/profile/team/base.jpg' ) %>" class="img-fluid">
+                    <div class="kid-overlay">
+                        <div class="text-center">
+                            <h3 class="kid-name">
+                                <%= envs[0][i].fname + " " + envs[0][i].lname %>
+                            </h3>
+                            <div class="line"></div>
+                            <p class="kid-details">
+                                <%= envs[0][i].category %>
+                                    <br>
+                                    <a href="#"
+                                        class="edit-envoy btn btn-outline-kid rounded-pill my-2"
+                                        data-id="<%= envs[0][i].id %>"
+                                        data-url="/admin/User/get_profile"
+                                        data-type="edit-modal" data-toggle="tooltip"
+                                        data-placement="top" title="Edit Envoy">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+
+                                <% if (user.user_type=="ADMS" ) { %>
+                                    <a href="#"
+                                        class="delete-envoy btn btn-outline-kid rounded-pill my-2"
+                                        data-id="<%= envs[0][i].id %>"
+                                        data-url="/admin/User/delete_profile"
+                                        data-toggle="tooltip"
+                                        data-placement="top" title="Remove Envoy">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        <% } %>
+    <% } else { %>
+            <div class="col-md-12 my-5">
+                <h6 class="text-center text-danger">No Envoys Available</h6>
+            </div>
+    <% } %>
+
+</div>

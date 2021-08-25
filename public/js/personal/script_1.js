@@ -14,13 +14,10 @@ jQuery(document).ready(function ($) {
     var viewPassword = $("#basic-addon12");
     var genPassword = $("#basic-addon2");
     var send = $(".icon2");
-    // var socket = io('http://localhost:3000');
-    // var user_id = user_id;
-    // console.log(user_id);
-    // socket.emit("user_connected", user_id);
+    var search = $("#basic-addon1");
 
 
-    
+
 
     //Function to Open Modal
     openMdl_1.on("click", function (e) {
@@ -28,8 +25,16 @@ jQuery(document).ready(function ($) {
         e.stopPropagation();
 
         var mdl = $("#addAdminModalForm");
-        var content = $(".admin-form-modal");
         mdl.modal("show");
+        $("input").val("")
+        $("select").val("")
+        $("textarea").val("")
+        submitAdmin.attr("data-url", "/admin/Administrators/add_admin");
+        submitAdmin.attr("data-type", "add");
+        profilePic.val("");
+        $("#frame").attr("src", '');
+        $(".filly").removeClass("deactivated");
+        $(".prev").addClass("deactivated");
         //content.css({"position":"static", "top" : "none"});
     });
 
@@ -118,8 +123,8 @@ jQuery(document).ready(function ($) {
                     pp = "";
                 }
 
-                if (submitAdmin.attr("data-type") == "edit") {
-                    fd.append("id", submitAdmin.attr("data-id"));
+                if ($(this).attr("data-type") == "edit") {
+                    fd.append("id", $(this).attr("data-id"));
                 }
 
                 fd.append("fname", fname.charAt(0).toUpperCase() + fname.substr(1).toLowerCase());
@@ -158,37 +163,23 @@ jQuery(document).ready(function ($) {
                         if (data.success) {
                             modal.modal("hide");
 
-                            if (submitSponsor.attr("data-type") == "add") {
+                            if ($(this).attr("data-type") == "add") {
                                 Swal.fire({
                                     icon: "success",
                                     title: data.success,
-                                    text: "Click OK to proceed to Dashboard or Add to Add Another Sponsor",
+                                    text: "Click OK to proceed",
                                     showCancelButton: true,
                                     confirmButtonText: `OK`,
                                     cancelButtonText: `Add`,
                                     allowOutsideClick: false,
-                                }).then((result) => {
-                                    if (result.value) {
-                                        location.replace("/admin/Sponsors");
-                                    } else {
-                                        if (modal != undefined) {
-                                            $("#addSponsorModalForm").modal("show");
-                                            $("input, textarea, select").val("");
-                                            $("#frame").attr('src', "");
-                                            $(".prev").addClass("deactivated");
-                                        } else {
-                                            location.replace("/admin/Sponsors/add_sponsor");
-                                        }
-                                    }
-                                });
+                                }).then(() => { location.reload() });
                             } else {
                                 Swal.fire({
                                     icon: "success",
                                     title: data.success,
-                                    text: "Click OK to proceed to Dashboard or Edit to Edit Sponsor",
-                                    showCancelButton: true,
+                                    text: "Click OK to proceed",
+                                    showCancelButton: false,
                                     confirmButtonText: `OK`,
-                                    cancelButtonText: `Add`,
                                     allowOutsideClick: false,
                                 }).then((result) => {
                                     location.reload();
@@ -200,6 +191,7 @@ jQuery(document).ready(function ($) {
                         }
                         else {
                             swal.close();
+                            modal.modal("show");
                             error.html("");
                             msg = "<span class='alert alert-success text-center'>" + data.error + "</span>";
                             error.html(msg);
@@ -323,11 +315,16 @@ jQuery(document).ready(function ($) {
                         $("#countryCode").val(data.success.telephone.split("-")[0]);
                         $("#title").val(data.success.user_type);
                         $("#password").val("");
-                        if (data.success.profile_photo) {
+                        if (data.success.profile_photo && data.success.profile_photo != '') {
                             profilePic.val("");
                             $("#frame").attr("src", data.success.profile_photo);
                             $(".filly").addClass("deactivated");
                             $(".prev").removeClass("deactivated");
+                        } else {
+                            profilePic.val("");
+                            $("#frame").attr("src", '');
+                            $(".filly").removeClass("deactivated");
+                            $(".prev").addClass("deactivated");
                         }
                         submitAdmin.attr("data-url", "/admin/Administrators/edit_profile");
                         submitAdmin.attr("data-type", "edit");
@@ -572,6 +569,21 @@ jQuery(document).ready(function ($) {
             chat_area.html(html);
             inputy.val("");
         }
+    });
+
+    search.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var valhala = $(".kwy").val();
+        if (valhala != "" && valhala != undefined) {
+            var new_val = "admins-" + valhala;
+            var first = $(".active.get-kids").attr("data-url").trim();
+            // console.log(first)
+            var url = first + "/search/keyword=" + new_val + "/page=0";
+            location.replace(url);
+        }
+
     });
 
 

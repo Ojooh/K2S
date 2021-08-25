@@ -2,7 +2,7 @@
     <div class="wrapper">
         <% include includes/sidebar %>
         <div class="main-content">
-            <% include includes/navbar %>
+            <% include includes/navbar2 %>
             <div class="content">
                 <div class="container-fluid">
 
@@ -10,11 +10,6 @@
                     <div class="row">
                         <div class="col-12">
                             <ol class="breadcrumb bg-light-mode">
-                                <li class="breadcrumb-item">
-                                    <a href="">
-                                        <i class="fas fa-home"></i> Home
-                                    </a>
-                                </li>
                                 <li class="breadcrumb-item active" aria-current="page">
                                     <i class="fas fa-th-large"></i> Dashboard
                                 </li>
@@ -28,16 +23,200 @@
                     <!-- Stats End -->
 
                     <!-- Graph & Messages -->
-                    <div class="row">
-                        <div class="col-lg-9 col-md-12 col-sm-12">
-                            <div class="card card-stats"></div>
-                        </div>
-                        <div class="col-lg-3 col-md-12 col-sm-12">
-                            <div class="card card-stats"></div>
-                        </div>
-                    </div>
-
+                    <% include includes/graphy %>
                     <!-- Graph & Message End -->
+
+                    <!-- Pie and task percentage -->
+                    <div class="row">
+                        <!-- Pie Chart -->
+                        <div class="col-lg-8 col-md-12 col-sm-12 ext-lg-5">
+                            <div class="card card-stats pb-4 pt-1 px-md-2 px-sm-1">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="graph-top mb-3">
+                                            <div class="float-left">
+                                                <h3>Kids Category Chart</h3>
+                                            </div>
+                                        </div>
+                                        <div class="gender-chart my-4">
+                                            <div class="data deactivated">
+                                                <span class="A">
+                                                    <p class="m">
+                                                        <%= chart.kts_m %>
+                                                    </p>
+                                                    <p class="f">
+                                                        <%= chart.kts_f %>
+                                                    </p>
+                                                </span>
+                                                <span class="B">
+                                                    <p class="m">
+                                                        <%= chart.ktsp_m %>
+                                                    </p>
+                                                    <p class="f">
+                                                        <%= chart.ktsp_f %>
+                                                    </p>
+                    
+                                                </span>
+                                                <span class="C">
+                                                    <p class="m">
+                                                        <%= chart.kta_m %>
+                                                    </p>
+                                                    <p class="f">
+                                                        <%= chart.kta_f %>
+                                                    </p>
+                    
+                                                </span>
+                                                <span class="D">
+                                                    <p class="m">
+                                                        <%= chart.ktt_m %>
+                                                    </p>
+                                                    <p class="f">
+                                                        <%= chart.ktt_f %>
+                                                    </p>
+                                                </span>
+                                            </div>
+                                            <div class="row w-100">
+                                                <div class="col-md-3">
+                                                    <div class="yart-A">
+                                                        <canvas id="pieChart-1"></canvas>
+                    
+                                                    </div>
+                                                    <div class="yart-A-no-data deactivated text-center">
+                                                        <h4 class="text-danger">No Data</h4>
+                                                    </div>
+                    
+                                                    <div class="text-center set">
+                                                        <span>A : </span>
+                                                        <span>Kids To School</span>
+                                                        <div class="cat-exp">
+                                                            <div class="cat-1">
+                                                                <div class="bod male"></div> Male
+                                                            </div>
+                                                            <div class="cat-1">
+                                                                <div class="bod female"></div> Female
+                                                            </div>
+                    
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="yart-B">
+                                                        <canvas id="pieChart-2"></canvas>
+                    
+                                                    </div>
+                                                    <div class="yart-B-no-data deactivated text-center">
+                                                        <h4 class="text-danger">No Data</h4>
+                                                    </div>
+                    
+                                                    <div class="text-center set">
+                                                        <span>B : </span>
+                                                        <span>Kids To Sports</span>
+                                                        <div class="cat-exp">
+                                                            <div class="cat-1">
+                                                                <div class="bod male"></div> Male
+                                                            </div>
+                                                            <div class="cat-1">
+                                                                <div class="bod female"></div> Female
+                                                            </div>
+                    
+                                                        </div>
+                                                    </div>
+                    
+                                                </div>
+                    
+                                                <div class="col-md-3">
+                                                    <div class="yart-C">
+                                                        <canvas id="pieChart-3"></canvas>
+                    
+                                                    </div>
+                                                    <div class="yart-C-no-data deactivated text-center">
+                                                        <h4 class="text-danger">No Data</h4>
+                                                    </div>
+                    
+                                                    <div class="text-center set">
+                                                        <span>C : </span>
+                                                        <span>Kids To Arts</span>
+                                                        <div class="cat-exp">
+                                                            <div class="cat-1">
+                                                                <div class="bod male"></div> Male
+                                                            </div>
+                                                            <div class="cat-1">
+                                                                <div class="bod female"></div> Female
+                                                            </div>
+                    
+                                                        </div>
+                                                    </div>
+                    
+                                                </div>
+                    
+                                                <div class="col-md-3">
+                                                    <div class="yart-D">
+                                                        <canvas id="pieChart-4"></canvas>
+                    
+                                                    </div>
+                    
+                                                    <div class="yart-D-no-data deactivated text-center">
+                                                        <h4 class="text-danger">No Data</h4>
+                                                    </div>
+                    
+                                                    <div class="text-center set">
+                                                        <span>D : </span>
+                                                        <span>Kids To Tech</span>
+                                                        <div class="cat-exp">
+                                                            <div class="cat-1">
+                                                                <div class="bod male"></div> Male
+                                                            </div>
+                                                            <div class="cat-1">
+                                                                <div class="bod female"></div> Female
+                                                            </div>
+                    
+                                                        </div>
+                                                    </div>
+                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pie Chart End -->
+                    
+                        <!-- Task Percentage -->
+                        <div class="col-lg-4 col-md-12 col-sm-12 red-lg-2">
+                            <div class="card card-stats px-3">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="graph-top mb-3">
+                                            <div class="float-left">
+                                                <h3>Tasks Percentage</h3>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="task-percent my-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <canvas id="taskChart"></canvas>
+                                                    <div class="percent-text w-100 text-center my-4">
+                                                        <div class="inner-mn-text text-center">
+                                                            <h3>40%</h3><br>
+                                                            <span> Completed</span>
+                                                        </div>
+                    
+                                                        <h4>Your Task</h4>
+                    
+                                                    </div>
+                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Task Percentage End -->
+                    </div>     
+                    <!-- Pie and task percentage End  -->
 
                 </div>
             </div>
@@ -57,5 +236,5 @@
 
         
        
-
+<script>var user_id = "<%= user.user_id %>";</script>
 <% include includes/foot.ejs%>

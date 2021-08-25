@@ -6,6 +6,7 @@ const moment = require('moment');
 const path = require('path');
 const fs = require('fs');
 const saltRounds = 10;
+var helper = require("./helper");
 
 
 
@@ -19,13 +20,24 @@ module.exports.getDash = async (req, res, next) => {
         var title = "Dashboard";
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            var noty = await DB.getNotys(user[0].user_id);
             var admins = await DB.getCountAdmins();
             var sponsors = await DB.getCountSponsors();
             var envoys = await DB.getCountEnvoys();
             var kids = await DB.getCountKids();
+            var activeKids = await DB.getCountActiveKids();
+            var inactiveKids = await DB.getCountInactiveKids();
+            var kts = await DB.getCountKTS();
+            var ktsp = await DB.getCountKTSP();
+            var kta = await DB.getCountKTA();
+            var ktt = await DB.getCountKTT();
+            var contacts = await DB.getContacts(user[0].user_id);
             var sidebar = { dash: "active", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "" };
-            var count = { admins: admins[0].total, sponsors: sponsors[0].total, envoys: envoys[0].total, kids: kids.total };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, count: count };
+            var count = { admins: admins[0].total, sponsors: sponsors[0].total, envoys: envoys[0].total, kids: kids[0].total, activeKids: activeKids[0].total, inactiveKids: inactiveKids[0].total, };
+            var graph = { kts: kts[0].total, ktsp: ktsp[0].total, kta: kta[0].total, ktt: ktt[0].total };
+            console.log(graph)
+            var chart = { kts_m: kts[0].male, kts_f: kts[0].female, ktsp_m: ktsp[0].male, ktsp_f: ktsp[0].female, kta_m: kta[0].male, kta_f: kta[0].female, ktt_m: ktt[0].male, ktt_f: ktt[0].female };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, count: count, graph: graph, chart, chart, noty: noty, contacts: contacts };
             res.render('admin/Dashboard', context);
         } else {
             res.redirect("/login");
@@ -46,10 +58,10 @@ module.exports.getAllUsers = async (req, res, next) => {
             let result = await DB.getAllUsers();
             res.json({ success: result });
         } else {
-            res.redirect(url)
+            res.redirect("/login");
         }
     } else {
-        res.redirect(url)
+        res.redirect("/login");
     }
 }
 
@@ -60,12 +72,19 @@ module.exports.getAdministrators = async (req, res, next) => {
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-user-shield";
         var title = "Administrators";
+        var count = 0;
+        var start = 1;
+        var section = 12;
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
-            var admins = await DB.getAdministrators();
+            var noty = await DB.getNotys(user[0].user_id);
+            var adminsy = await DB.getAdministrators();
+            var [admins, cur_t] = helper.paginateArray(adminsy, count);
+            var tab = JSON.parse(user[0].preference);
+
             var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, admins: admins };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, admins: admins, noty: noty, points: cur_t, curry: count, total: adminsy.length, start: start, section: section };
             res.render('admin/administrators', context);
         } else {
             res.redirect("/login");
@@ -77,26 +96,93 @@ module.exports.getAdministrators = async (req, res, next) => {
 
 };
 
-
-//Function To Render Adminstartor Add Form
-module.exports.getAddAdministratorForm = async (req, res, next) => {
+//Function To Render Page:id
+module.exports.getAdminPage = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-user-shield";
         var title = "Administrators";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        // var section = 12 * (count + 1)
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
+            var adminsy = await DB.getAdministrators();
+            var [admins, cur_t] = helper.paginateArray(adminsy, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+
             var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar };
-            res.render('admin/addAdministrator', context);
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, admins: admins, noty: noty, points: cur_t, curry: count, total: adminsy.length, start: start, section: (start + adminsy.length) - 1 };
+            res.render('admin/administrators', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+};
+
+// function to handle search
+module.exports.searchMyAdmins = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-user-shield";
+        var title = "Administrators";
+        var count = req.params.id;
+        var [mesc, kwy] = req.params.kwy.split("-");
+        var start = (12 * count) + 1;
+        var result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
+            if (mesc == "admins") {
+                result = await DB.getAdminSearch(kwy);
+            }
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
+            var [admins, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+
+            var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, admins: admins, noty: noty, turl: turl, points: cur_t, curry: count, total: result.length, start: start, section: (start + result.length) - 1 };
+            res.render('admin/administrators-s', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+
+};
+
+// Method to handle change of tab prefrence
+module.exports.changePreference = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.pref;
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADM" || user[0].user_type == "ADMS")) {
+            let update = await DB.updateUserPrefrence(ID, user[0].id);
+            var msg = user[0].fname + " Preference Changed Successfully";
+            res.json({ success: msg });
         } else {
             res.redirect("/login");
         }
     } else {
         res.redirect("/login");
     }
+
 };
 
 
@@ -113,7 +199,7 @@ module.exports.createAdminProfile = async (req, res, next) => {
             if (state) {
                 if (!req.files) {
                     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-                        let insert = DB.insertAdminProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + req.body.telephone, req.body.title, message.user_type, "", "1", hash, "1");
+                        let insert = DB.insertAdminProfile(message.user_id, req.body.fname, req.body.lname, req.body.dob, req.body.age, req.body.gender, req.body.country, req.body.state, req.body.email, req.body.code + "-" + req.body.telephone, req.body.title, message.user_type, "", "1", hash, "1");
                     });
 
                 } else {
@@ -137,130 +223,12 @@ module.exports.createAdminProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            var url = "/login"
-            res.redirect(url)
+            res.redirect("/login");
         }
     } else {
-        var url = "/login"
-        res.redirect(url)
+        res.redirect("/login");
     }
 };
-
-//Function To Chnage Active Status
-module.exports.updateProfileStatus = async (req, res, next) => {
-    if (req.session.loggedin) {
-        var email = req.session.username;
-        var user = await DB.getUserByEmail(email);
-        var ID = req.body.id;
-        var status = req.body.status;
-        var change = "";
-
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            if (status == "False") {
-                status = "0";
-                change = "Deactivated";
-            } else {
-                status = "1";
-                change = "Activated";
-            }
-            let update = await DB.updateUserStatus(ID, status);
-            var editted = await DB.getUserById(ID);
-            var msg = editted[0].fname + " Profile Is " + change;
-            res.json({ success: msg });
-        } else {
-            var url = "/login"
-            res.redirect(url)
-        }
-    } else {
-        var url = "/login"
-        res.redirect(url)
-    }
-
-};
-
-//Function To get Admin Data
-module.exports.getProfile = async (req, res, next) => {
-    if (req.session.loggedin) {
-        var email = req.session.username;
-        var user = await DB.getUserByEmail(email);
-        var ID = req.body.id;
-        var type = req.body.type;
-        var mode = req.body.mode;
-        console.log(type);
-
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM")) {
-            let edittee = await DB.getUserById(ID);
-            //console.log(edittee);
-
-            if (type == "edit") {
-                if (mode == "form") {
-
-                    res.json({ success: "successful", type: mode });
-                } else {
-                    res.json({ success: edittee[0], type: mode });
-                }
-            }
-
-            if (type == "display") {
-                res.json({ success: edittee[0], type: mode });
-            }
-
-
-
-
-        } else {
-            var url = "/login"
-            res.redirect(url)
-        }
-    } else {
-        var url = "/login"
-        res.redirect(url)
-    }
-
-
-};
-
-//Function To get Kid Data
-module.exports.getKidProfile = async (req, res, next) => {
-    if (req.session.loggedin) {
-        var email = req.session.username;
-        var user = await DB.getUserByEmail(email);
-        var ID = req.body.id;
-        var type = req.body.type;
-        var mode = req.body.mode;
-        console.log(type);
-
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
-            let edittee = await DB.getKidById(ID);
-            edittee[0].expenses = ((edittee[0].expenses != "") ? JSON.parse(edittee[0].expenses) : "");
-
-            if (type == "edit") {
-                if (mode == "form") {
-
-                    res.json({ success: "successful", type: mode });
-                } else {
-                    res.json({ success: edittee[0], type: mode });
-                }
-            }
-
-            if (type == "display") {
-                res.json({ success: edittee[0], type: mode });
-            }
-
-
-
-
-        } else {
-            var url = "/login"
-            res.redirect(url)
-        }
-    } else {
-        var url = "/login"
-        res.redirect(url)
-    }
-
-
-}
 
 //Function To Handle Admin Profile Edit Post
 module.exports.updateAdminProfile = async (req, res, next) => {
@@ -319,39 +287,123 @@ module.exports.updateAdminProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            var url = "/login"
-            res.redirect(url)
+            res.redirect("/login");
         }
     } else {
-        var url = "/login"
-        res.redirect(url)
+        res.redirect("/login");
     }
 }
 
-//Function To Render Adminstartor Add Form
-module.exports.getEditAdministratorForm = async (req, res, next) => {
+//Function To Chnage Active Status
+module.exports.updateProfileStatus = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
         var user = await DB.getUserByEmail(email);
-        var icon = "fas fa-user-shield";
-        var title = "Administrators";
-        var ID = req.params.id;
+        var ID = req.body.id;
+        var status = req.body.status;
+        var change = "";
 
-
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
-            let edittee = await DB.getUserById(ID);
-            var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
-            res.render('admin/editAdministrator', context);
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            if (status == "False") {
+                status = "0";
+                change = "Deactivated";
+            } else {
+                status = "1";
+                change = "Activated";
+            }
+            let update = await DB.updateUserStatus(ID, status);
+            var editted = await DB.getUserById(ID);
+            var msg = editted[0].fname + " Profile Is " + change;
+            res.json({ success: msg });
         } else {
-            var url = "/login";
-            res.redirect(url);
+            res.redirect("/login");
         }
     } else {
-        var url = "/login";
-        res.redirect(url);
+        res.redirect("/login");
     }
+
 };
+
+//Function To get Admin Data
+module.exports.getProfile = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var type = req.body.type;
+        var mode = req.body.mode;
+        console.log(type);
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM")) {
+            let edittee = await DB.getUserById(ID);
+            //console.log(edittee);
+
+            if (type == "edit") {
+                if (mode == "form") {
+
+                    res.json({ success: "successful", type: mode });
+                } else {
+                    res.json({ success: edittee[0], type: mode });
+                }
+            }
+
+            if (type == "display") {
+                res.json({ success: edittee[0], type: mode });
+            }
+
+
+
+
+        } else {
+            res.redirect("/login");
+        }
+    } else {
+        res.redirect("/login");
+    }
+
+
+};
+
+//Function To get Kid Data
+module.exports.getKidProfile = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var type = req.body.type;
+        var mode = req.body.mode;
+        console.log(type);
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].id == ID || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
+            let edittee = await DB.getKidById(ID);
+            edittee[0].expenses = ((edittee[0].expenses != "") ? JSON.parse(edittee[0].expenses) : "");
+
+            if (type == "edit") {
+                if (mode == "form") {
+
+                    res.json({ success: "successful", type: mode });
+                } else {
+                    res.json({ success: edittee[0], type: mode });
+                }
+            }
+
+            if (type == "display") {
+                res.json({ success: edittee[0], type: mode });
+            }
+
+
+
+
+        } else {
+            res.redirect("/login");
+        }
+    } else {
+        res.redirect("/login");
+    }
+
+
+}
+
 
 //Function To Delete User Profile
 module.exports.deleteProfile = async (req, res, next) => {
@@ -384,12 +436,21 @@ module.exports.getSponsors = async (req, res, next) => {
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-users";
         var title = "Sponsors";
+        var count = 0;
+        var start = 1;
+        var section = 12;
+
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            var sponsors = await DB.getSponsors();
+            var noty = await DB.getNotys(user[0].user_id);
+            var sponsorsy = await DB.getSponsors();
+            var [sponsors, cur_t] = helper.paginateArray(sponsorsy, count);
+            var tab = JSON.parse(user[0].preference);
+
+
             var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, spns: sponsors };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, spns: sponsors, noty: noty, points: cur_t, curry: count, total: sponsorsy.length, start: start, section: section };
             res.render('admin/sponsors', context);
         } else {
             var url = "/login";
@@ -403,19 +464,27 @@ module.exports.getSponsors = async (req, res, next) => {
 
 };
 
-//Function To Render Sponsor Add Form
-module.exports.getAddSponsorForm = async (req, res, next) => {
+// /Function To Render Page:id
+module.exports.getSponsorPage = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-users";
         var title = "Sponsors";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        // var section = 12 * (count + 1)
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            var sponsorsy = await DB.getSponsors();
+            var [sponsors, cur_t] = helper.paginateArray(sponsorsy, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+
             var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar };
-            res.render('admin/addSponsor', context);
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, spns: sponsors, noty: noty, points: cur_t, curry: count, total: sponsorsy.length, start: start, section: (start + sponsorsy.length) - 1 };
+            res.render('admin/sponsors', context);
         } else {
             var url = "/login";
             res.redirect(url);
@@ -424,6 +493,44 @@ module.exports.getAddSponsorForm = async (req, res, next) => {
         var url = "/login";
         res.redirect(url);
     }
+};
+
+// function to handle search
+module.exports.searchMySponsors = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-user-shield";
+        var title = "Administrators";
+        var count = req.params.id;
+        var [mesc, kwy] = req.params.kwy.split("-");
+        var start = (12 * count) + 1;
+        var result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
+            if (mesc == "sponsors") {
+                result = await DB.getSponsorSearch(kwy);
+            }
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
+            var [sponsors, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, spns: sponsors, noty: noty, turl: turl, points: cur_t, curry: count, total: result.length, start: start, section: (start + result.length) - 1 };
+            res.render('admin/sponsors-s', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+
 };
 
 
@@ -473,30 +580,6 @@ module.exports.createSponsorProfile = async (req, res, next) => {
     }
 }
 
-//Function To Render Sponsors Add Form
-module.exports.getEditSponsorForm = async (req, res, next) => {
-    if (req.session.loggedin) {
-        var email = req.session.username;
-        var user = await DB.getUserByEmail(email);
-        var icon = "fas fa-users";
-        var title = "Sponsors";
-        var ID = req.params.id;
-
-
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            let edittee = await DB.getUserById(ID);
-            var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
-            res.render('admin/editSponsor', context);
-        } else {
-            var url = "/login";
-            res.redirect(url);
-        }
-    } else {
-        var url = "/login";
-        res.redirect(url);
-    }
-};
 
 //Function To Handle Sponsor Profile Edit Post
 module.exports.updateSponsorProfile = async (req, res, next) => {
@@ -571,12 +654,21 @@ module.exports.getEnvoys = async (req, res, next) => {
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-hands-helping";
         var title = "Envoys";
+        var count = 0;
+        var start = 1;
+        var section = 12;
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            var envoys = await DB.getEnvoys();
+            var noty = await DB.getNotys(user[0].user_id);
+            var envoysy = await DB.getEnvoys();
+            var [envoys, cur_t] = helper.paginateArray(envoysy, count);
+            var tab = JSON.parse(user[0].preference);
+
+
             var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "active", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, envs: envoys };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, envs: envoys, noty: noty, points: cur_t, curry: count, total: envoysy.length, start: start, section: section };
+
             res.render('admin/envoys', context);
         } else {
             var url = "/login";
@@ -584,32 +676,81 @@ module.exports.getEnvoys = async (req, res, next) => {
         }
     } else {
         var url = "/login";
-        res.json(url);
+        res.redirect(url);
     }
 
 
 };
 
-//Function To Render Envoy Add Form
-module.exports.getAddEnvoyForm = async (req, res, next) => {
+// /Function To Render Page:id
+module.exports.getEnvoysPage = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-hands-helping";
         var title = "Envoys";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        // var section = 12 * (count + 1)
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "active", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar };
-            res.render('admin/addEnvoy', context);
+            var envoysy = await DB.getEnvoys();
+            var [envoys, cur_t] = helper.paginateArray(envoysy, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, envs: envoys, noty: noty, points: cur_t, curry: count, total: envoysy.length, start: start, section: (start + envoysy.length) - 1 };
+            res.render('admin/envoys', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.redirect(url);
         }
     } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.redirect(url);
     }
 };
+
+// function to handle search
+module.exports.searchMyEnvoys = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-hands-helping";
+        var title = "Envoys";
+        var count = req.params.id;
+        var [mesc, kwy] = req.params.kwy.split("-");
+        var start = (12 * count) + 1;
+        var result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
+            if (mesc == "envoys") {
+                result = await DB.getEnvoySearch(kwy);
+            }
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
+            var [envoys, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, envs: envoys, noty: noty, turl: turl, points: cur_t, curry: count, total: result.length, start: start, section: (start + result.length) - 1 };
+            res.render('admin/envoys-s', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+
+};
+
 
 //Function to Handle Envoy AddProfile Post
 module.exports.createEnvoyProfile = async (req, res, next) => {
@@ -658,29 +799,6 @@ module.exports.createEnvoyProfile = async (req, res, next) => {
         res.redirect(url)
     }
 }
-
-//Function To Render Envoy Add Form
-module.exports.getEditEnvoyForm = async (req, res, next) => {
-    if (req.session.loggedin) {
-        var email = req.session.username;
-        var user = await DB.getUserByEmail(email);
-        var icon = "fas fa-users";
-        var title = "Sponsors";
-        var ID = req.params.id;
-
-
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            let edittee = await DB.getUserById(ID);
-            var sidebar = { dash: "", usr: "", adm: "active", kds: "", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
-            res.render('admin/editSponsor', context);
-        } else {
-            res.redirect("/login");
-        }
-    } else {
-        res.redirect("/login");
-    }
-};
 
 //Function To Handle Envoy Profile Edit Post
 module.exports.updateEnvoyProfile = async (req, res, next) => {
@@ -877,12 +995,10 @@ module.exports.updateKidStatus = async (req, res, next) => {
             var msg = editted[0].fname + " Profile Is " + change;
             res.json({ success: msg });
         } else {
-            var url = "/login"
-            res.redirect(url)
+            res.redirect("/login");
         }
     } else {
-        var url = "/login"
-        res.redirect(url)
+        res.redirect("/login");
     }
 
 }
@@ -982,12 +1098,10 @@ module.exports.updateKidProfile = async (req, res, next) => {
 
             // res.render('admin/addAdministrator', context);
         } else {
-            var url = "/login"
-            res.redirect(url)
+            res.redirect("/login");
         }
     } else {
-        var url = "/login"
-        res.redirect(url)
+        res.redirect("/login");
     }
 };
 

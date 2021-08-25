@@ -1,0 +1,95 @@
+<div class="row grid justify-content-space-around <%= tab.row_grid%>">
+    <% if (admins.length > 1) {%>
+        <% for (var i=0; i < admins.length; i++) { %>
+            <div class="col-md-4 my-4">
+
+                <div class="kid profile  mb-3" data-type="display-modal" data-id="<%= admins[i].id %>" data-url="/admin/User/get_profile">
+                <img src="<%= (admins[i].profile_photo != '' ? admins[i].profile_photo : '/images/profile/team/base.jpg' ) %>"
+                    class="img-fluid">
+                    <div class="kid-overlay">
+                        <div class="text-center">
+                            <h3 class="kid-name">
+                                <%= admins[i].fname + " " + admins[i].lname %>
+                            </h3>
+                            <div class="line"></div>
+                            <p class="kid-details">
+                                <%= admins[i].category %>
+                                <br>
+                                <%= admins[i].age %> Years
+                                <br>
+        
+
+                                <a href="#"
+                                    class="edit-admin btn btn-outline-kid rounded-pill my-2"
+                                    data-id="<%= admins[i].id %>"
+                                    data-url="/admin/User/get_profile"
+                                    data-type="edit-modal" data-toggle="tooltip"
+                                    data-placement="top" title="Edit Administrator">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            <% if (user.user_type=="ADMS" ) { %>
+                                <a href="#"
+                                    class="delete-admin btn btn-outline-kid rounded-pill my-2"
+                                    data-id="<%= admins[i].id %>"
+                                    data-url="/admin/User/delete_profile"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="Remove Administrator">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            <% } %>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        <% } %>
+    <% } else if (admins.length==1) { %>
+        <% for (var i=0; i < admins[0].length; i++) { %>
+            <div class="col-md-4 my-4">
+                <div class="kid profile  mb-3" data-type="display-modal" data-id="<%= admins[0][i].id %>" data-url="/admin/User/get_profile">
+                    <img src="<%= (admins[0][i].profile_photo != '' ? admins[0][i].profile_photo : '/images/profile/team/base.jpg' ) %>" class="img-fluid">
+                    <div class="kid-overlay">
+                        <div class="text-center">
+                            <h3 class="kid-name">
+                                <%= admins[0][i].fname + " " + admins[0][i].lname %>
+                            </h3>
+                            <div class="line"></div>
+                            <p class="kid-details">
+                                <%= admins[0][i].category %>
+                                    <br>
+                                    <a href="#"
+                                        class="edit-admin btn btn-outline-kid rounded-pill my-2"
+                                        data-id="<%= admins[0][i].id %>"
+                                        data-url="/admin/User/get_profile"
+                                        data-type="edit-modal" data-toggle="tooltip"
+                                        data-placement="top" title="Edit Administrator">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+
+                                <% if (user.user_type=="ADMS" ) { %>
+                                    <a href="#"
+                                        class="delete-admin btn btn-outline-kid rounded-pill my-2"
+                                        data-id="<%= admins[0][i].id %>"
+                                        data-url="/admin/User/delete_profile"
+                                        data-toggle="tooltip"
+                                        data-placement="top" title="Remove Administrator">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        <% } %>
+    <% } else { %>
+            <div class="col-md-12 my-5">
+                <h6 class="text-center text-danger">No Administrators Available</h6>
+            </div>
+    <% } %>
+
+</div>

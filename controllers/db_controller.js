@@ -211,7 +211,7 @@ module.exports.getCountEnvoys = () => {
 
 //GET count for kids
 module.exports.getCountKids = () => {
-    const query = "SELECT COUNT(*) AS total FROM kids WHERE is_kid = 1;";
+    const query = "SELECT COUNT(*) AS total FROM kids;";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -241,9 +241,27 @@ module.exports.getCountEnvoyKids = (user_id) => {
     });
 };
 
+
+
 //GET COUNT FOR ENVOY ACTIVE KIDS
 module.exports.getCountEnvoyActiveKids = (user_id) => {
     const query = "SELECT COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and is_active = 1;";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET COUNT FOR ENVOY ACTIVE KIDS
+module.exports.getCountActiveKids = () => {
+    const query = "SELECT COUNT(*) AS total FROM kids WHERE is_active = 1;";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -273,9 +291,42 @@ module.exports.getCountEnvoyInactiveKids = (user_id) => {
     });
 };
 
+//GET COUNT FOR ENVOY InACTIVE KIDS
+module.exports.getCountInactiveKids = () => {
+    const query = "SELECT COUNT(*) AS total FROM kids WHERE is_active = 0;";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
 //GET count for envoys kts
 module.exports.getCountEnvoyKTS = (user_id) => {
     const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and category = 'Kids to School';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET count for envoys kts
+module.exports.getCountKTS = () => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE category = 'Kids to School';";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -305,6 +356,22 @@ module.exports.getCountEnvoyKTSP = (user_id) => {
     });
 };
 
+module.exports.getCountKTSP = () => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE category = 'Kids to Sports';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
 //GET count for envoys kta
 module.exports.getCountEnvoyKTA = (user_id) => {
     const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and category = 'Kids to Arts';";
@@ -321,9 +388,41 @@ module.exports.getCountEnvoyKTA = (user_id) => {
     });
 };
 
+
+module.exports.getCountKTA = () => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE category = 'Kids to Arts';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
 //GET count for envoys ktt
 module.exports.getCountEnvoyKTT = (user_id) => {
     const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "' and category = 'Kids to Tech';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+module.exports.getCountKTT = () => {
+    const query = "SELECT COUNT(case when gender = 'Male' then 1 end) as male, COUNT(case when gender = 'Female' then 1 end) as female, COUNT(*) AS total FROM kids WHERE category = 'Kids to Tech';";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -1127,6 +1226,51 @@ module.exports.getSPNMySearch = (kwy, user) => {
 //SPONSOR search
 module.exports.getENVMySearch = (kwy, user) => {
     const query = "SELECT * FROM kids WHERE (category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%') AND (created_by = '" + user + "');";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+module.exports.getAdminSearch = (kwy) => {
+    const query = "SELECT * FROM users WHERE (title LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%' OR email LIKE '%" + kwy + "%') AND (is_admin = '1');";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+module.exports.getSponsorSearch = (kwy) => {
+    const query = "SELECT * FROM users WHERE (proffession LIKE '%" + kwy + "%' OR title LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%' OR email LIKE '%" + kwy + "%') AND (is_sponsor = '1');";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+module.exports.getEnvoySearch = (kwy) => {
+    const query = "SELECT * FROM users WHERE (proffession LIKE '%" + kwy + "%' OR title LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%' OR email LIKE '%" + kwy + "%') AND (is_envoy = '1');";
     console.log(query)
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {

@@ -919,7 +919,7 @@ li {
 
       .card-table-title {
         position: absolute;
-        top: -20px;
+        top: -40px;
         left: 10px;
         width: 95% !important;
         border-radius: 5px;
@@ -969,7 +969,7 @@ li {
 
       .card-category {
         margin: 0;
-        margin-top: 25px !important;
+        margin-top: 45px !important;
         text-align: right;
         font-size: 16px;
         font-weight: 300;
@@ -982,7 +982,7 @@ li {
         font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 
         @media (min-width: 991px) and (max-width: 1442px) {
-          margin-top: 50px !important;
+          margin-top: 90px !important;
         }
 
         @media (max-width: 991px) {
@@ -1650,7 +1650,7 @@ li {
   }
 
   .card-modal-box {
-    width: 90%;
+    width: 100%;
     float: center;
 
     .card-modal-scrollable {

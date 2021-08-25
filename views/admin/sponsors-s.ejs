@@ -16,21 +16,21 @@
                                             </a>
                                         </li>
                                         <li class="breadcrumb-item active" aria-current="page">
-                                            <i class="fas fa-hands-helping"></i> Envoys
+                                            <i class='fas fa-users'></i> Sponsors
                                         </li>
                                     </ol>
                                 </div>
                             </div>
                             <!-- BreadCrumb End -->
 
-                            <!-- Envoys Tab -->
+                            <!-- Sponsors Tab -->
                             <div class="row">
                                 <div class="col-12">
                                     <div class="w-100 py-0 mt-4 border-bottom ">
                                         <div class="row justify-content-space-between">
                                             <div class="col-md-6">
                                                 <ul class="list-tab float-left">
-                                                    <li class="active get-kids" data-url="/admin/Envoys">All Envoys</li>
+                                                    <li class="active get-kids" data-url="/admin/Sponsors">All Sponsors</li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-6">
@@ -45,46 +45,41 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Envoys Tab-->
+                            <!-- End Sponsors Tab-->
 
                             <!-- Row 1 -->
-                            <% include includes/envoyRow-1 %>
+                            <% include includes/sponsorRow-1 %>
                                 <!-- Row 2 -->
                             
                             <!-- Administrator Grid View -->
-                            <% include includes/envoyGrid %>
+                            <% include includes/sponsorGrid %>
                             <!-- Administrator Grid View End-->
-                        
+                            
                             <!-- Administrator Table -->
-                            <% include includes/envoyTable %>
+                            <% include includes/sponsorTable %>
                             <!-- Administrator Table End -->
                     
                             <!-- Pagination-buttons -->
-                            <% include includes/envoyPagination %>
+                            <% include includes/sponsorPagination-s %>
                             <!-- Pagination-buttons End-->
 
-                            
 
-                           
-
-
+                    
                         </div>
                     </div>
-                                                    
+                        
             </div>
     </div>
 
-<% include includes/modal_3.ejs %>
+<% include includes/modal_2.ejs %>
 <script>var user_id = "<%= user.user_id %>";</script>
 <script src="/js/personal/sidebar.js"></script>
 <script src="/js/personal/display.js"></script>
 <script src="/js/personal/country_state.js"></script>
 <script src="/js/personal/country_code.js"></script>
-<script src="/js/personal/script_3.js"></script>
+<script src="/js/personal/script_2.js"></script>
 <script src="/js/personal/helper.js"></script>
 <script src="/js/personal/socket_1.js"></script>
 </body>
 
 </html>
-
-
