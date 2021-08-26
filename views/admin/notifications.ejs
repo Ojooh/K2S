@@ -1,0 +1,266 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar %>
+            <div class="main-content">
+                <% include includes/navbar2 %>
+                    <div class="content">
+                        <div class="container-fluid">
+
+                            <!-- BreadCrumb -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb bg-light-mode">
+                                        <li class="breadcrumb-item">
+                                            <a href="/admin">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <i class="fas fa-bell"></i> Notificationsy
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <!-- BreadCrumb End -->
+
+                            <!-- Add Button -->
+                            <!-- Add Button Modal-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-left mdl-task-form my-5">
+                                        <a href="#" class="btn btn-outline-kts">
+                                            <i class="fas fa-plus"></i>
+                                            Create A Task
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Add Button Modal-->
+
+                            <!-- task and chat section -->
+                            <div class="row">
+                                <!-- task section -->
+                                <div class="col-lg-8 col-md-12">
+                                    <div class="card card-stats mt-5 h-40">
+                                        <div class="card-table-title bg-success">
+                                            <h4 class="card-title ">Tasks</h4>
+                                            <p class="card-description"> List of Tasks Assigned or Created.</p>
+                                        </div>
+
+                                        <div class="card-body mt-5">
+                                            <% if (tks.length> 0) {%>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">S/N</th>
+                                                                <th scope="col">message</th>
+                                                                <th scope="col">Category</th>
+                                                                <th scope="col">Date Created</th>
+                                                                <th scope="col">Date Due</th>
+                                                                <th scope="col">Status</th>
+                                                                <th scope="col">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% for (var i=0; i < tks.length; i++) { %>
+                                                                <tr>
+                                                                    <th scope="row">
+                                                                        <%= i + 1; %>
+                                                                    </th>
+                                                                    <td>
+                                                                        <%= tks[i].message_topic %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= tks[i].category %>
+                                                                    </td>
+                                                                    <td class="pretty-date">
+                                                                        <%= tks[i].date_created %>
+                                                                    </td>
+                                                                <% if (tks[i].due_date=="0000-00-00 00:00:00" ) { %>
+                                                                    <td>
+                                                                        Not Set
+                                                                    </td>
+                                                                <% } else { %>
+                                                                    <td class="pretty-date">
+                                                                        <%= tks[i].due_date %>
+                                                                    </td>
+                                                                <% } %>
+                                                                    <td>
+                                                                        <% if (tks[i].is_complete) { %>
+                                                                            <div class="custom-control custom-switch">
+                                                                                <input type="checkbox" class="custom-control-input"
+                                                                                    id="customSwitch-<%= tks[i].id %>" data-url="/admin/Task/change_status" value="False" checked>
+                                                                                <label class="custom-control-label"
+                                                                                    for="customSwitch-<%= tks[i].id %>"></label>
+                                                                            </div>
+                                                                        <% } else { %>
+                                                                            <div class="custom-control custom-switch">
+                                                                                <input type="checkbox" class="custom-control-input"
+                                                                                    id="customSwitch-<%= tks[i].id %>" data-url="/admin/Task/change_status" value="True">
+                                                                                <label class="custom-control-label"
+                                                                                    for="customSwitch-<%= tks[i].id %>"></label>
+                                                                            </div>
+                                                                        <% } %>
+                                                                    </td>
+                                                                    <td class="td-actions">
+                                                                    <% if (user.user_type=="ADMS" || tks[i].sender == user.user_id) { %>
+                                                                        <a href="#" class="edit-task text-primary mr-4" data-id="<%= tks[i].id %>"
+                                                                            data-url="/admin/Task/get_task" data-type="edit-modal"
+                                                                            data-toggle="tooltip" data-placement="top" title="Edit Task">
+                                                                            <i class="fas fa-pencil-alt"></i>
+                                                                        </a>
+                                                                        
+                                                                        <a href="#" class="delete-task text-danger" data-id="<%= tks[i].id %>"
+                                                                            data-url="/admin/Task/delete_task" data-toggle="tooltip"
+                                                                            data-placement="top" title="Remove Task">
+                                                                            <i class="fas fa-times"></i>
+                                                                        </a>
+                                                                        
+                                                                    <% }  else {%>
+                                                                        <a href="#" class="task-info text-info mr-4" data-id="<%= tks[i].id %>" data-url="/admin/Task/get_task"
+                                                                            data-type="display-modal" data-toggle="tooltip" data-placement="top" title="Task Details">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                        </a>
+                                                                    <% } %>
+                                                                    </td>
+                                                                </tr>
+                                                            <% } %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            <% } else { %>
+                                                <div class="my-5">
+                                                    <h6 class="text-center text-danger">No Tasks Available</h6>
+                                                </div>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- task section end -->
+
+                                <!-- chat section  -->
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="card card-stats mt-5 chat-contacts h-40">
+                                        <div class="card-table-title bg-success">
+                                            <h4 class="card-title ">Mesages</h4>
+                                            <p class="card-description"> List of Chat Conversations.</p>
+                                        </div>
+                                    
+                                        <div class="card-body mt-5">
+                                            <div class="row hp80">
+                                                <div class="col-12">
+                                                <% if (contacts.length > 0) {%>
+                                                    <div class="convos">
+                                                        <div class="scroll px-4">
+                                                        <% for (var i=0; i < contacts.length; i++) { %>
+                                                            <% if (contacts[i].sender == user.user_id ) {%>
+                                                                <div class="box my-2" data-id="<%= contacts[i].id %>" data-name="<%= contacts[i].rec_fname + ' ' + contacts[i].rec_lname  %>" data-user="<%= contacts[i].rec_user_id %>" data-convo= "<%= contacts[i].message %>">
+                                                                <% if (contacts[i].rec_pp != "") {%>
+                                                                    <div class="box-img">
+                                                                        <img src="<%= contacts[i].rec_pp %>" class="img-fluid">
+                                                                    </div>
+                                                                <% } else { %>
+                                                                    <div class="box-img">
+                                                                        <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid">
+                                                                    </div>
+                                                                <% } %>
+                                                                    <div class="box-content <%= contacts[i].rec_fname %>">
+                                                                        <h3><%= contacts[i].rec_fname + " " + contacts[i].rec_lname  %></h3>
+                                                                        <span><%= contacts[i].rec_user_id %></span>
+                                                                        <span class ="time-only"> <%= contacts[i].date_created %></span>
+                                                                    </div>
+                                                                </div>
+                                                            <% } else { %>
+                                                                <div class="box my-2" data-id="<%= contacts[i].id %>" data-name="<%= contacts[i].send_fname + ' ' + contacts[i].send_lname  %>"
+                                                                    data-user="<%= contacts[i].send_user_id %>" data-convo="<%= contacts[i].message %>">
+                                                                    <% if (contacts[i].send_pp !="" ) {%>
+                                                                        <div class="box-img">
+                                                                            <img src="<%= contacts[i].send_pp %>" class="img-fluid">
+                                                                        </div>
+                                                                    <% } else { %>
+                                                                        <div class="box-img">
+                                                                            <img src="/images/profile/avatar/avatar.png" class="img-fluid">
+                                                                        </div>
+                                                                    <% } %>
+                                                                        <div class="box-content">
+                                                                            <h3>
+                                                                                <%= contacts[i].send_fname + " " + contacts[i].send_lname %>
+                                                                            </h3>
+                                                                            <span>
+                                                                                <%= contacts[i].send_user_id %>
+                                                                            </span>
+                                                                            <span class ="time-only"> <%= contacts[i].date_created %></span>
+                                                                        </div>
+                                                                </div>
+                                                            <% } %>
+                                                        <% } %>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                <% } else { %>
+                                                    <div class="my-5">
+                                                        <h6 class="text-center text-danger">No Conversations Yet</h6>
+                                                    </div>
+                                                <% } %>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="bottom tex-center w-100 mt-4 pt-4 pb-lg-2 pb-md-2">
+                                                        <a href="#" data-url="/admin/get_chat" class="btn btn-kts start-convo">Start Conversation</a>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            
+                                        </div>
+                                       
+                                    </div>
+
+                                    <div class="cradles chat-convo mb-4 deactivated">
+                                       
+                                        <div class="main w-100 mt-4 mb-4">
+                                            <div class="d-flex flex-row justify-content-between p-3 adiv bg-success text-white"> 
+                                                <i class="fas fa-chevron-left"></i> 
+                                                <h6 class="pb-3 name grame">Live chat</h6>  
+                                            </div>
+                                            <div class="scroll gratty px-4">
+                                            </div>
+                                                <!-- <div class=""></div> -->
+                                                <!-- 
+                                                
+                                                <div class="text-center"><span class="between">Call started at 10:47am</span></div>
+                                                <div class="text-center"><span class="between">Call ended at 11:03am</span></div> -->
+                                                
+                                            <nav class="navbar bg-white navbar-expand-sm d-flex justify-content-between rejp w-100"> 
+                                                <input type="text number"name="text" class="form-control w-100" id="send-message" data-rec="" placeholder="Type a message...">
+                                                <div class="icondiv d-flex justify-content-end align-content-center text-center ml-2"> 
+                                                    <!-- <i class="fa fa-paperclip icon1 deactivated"></i>  -->
+                                                    <i class="fa fa-arrow-circle-right icon2 warki" data-id=""></i> 
+                                                </div>
+                                            </nav>
+                                        
+                                    </div>
+                                </div>
+                                <!-- chat section end -->
+                            </div>
+                            <!-- task and chat section end -->
+
+
+
+                        </div>
+                    </div>
+                            
+            </div>
+                            
+    </div>
+<% include includes/modal_5.ejs %>
+<script>var user_id = "<%= user.user_id %>";</script>
+<script>var user_name = "<%= user.fname + ' ' + user.lname %>";</script>
+<script src="/js/personal/sidebar-2.js"></script>
+<script src="/js/personal/helper.js"></script>
+<script src="/js/personal/script_5.js"></script>
+<script src="/js/personal/socket_1.js"></script>
+</body>
+                            
+</html>

@@ -13,9 +13,10 @@
                             </h3>
                             <div class="line"></div>
                             <p class="kid-details">
-                                <%= spns[i].category %>
                                 <br>
                                 <%= spns[i].age %> Years
+                                <br>
+                                <%= spns[i].kids %> Kids
                                 <br>
         
 
@@ -57,16 +58,19 @@
                             </h3>
                             <div class="line"></div>
                             <p class="kid-details">
-                                <%= spns[0][i].category %>
-                                    <br>
-                                    <a href="#"
-                                        class="edit-sponsor btn btn-outline-kid rounded-pill my-2"
-                                        data-id="<%= spns[0][i].id %>"
-                                        data-url="/admin/User/get_profile"
-                                        data-type="edit-modal" data-toggle="tooltip"
-                                        data-placement="top" title="Edit Sponsor">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
+                                <br>
+                                <%= spns[0][i].age %> Years
+                                <br>
+                                <%= spns[0][i].kids %> Kids
+                                <br>
+                                <a href="#"
+                                    class="edit-sponsor btn btn-outline-kid rounded-pill my-2"
+                                    data-id="<%= spns[0][i].id %>"
+                                    data-url="/admin/User/get_profile"
+                                    data-type="edit-modal" data-toggle="tooltip"
+                                    data-placement="top" title="Edit Sponsor">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
 
                                 <% if (user.user_type=="ADMS" ) { %>
                                     <a href="#"

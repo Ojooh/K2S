@@ -439,6 +439,23 @@ module.exports.getSponsors = async (req, res, next) => {
         var count = 0;
         var start = 1;
         var section = 12;
+        // let result = await DB.getAllUsers();
+
+
+        // for (var g = 0; g < result.length; g++) {
+        //     // console.log(result[0])
+        //     if (result[g].user_type == "ENV") {
+        //         let v = await DB.getCountEnvoyKids(result[g].user_id);
+        //         console.log(v)
+        //         let d = await DB.updateKids(v[0].total, result[g].user_id)
+        //     }
+        //     if (result[g].user_type == "SPN") {
+        //         let v = await DB.getCountSponsorKids(result[g].user_id);
+        //         let d = await DB.updateKids(v[0].total, result[g].user_id)
+        //         console.log(v)
+        //     }
+        // }
+
 
 
 
@@ -446,6 +463,7 @@ module.exports.getSponsors = async (req, res, next) => {
             var noty = await DB.getNotys(user[0].user_id);
             var sponsorsy = await DB.getSponsors();
             var [sponsors, cur_t] = helper.paginateArray(sponsorsy, count);
+            var Kids = await DB.getCountEnvoyKids(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
 
 
@@ -533,7 +551,6 @@ module.exports.searchMySponsors = async (req, res, next) => {
 
 };
 
-
 //Function to Handle Sponsor AddProfile Post
 module.exports.createSponsorProfile = async (req, res, next) => {
     if (req.session.loggedin) {
@@ -579,7 +596,6 @@ module.exports.createSponsorProfile = async (req, res, next) => {
         res.redirect(url)
     }
 }
-
 
 //Function To Handle Sponsor Profile Edit Post
 module.exports.updateSponsorProfile = async (req, res, next) => {
@@ -700,7 +716,7 @@ module.exports.getEnvoysPage = async (req, res, next) => {
             var noty = await DB.getNotys(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
 
-            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "active", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, envs: envoys, noty: noty, points: cur_t, curry: count, total: envoysy.length, start: start, section: (start + envoysy.length) - 1 };
             res.render('admin/envoys', context);
         } else {
@@ -726,7 +742,7 @@ module.exports.searchMyEnvoys = async (req, res, next) => {
         var result;
 
 
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS")) {
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADMS")) {
             if (mesc == "envoys") {
                 result = await DB.getEnvoySearch(kwy);
             }
@@ -736,7 +752,7 @@ module.exports.searchMyEnvoys = async (req, res, next) => {
             var noty = await DB.getNotys(user[0].user_id);
             var tab = JSON.parse(user[0].preference);
 
-            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "active", env: "", ntf: "" };
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "active", ntf: "" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, envs: envoys, noty: noty, turl: turl, points: cur_t, curry: count, total: result.length, start: start, section: (start + result.length) - 1 };
             res.render('admin/envoys-s', context);
         } else {
@@ -873,12 +889,19 @@ module.exports.getKids = async (req, res, next) => {
         var user = await DB.getUserByEmail(email);
         var icon = "fas fa-child";
         var title = "Kids";
+        var count = 0;
+        var start = 1;
+        var section = 12;
 
 
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
-            var kids = await DB.getKids();
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var kidsy = await DB.getKids();
+            var [kids, cur_t] = helper.paginateArray(kidsy, count);
+
             var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, kds: kids };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, start: start, section: section };
             res.render('admin/kids', context);
         } else {
             var url = "/login";
@@ -892,26 +915,75 @@ module.exports.getKids = async (req, res, next) => {
 
 };
 
-//Function To Render Envoy Add Form
-module.exports.getAddKidForm = async (req, res, next) => {
+// /Function To Render Page:id
+module.exports.getKidsPage = async (req, res, next) => {
     if (req.session.loggedin) {
         var email = req.session.username;
         var user = await DB.getUserByEmail(email);
-        var icon = "fas fa-hands-helping";
-        var title = "Envoys";
+        var icon = "fas fa-child";
+        var title = "Kids";
+        var count = req.params.id;
+        var start = (12 * count) + 1;
+        // var section = 12 * (count + 1)
 
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "active", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar };
-            res.render('admin/addEnvoy', context);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+            var kidsy = await DB.getKids();
+            var [kids, cur_t] = helper.paginateArray(kidsy, count);
+
+            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, kds: kids, noty: noty, points: cur_t, curry: count, total: kidsy.length, start: start, section: (start + kidsy.length) - 1 };
+            res.render('admin/kids', context);
         } else {
-            res.redirect("/login");
+            var url = "/login";
+            res.redirect(url);
         }
     } else {
-        res.redirect("/login");
+        var url = "/login";
+        res.redirect(url);
     }
 };
+
+// function to handle search
+module.exports.searchMyKids = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-child";
+        var title = "Kids";
+        var count = req.params.id;
+        var [mesc, kwy] = req.params.kwy.split("-");
+        var start = (12 * count) + 1;
+        var result;
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            if (mesc == "kids") {
+                result = await DB.getKidsSearch(kwy);
+            }
+            var turl = req.originalUrl.split("page")[0];
+            console.log(turl)
+            var [kids, cur_t] = helper.paginateArray(result, count);
+            var noty = await DB.getNotys(user[0].user_id);
+            var tab = JSON.parse(user[0].preference);
+
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "active", ntf: "" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tab: tab, kds: kids, noty: noty, turl: turl, points: cur_t, curry: count, total: result.length, start: start, section: (start + result.length) - 1 };
+            res.render('admin/kids-s', context);
+        } else {
+            var url = "/login";
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url);
+    }
+
+
+};
+
 
 //Function to Handle Envoy AddProfile Post
 module.exports.createKidProfile = async (req, res, next) => {
@@ -1002,31 +1074,6 @@ module.exports.updateKidStatus = async (req, res, next) => {
     }
 
 }
-
-//Function To Render Kid Edit Form
-module.exports.getEditKidForm = async (req, res, next) => {
-    if (req.session.loggedin) {
-        var email = req.session.username;
-        var user = await DB.getUserByEmail(email);
-        var icon = "fas fa-child";
-        var title = "Kids";
-        var ID = req.params.id;
-
-
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
-            let edittee = await DB.getKidById(ID);
-            var sidebar = { dash: "", usr: "", adm: "", kds: "active", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, edity: edittee[0] };
-            res.render('admin/editKids', context);
-        } else {
-            var url = "/login";
-            res.redirect(url);
-        }
-    } else {
-        var url = "/login";
-        res.redirect(url);
-    }
-};
 
 //Function To Handle Kid Profile Edit Post
 module.exports.updateKidProfile = async (req, res, next) => {
@@ -1129,3 +1176,184 @@ module.exports.deleteKidProfile = async (req, res, next) => {
 
 };
 
+module.exports.getNotify = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var icon = "fas fa-bell";
+        var title = "Notifications";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            var tasks = await DB.getEnvoyTasks(user[0].user_id);
+            var noty = await DB.getNotys(user[0].user_id);
+            var contacts = await DB.getContacts(user[0].user_id);
+
+            var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "active" };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, tks: tasks, noty: noty, contacts: contacts.slice(0, 4) };
+            res.render('admin/notifications', context);
+            // res.send('respond with a resource.');
+        } else {
+            res.redirect("/login");
+        }
+    } else {
+        res.redirect("/login");
+    }
+};
+
+//Function to update task status
+module.exports.updateStatus = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var status = req.body.status;
+        var change, d_done = "";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            if (status == "False") {
+                status = "0";
+                change = " Marked In-complete";
+                d_done = ""
+            } else {
+                status = "1";
+                change = " Marked Complete";
+                d_done = moment().format('YYYY-MM-DD  HH:mm:ss.000');
+            }
+
+            let update = await DB.updateTaskStatus(ID, status, d_done);
+            var editted = await DB.getTaskById(ID);
+            cat = "task_f";
+            let exist = await DB.notyExist(user[0].user_id, cat);
+            if (exist.length > 0) {
+                msg = "You have " + (exist[0].count + 1).toString() + " Finished Task(s)";
+                let update = await DB.updateNoty(user[0].user_id, msg, exist[0].count + 1, cat);
+            } else {
+                msg = "You have 1 Finished Task(s)";
+                let insert_2 = await DB.addNoty(user[0].user_id, msg, cat, "1");
+            }
+            var msg = editted[0].message_topic + "" + change;
+            res.json({ success: msg });
+        } else {
+            var url = "/login"
+            res.json({ url: url });
+        }
+    } else {
+        var url = "/login"
+        res.json({ url: url });
+    }
+};
+
+
+//Function to update task status
+module.exports.updateMessage = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var status = req.body.status;
+        var change = "";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM")) {
+            await DB.updateMessageStatus(ID);
+            res.json({ success: "message seen successfully" });
+        } else {
+            var url = "/login"
+            res.redirect(url);
+        }
+    } else {
+        var url = "/login"
+        res.redirect(url);
+    }
+};
+
+//Function To Delete User Task
+module.exports.deleteTask = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var editted = await DB.getTaskById(ID);
+        var change = "";
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_id == editted[0].sender)) {
+            let update = await DB.deleteUserTask(ID);
+            cat = "task_d";
+            let exist = await DB.notyExist(user[0].user_id, cat);
+            if (exist.length > 0) {
+                msg = "You have " + (exist[0].count + 1).toString() + " Deleted Task(s)";
+                let update = await DB.updateNoty(user[0].user_id, msg, exist[0].count + 1, cat);
+            } else {
+                msg = "You have 1 Deleted Task(s)";
+                let insert_2 = await DB.addNoty(user[0].user_id, msg, cat, "1");
+            }
+            var msg = editted[0].message_topic + " Deleted Successfully";
+            res.json({ success: msg });
+        } else {
+            var url = "/login";
+            res.redirect(url)
+        }
+    } else {
+        var url = "/login";
+        res.redirect(url)
+    }
+
+};
+
+
+//Function To get Task
+module.exports.getTask = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+        var ID = req.body.id;
+        var type = req.body.type;
+        var mode = req.body.mode;
+        var task = await DB.getTaskById(ID);
+        console.log(type);
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_id == task[0].sender)) {
+            if (type == "edit") {
+                if (mode == "form") {
+
+                    res.json({ success: "successful", type: mode });
+                } else {
+                    res.json({ success: task[0], type: mode });
+                }
+            }
+
+            if (type == "display") {
+                res.json({ success: task[0], type: mode });
+            }
+
+
+
+
+        } else {
+            var url = "/login"
+            res.redirect(url)
+        }
+    } else {
+        var url = "/login"
+        res.redirect(url);
+    }
+
+
+};
+
+//Function to get all Users
+module.exports.getChatUsers = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "SPN")) {
+            let result = await DB.getAllUsers();
+            res.json({ success: result });
+        } else {
+            res.redirect("/login");
+        }
+    } else {
+        res.redirect("/login");
+    }
+};

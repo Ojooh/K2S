@@ -1,4 +1,3 @@
-<!-- Over Lay  -->
 <div class="overlay deactivated">
     <div class="close-sidebar">
         <i class="fas fa-times"></i>
@@ -21,23 +20,24 @@
 
             </div>
 
-            <div class="modal-body card-modal-body mt-5">
+            <div class="modal-body card-modal-body card-modal-scrollable mt-5">
                 <form class=" mt-4" method="POST" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="col-12">
-                            <div class="form-group my-4">
+                            <div class="form-group">
                                 <h3 class="fieldset-name text-center">Personal Bio</h3>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-12">
-                            <div class="form-group error my-4"></div>
+                            <div class="form-group error my-2"></div>
                         </div>
                     </div>
+
                     <fieldset>
                         <div class="form-row">
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Category</label>
                                     <select class="form-control category" id="category" required>
@@ -50,52 +50,57 @@
                                     <span class="text-danger category-error my-1"></span>
                                 </div>
                             </div>
-                        
-                            <div class="col-md-3">
+
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">First Name</label>
-                                    <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name.....">
+                                    <input type="text" class="form-control" id="fname" name="fname"
+                                        placeholder="First Name.....">
                                     <span class="text-danger fname-error my-1"></span>
                                 </div>
-                        
+
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Middle Name</label>
-                                    <input type="text" class="form-control" id="mname" name="mname" placeholder="Middle Name.....">
+                                    <input type="text" class="form-control" id="mname" name="mname"
+                                        placeholder="Middle Name.....">
                                     <span class="text-danger mname-error my-1"></span>
                                 </div>
-                        
+
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Last Name</label>
-                                    <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name.....">
+                                    <input type="text" class="form-control" id="lname" name="lname"
+                                        placeholder="Last Name.....">
                                     <span class="text-danger lname-error my-1"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">DOB</label>
-                                    <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of Birth">
+                                    <input type="date" class="form-control" id="dob" name="dob"
+                                        placeholder="Date of Birth">
                                     <span class="text-danger dob-error my-1"></span>
                                 </div>
-                        
+
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Age</label>
-                                    <input type="text" class="form-control" id="age" name="age" placeholder="Age....." disabled>
+                                    <input type="text" class="form-control" id="age" name="age" placeholder="Age....."
+                                        disabled>
                                     <span class="text-danger age-error my-1"></span>
                                 </div>
-                        
+
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Gender</label>
                                     <select class="form-control" id="gender">
@@ -109,51 +114,50 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Country of residence</label>
-                                    <select class="form-control" id="country">
-                        
-                                    </select>
+                                    <select class="form-control" id="country" placeholder="country....."></select>
                                     <span class="text-danger country-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">State of Origin</label>
                                     <select class="form-control" id="state-o">
-                        
+
                                     </select>
                                     <span class="text-danger state-o-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">State of Resdence</label>
                                     <select class="form-control" id="state-r">
-                        
+
                                     </select>
                                     <span class="text-danger state-r-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Local Government Area</label>
-                                    <input type="text" class="form-control" id="lga" name="lga" placeholder="Local Government Area....">
+                                    <input type="text" class="form-control" id="lga" name="lga"
+                                        placeholder="Local Government Area....">
                                     <span class="text-danger lga-error my-1"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Email</label>
                                     <input type="email" class="form-control" id="email" placeholder="Email....">
                                     <span class="text-danger email-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-row">
                                     <div class="col-4">
                                         <div class="form-group bmd-form-group">
@@ -165,7 +169,8 @@
                                     <div class="col-8">
                                         <div class="form-group bmd-form-group">
                                             <label class="bmd-label-floating">Telephone</label>
-                                            <input type="tel" class="form-control" id="telephone" placeholder="Phone Number....">
+                                            <input type="tel" class="form-control" id="telephone"
+                                                placeholder="Phone Number....">
                                             <span class="text-danger tely-error my-1"></span>
                                         </div>
                                     </div>
@@ -174,63 +179,99 @@
                         </div>
 
                     </fieldset>
+
                     <fieldset>
                         <div class="form-row">
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">School Name</label>
-                                    <input type="text" class="form-control" id="sname" name="sname" placeholder="School Name....">
+                                    <input type="text" class="form-control" id="sname" name="sname"
+                                        placeholder="School Name....">
                                     <span class="text-danger sname-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Level of Study</label>
                                     <select class="form-control" id="los">
-                        
+
                                     </select>
                                     <span class="text-danger los-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Class</label>
                                     <select class="form-control" id="class">
-                        
+
                                     </select>
                                     <span class="text-danger class-error my-1"></span>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">School Address</label>
-                                    <textarea class="form-control" id="saddress"placeholder="School Address..." row="2"></textarea>
+                                    <textarea class="form-control" id="saddress" placeholder="School Address..."
+                                        row="2"></textarea>
                                     <span class="text-danger saddress-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group bmd-form-group">
-                                    <label class="bmd-label-floating">School Fees</label>
-                                    <input type="number" class="form-control" id="sfees" placeholder="School Fees ....." min="0">
-                                    <span class="text-danger sfees-error my-1"></span>
-                                </div>
-                            </div>
-                            <div class="col-12">
+                            <!-- <div class="col-md-6">
+                                                    <div class="form-group bmd-form-group">
+                                                        <label class="bmd-label-floating">School Fees</label>
+                                                        <input type="number" class="form-control" id="sfees" placeholder="School Fees ....."
+                                                            min="0">
+                                                        <span class="text-danger sfees-error my-1"></span>
+                                                    </div>
+                                                </div> -->
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Other Details</label>
-                                    <textarea class="form-control" id="sother" placeholder="School Address..." rows="6"></textarea>
+                                    <textarea class="form-control" id="sother" placeholder="School Address..."
+                                        rows="6"></textarea>
                                     <span class="text-danger sother-error my-1"></span>
                                 </div>
                             </div>
-                        
+
                         </div>
                     </fieldset>
+
                     <fieldset>
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-lg-12 col-md-12 my-3">
+                                <div class="text-center">
+                                    Start by creating an expense field, where you input an expense name, expense cost in
+                                    Naira (&#8358;) and expense description for the child.
+                                    You can create multiple fields by clicking on the create button.
+                                </div>
+                                <span id="expyy" class="deactivated">0</span>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 mdl-kid-form my-4">
+                                <a href="#" id="createExpense" class="btn btn-outline-kts">
+                                    <i class="fas fa-plus"></i>
+                                    Create an Expense Field
+                                </a>
+
+                                <div class="float-right">
+                                    <h3 class="tot"></h3>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="form-row expense-home">
+
+
+
+                            </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="form-row">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Parent Title</label>
                                     <select class="form-control" id="ptitle">
@@ -243,38 +284,43 @@
                                         <option value="Sister">Sister</option>
                                         <option value="Uncle">Uncle</option>
                                         <option value="Other">Other</option>
-                                
+
                                     </select>
-                                    <input type="hidden" class="form-control mt-2" id="ptitle2" name="ptitle" placeholder="Enter Parent Title....">
+                                    <input type="hidden" class="form-control mt-2" id="ptitle2" name="ptitle"
+                                        placeholder="Enter Parent Title....">
                                     <span class="text-danger ptitle-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Parent Name</label>
-                                    <input type="text" class="form-control" id="pname" name="pname" placeholder="Parent Name....">
+                                    <input type="text" class="form-control" id="pname" name="pname"
+                                        placeholder="Parent Name....">
                                     <span class="text-danger pname-error my-1"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Parent Email</label>
-                                    <input type="email" class="form-control" id="pemail" name="pemail" placeholder="Parent Email....">
+                                    <input type="email" class="form-control" id="pemail" name="pemail"
+                                        placeholder="Parent Email....">
                                     <span class="text-danger pemail-error my-1"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Parent Telephone</label>
-                                    <input type="tel" class="form-control" id="ptel" name="ptel" placeholder="Parent Telephone....">
+                                    <input type="tel" class="form-control" id="ptel" name="ptel"
+                                        placeholder="Parent Telephone....">
                                     <span class="text-danger ptel-error my-1"></span>
                                 </div>
                             </div>
-                    
+
                         </div>
                     </fieldset>
+
                     <fieldset>
                         <div class="form-row">
                             <div class="col-md-12">
@@ -295,15 +341,16 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group dilly bmd-form-group">
                                     <label class="bmd-label-floating">Birth Certificate</label>
-                                    <input type="file" class="form-control" id="bc" placeholder="upload a document.....">
+                                    <input type="file" class="form-control" id="bc"
+                                        placeholder="upload a document.....">
                                     <span class="text-danger bc-error my-1"></span>
                                 </div>
                                 <div class="form-group bmd-form-group mt-5 jev text-center deactivated">
                                     <h5 class="text-info text-center path">
-                            
+
                                     </h5>
                                     <a href="#" class="btn btn-danger delete-file text-center">
                                         <i class="far fa-times-circle"></i>
@@ -311,10 +358,11 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6 col-md-12">
                                 <div class="form-group filly bmd-form-group">
                                     <label class="bmd-label-floating">Profile Picture</label>
-                                    <input type="file" class="form-control" id="profilePic" placeholder="upload an image.....">
+                                    <input type="file" class="form-control" id="profilePic"
+                                        placeholder="upload an image.....">
                                     <span class="text-danger pp-error my-1"></span>
                                 </div>
                                 <div class="form-group bmd-form-group mt-5 prev text-center deactivated">
@@ -331,149 +379,26 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary rounded-pill back deactivated">
-                    <i class="fas fa-long-arrow-alt-left"></i>
-                    Back
-                </button>
-                <button type="button" class="btn btn-outline-kts next" id="submitKid" data-type="add" data-url="/admin/Kids/add_kid">
-                    <i class="fas fa-long-arrow-alt-right"></i>
-                    Next
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Kids Form Modal End -->
 
-<!-- Kids Profile Modal -->
-<div class="modal fade bd-example-modal-xl" id="kidProfileModal" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="kifProfileModalCenterTitle" aria-hidden="true">
-    <div class="close-modal">
-        <i class="fas fa-times"></i>
-    </div>
-
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content card-modal-box mt-5">
-
-            <div class="modal-body card-modal-body mt-2">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#bio" role="tab"
-                            aria-controls="bio" aria-selected="true">Bio Information</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#SchoolInfo" role="tab"
-                            aria-controls="SchoolInfo" aria-selected="false">School Information</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#parent" role="tab"
-                            aria-controls="parent" aria-selected="false">Parent Information</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#profile" role="tab"
-                            aria-controls="profile" aria-selected="false">Profile Information</a>
-                    </li>
-                </ul>
-                <div class="tab-content my-2 p-md-4" id="myTabContent">
-                    <div class="tab-pane fade show active" id="bio" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="profile-img">
-                                        <img src="" class="avatar img-fluid rounded-pill">
-                                    </div>
-                                    <div class="k-id text-center my-4">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-8 info">
-                                    <div class="data ml-3">
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group error my-4"></div>
                     </div>
-                    <div class="tab-pane fade" id="SchoolInfo" role="tabpanel" aria-labelledby="schoolInfo-tab">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="profile-img">
-                                        <img src="" class="avatar img-fluid rounded-pill">
-                                    </div>
-                                    <div class="k-id text-center my-4">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-8 s-info">
-                                    <div class="data ml-3">
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="parent" role="tabpanel" aria-labelledby="parent-tab">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="profile-img">
-                                        <img src="" class="avatar img-fluid rounded-pill">
-                                    </div>
-                                    <div class="k-id text-center my-4">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-8 p-info">
-                                    <div class="data ml-3">
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="profile-img">
-                                        <img src="" class="avatar img-fluid rounded-pill">
-                                    </div>
-                                    <div class="k-id text-center my-4">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-8 pro-info">
-                                    <div class="data ml-3">
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-12 float-right">
+                        <button type="button" class="btn btn-secondary rounded-pill back deactivated">
+                            <i class="fas fa-long-arrow-alt-left"></i>
+                            Back
+                        </button>
+                        <button type="button" class="btn btn-outline-kts next" id="submitKid" data-type="add"
+                            data-url="/admin/Kids/add_kid">
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            Next
+                        </button>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                    <i class="fas fa-times"></i>
-                    Close
-                </button>
 
             </div>
         </div>
     </div>
 </div>
-<!-- Kids Profile Modal End -->
-
-
-
-<!-- The Modal End -->
-<script src="/javascripts/personal/school_level.js"></script>
-<script src="/javascripts/personal/country_state.js"></script>
-<script src="/javascripts/personal/country_code.js"></script>
-<!-- The Modal End -->
+<!-- Key Form Modal End -->

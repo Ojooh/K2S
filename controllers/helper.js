@@ -48,7 +48,7 @@ module.exports.validateAge = (dob) => {
     var current_year = d.getFullYear();
     var new_age = parseInt(current_year) - parseInt(user_year);
 
-    if (new_age > 18) {
+    if (new_age > 5) {
         return false;
     } else {
         return true

@@ -414,3 +414,21 @@ module.exports.getTask = async (req, res, next) => {
 
 
 };
+
+//Function to get all Users
+module.exports.getChatUsers = async (req, res, next) => {
+    if (req.session.loggedin) {
+        var email = req.session.username;
+        var user = await DB.getUserByEmail(email);
+
+
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "ENV")) {
+            let result = await DB.getAllUsers();
+            res.json({ success: result });
+        } else {
+            res.redirect("/login");
+        }
+    } else {
+        res.redirect("/login");
+    }
+};

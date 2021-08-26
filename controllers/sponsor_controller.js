@@ -27,8 +27,11 @@ module.exports.getDash = async (req, res, next) => {
             var activities = await DB.getSPNActivities(user[0].user_id, limit);
             var cards = await DB.getSPNCards(user[0].user_id);
             var contacts = await DB.getContacts(user[0].user_id);
+            var Kids = await DB.getCountSponsorKids(user[0].user_id);
+            var Kids_d = await DB.getCountSponsorDonations(user[0].user_id);
+            var count = { kids: Kids[0].total, kids_d: Kids_d[0].total }
             var sidebar = { dash: "active", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "" };
-            var context = { title: title, icon: icon, user: user[0], active: sidebar, noty: noty, cards: cards, wllt: wallet, acts: activities, contacts: contacts };
+            var context = { title: title, icon: icon, user: user[0], active: sidebar, count, count, noty: noty, cards: cards, wllt: wallet, acts: activities, contacts: contacts };
             res.render('sponsor/dashboard', context);
         } else {
             res.redirect("/login");
@@ -886,14 +889,14 @@ module.exports.getChatUsers = async (req, res, next) => {
         var user = await DB.getUserByEmail(email);
 
 
-        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "SPN")) {
+        if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "ADMS" || user[0].user_type == "ADM" || user[0].user_type == "SPN")) {
             let result = await DB.getUserByType("ADM");
             res.json({ success: result });
         } else {
-            res.json({ url: url });
+            res.redirect("/login");
         }
     } else {
-        res.json({ url: url });
+        res.redirect("/login");
     }
 };
 
@@ -907,6 +910,7 @@ module.exports.adoptKid = async (req, res, next) => {
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
             await DB.adoptKid(ID, user[0].user_id);
+            await DB.updateSponsorKids(user[0].kids, user[0].user_id)
 
             res.json({ success: 'You Have Succesfully Adopted ' + edyyy[0].fname })
 

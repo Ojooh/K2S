@@ -466,7 +466,7 @@ startConvo.on("click", function (e) {
             Swal.fire({
                 title: 'Auto close alert!',
                 html: 'Please Hold on as Details are being Fetched.',
-                timer: 40000,
+                timer: 400000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 allowOutsideClick: false,

@@ -72,18 +72,14 @@ router.post('/Envoys/edit_profile', adminHandler.updateEnvoyProfile);
 /* GET administrator Details. */
 router.post('/Kid/get_profile', adminHandler.getKidProfile);
 
-
-
-
-
-
-
-
 /* GET Kids page. */
 router.get('/Kids', adminHandler.getKids);
 
-/* GET Kid Form. */
-router.get('/Kids/add_kid', adminHandler.getAddKidForm);
+/* GET page */
+router.get('/Kids/page=:id', adminHandler.getKidsPage);
+
+/*GET page */
+router.get('/Kids/search/keyword=:kwy/page=:id', adminHandler.searchMyKids);
 
 /* POST add Kid Profile. */
 router.post('/Kids/add_kid', adminHandler.createKidProfile);
@@ -91,13 +87,29 @@ router.post('/Kids/add_kid', adminHandler.createKidProfile);
 /* POST change kid status page. */
 router.post('/Kids/chnage_status', adminHandler.updateKidStatus);
 
-/* GET edit kid page. */
-router.get('/Kids/edit_kid/:id', adminHandler.getEditKidForm);
-
 /* POST kids updated Details. */
 router.post('/Kids/edit_profile', adminHandler.updateKidProfile);
 
 /* DELETE  Profile. */
 router.post('/Kids/delete_profile', adminHandler.deleteKidProfile);
+
+/* GET Notification pagee. */
+router.get('/notifications', adminHandler.getNotify);
+
+/* Post Task Complete. */
+router.post('/Task/change_status', adminHandler.updateStatus);
+
+/* Post Message seen. */
+router.post('/Message/seen', adminHandler.updateMessage);
+
+/* Post Delete Task */
+router.post('/Task/delete_task', adminHandler.deleteTask);
+
+/* Post Delete Task */
+router.post('/Task/get_task', adminHandler.getTask);
+
+/*GET login page. */
+router.get('/get_chat', adminHandler.getChatUsers);
+
 
 module.exports = router;

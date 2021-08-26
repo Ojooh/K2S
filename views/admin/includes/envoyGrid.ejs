@@ -13,9 +13,9 @@
                             </h3>
                             <div class="line"></div>
                             <p class="kid-details">
-                                <%= envs[i].category %>
-                                <br>
                                 <%= envs[i].age %> Years
+                                <br>
+                                <%= envs[i].kids %> Kids
                                 <br>
         
 
@@ -57,8 +57,11 @@
                             </h3>
                             <div class="line"></div>
                             <p class="kid-details">
-                                <%= envs[0][i].category %>
-                                    <br>
+                                <%= envs[0][i].age %> Years
+                                <br>
+                                <%= envs[0][i].kids %> Kids
+                                <br>
+
                                     <a href="#"
                                         class="edit-envoy btn btn-outline-kid rounded-pill my-2"
                                         data-id="<%= envs[0][i].id %>"

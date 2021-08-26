@@ -45,5 +45,8 @@ router.post('/Task/delete_task', envoyHandler.deleteTask);
 /* Post Delete Task */
 router.post('/Task/get_task', envoyHandler.getTask);
 
+/*GET login page. */
+router.get('/get_chat', envoyHandler.getChatUsers);
+
 
 module.exports = router;

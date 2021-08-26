@@ -1,0 +1,98 @@
+<!-- Over Lay  -->
+<div class="overlay deactivated">
+    <div class="close-sidebar">
+        <i class="fas fa-times"></i>
+    </div>
+</div>
+<!-- Over Lay End -->
+<!-- The Modal -->
+<!-- Kid Form Modal -->
+<div class="modal fade bd-example-modal-lg" id="addTaskModalForm" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="addTaskModalFormCenterTitle" aria-hidden="true">
+    <div class="close-modal">
+        <i class="fas fa-times"></i>
+    </div>
+
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content card-modal-box mt-5">
+            <div class="card-modal-header bg-success">
+                <h4 class="card-modal-title ">Task Form</h4>
+                <p class="card-modal-description">Add A New Task.</p>
+
+            </div>
+
+            <div class="modal-body card-modal-body card-modal-scrollable h-auto mt-5">
+                <form class=" mt-4 px-4" method="POST" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="form-group my-4">
+                                <!-- <h3 class="fieldset-name text-center">Task Form</h3> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="form-group error my-4"></div>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Task To :</label>
+                                    <select class="form-control category" id="to" disabled required>
+                                        <option value="<%= user.user_id %>" selected="selected">
+                                            <%= user.user_id + " - " + user.fname + " " + user.lname %>
+                                        </option>
+                                    </select>
+                                    <span class="text-danger to-error my-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Task Subject</label>
+                                    <input type="text" class="form-control" id="subject" name="subject"
+                                        placeholder="Subject.....">
+                                    <span class="text-danger subject-error my-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Task Due Date</label>
+                                    <input type="datetime-local" class="form-control" id="due" name="due"
+                                        placeholder="Date of Birth">
+                                    <span class="text-danger due-error my-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Task Description</label>
+                                    <textarea type="text" class="form-control" id="description" name="description"
+                                        placeholder="Task Description....." rows="8"></textarea>
+                                    <span class="text-danger description-error my-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary rounded-pill" data-dismiss="modal">
+                    <i class="fas fa-long-arrow-alt-left"></i>
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-outline-kts next" id="submitTask" data-type="add"
+                    data-url="/admin/Task/add_task">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                    Add Task
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

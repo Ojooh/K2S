@@ -38,7 +38,7 @@ module.exports.getUserById = (id) => {
 
 //GET All Users
 module.exports.getAllUsers = () => {
-    const query = "SELECT users.user_id, users.fname, users.lname, users.email FROM users WHERE is_active = '1';";
+    const query = "SELECT * FROM users WHERE is_active = '1';";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -228,6 +228,36 @@ module.exports.getCountKids = () => {
 //GET count for envoy kids
 module.exports.getCountEnvoyKids = (user_id) => {
     const query = "SELECT COUNT(*) AS total FROM kids WHERE created_by = '" + user_id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+module.exports.getCountSponsorKids = (user_id) => {
+    const query = "SELECT COUNT(*) AS total FROM kids WHERE adopted_by = '" + user_id + "';";
+    console.log(query);
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+module.exports.getCountSponsorDonations = (user_id) => {
+    const query = "SELECT COUNT(*) AS total FROM donations WHERE donator = '" + user_id + "';";
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -1284,6 +1314,21 @@ module.exports.getEnvoySearch = (kwy) => {
     });
 };
 
+module.exports.getKidsSearch = (kwy) => {
+    const query = "SELECT * FROM kids WHERE (category LIKE '%" + kwy + "%' OR fname LIKE '%" + kwy + "%' OR mname LIKE '%" + kwy + "%' OR lname LIKE '%" + kwy + "%');";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 //SPONSOR wallet
 module.exports.getSPNWallet = (id) => {
     const query = "SELECT * FROM wallet WHERE is_active = 1 AND owner = '" + id + "';";
@@ -1411,6 +1456,23 @@ module.exports.adoptKid = (id, user) => {
         });
     });
 };
+
+module.exports.updateKids = (value, user) => {
+    const query = "UPDATE users SET kids = '" + value + "' WHERE user_id = '" + user + "';";
+    console.log(query)
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
 
 module.exports.addDonation = (ref, user, kid, amount, title, type, status) => {
     const query = "INSERT INTO donations (`ref`, `donator`, `kid`, `amount`, `title`, `payment_type`, `status`) VALUES ('" + ref + "', '" + user + "',  '" + kid + "',  '" + amount + "',  '" + title + "', '" + type + "',  '" + status + "')";

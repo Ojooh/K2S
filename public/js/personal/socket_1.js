@@ -1,4 +1,9 @@
-var socket = io('http://localhost:3000');
+
+if (window.origin == "http://192.168.10.129:3000") {
+    var socket = io('http://192.168.10.129:3000');
+} else {
+    var socket = io('http://localhost:3000');
+}
 // var user_id = user_id;
 // console.log(user_id);
 socket.emit("user_connected", user_id);

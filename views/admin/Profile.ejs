@@ -1,0 +1,107 @@
+<% include includes/head %>
+    <div class="wrapper">
+        <% include includes/sidebar2 %>
+            <div class="main-content">
+                <% include includes/navbar2 %>
+                    <div class="content">
+                        <div class="container-fluid">
+
+                            <!-- BreadCrumb -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb bg-light-mode">
+                                        <li class="breadcrumb-item">
+                                            <a href="/sponsor">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            <i class="<%= icon %>"></i>
+                                            <%= title %>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <!-- BreadCrumb End -->
+
+                            <div class="row my-4">
+                                <div class="col-12">
+                                    <div class="card card-stats h-40 p-5">
+                                        <div class="row">
+                                            <div class="col-md-6 p-0">
+                                                <div class="card-bg-icon bg-transparent">
+                                                    <% if (user.profile_photo && user.profile_photo !="" ) { %>
+                                                        <img src="<%= user.profile_photo %>" class="img-fluid" />
+                                                    <%} else { %>
+                                                        <img src="/images/profile/avatar/avatar_1.jpg" class="img-fluid" />
+                                                    <%} %>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card-bg-body w-100">
+                                                    <p class="card-bg-category my-3">
+                                                        <%= user.user_id %>
+                                                    </p>
+                                                    <h2>
+                                                        <%= (user.fname + " " + ((user.mname !=null)? user.mname : "" ) + " " + user.lname).toUpperCase() %>
+                                                    </h2>
+                                                
+                                                    <h5 class="text-info my-3">
+                                                        <%= (user.country.split("-")[0] + ", " + user.state).toUpperCase() %>
+                                                    </h5>
+                                                
+                                                    <h5 class="text-info">
+                                                        <%= (user.proffession + "  (" + user.title + ")" ).toUpperCase() %>
+                                                    </h5>
+                                                    <h5 class="text-info pretty-date-only my-3">
+                                                        <%= user.dob %>
+                                                    </h5>
+                                                
+                                                    <h5 class=" mt-4">
+                                                        <a href="mailto:<%= user.email %>">
+                                                            <%= user.email %>
+                                                
+                                                        </a>
+                                                    </h5>
+                                                    <h5>
+                                                        <a href="mailto:<%= user.telephone %>" class="">
+                                                            <%= user.telephone %>
+                                                
+                                                        </a>
+                                                    </h5>
+                                                    <a href="#" class="btn btn-outline-kts edit-sponsor mt-3" data-id="<%= user.id %>"
+                                                                            data-url="/admin/User/get_profile" data-type="edit-modal" >
+                                                        <i class="fas fa-pencil-alt"></i> Edit Profile
+                                                    </a>
+                                                
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                        
+            </div>
+    </div>
+    <div class="overlay deactivated">
+        <div class="close-sidebar">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+                        
+    <% include includes/modal_5.ejs %>
+    <script>var user_id = "<%= user.user_id %>";</script>
+    <script src="/js/personal/sidebar-2.js"></script>
+    <script src="/js/personal/helper.js"></script>
+    <script src="/js/personal/script_2.js"></script>
+    <script src="/js/personal/socket_1.js"></script>
+    </body>
+    </body>
+    
+    </html>
+                        
