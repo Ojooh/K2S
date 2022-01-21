@@ -1,43 +1,83 @@
-
-<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white border-bottom">
-    <a class="navbar-brand" href="#">
-        <img src="/images/logo/logo-1.png" width="100" height="60" alt="">
-    </a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggley" href="#" id="navbarDropdownMenuLink" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Our Kids <i class="fas fa-angle-down"></i>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Kids To School</a>
-                    <a class="dropdown-item" href="#">Kids To Sports</a>
-                    <a class="dropdown-item" href="#">Kids To Art</a>
-                    <a class="dropdown-item" href="#">Kids To Tech</a>
+<div class="header-area">
+    <div class="main-header ">
+        <div class="header-top d-none d-lg-block">
+            <div class="container-fluid">
+                <div class="col-xl-12">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="header-info-left d-flex">
+                            <ul>
+                                <li>Phone: <%= setts['phone'] %></li>
+                                <li>Email: <a href="mailto:<%= setts['email'] %>" style="color:#687693 !important;" class=""><%= setts['email'] %></a>
+                                </li>
+                            </ul>
+                            <div class="header-social">
+                                <ul>
+                                    <li><a href="<%= setts['twitter'] %>"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="<%= setts['facebook'] %>"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="<%= setts['linkedin'] %>"><i class="fab fa-linkedin-in"></i></a></li>
+                                    <li> <a href="<%= setts['google_plus'] %>"><i class="fab fa-google-plus-g"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="header-info-right d-flex align-items-center">
+                            <div class="select-this">
+                                <form action="#">
+                                    <div class="select-itms">
+                                        <div class="nice-select" tabindex="0"><span class="current">English</span>
+                                            <ul class="list">
+                                                <li data-value="" class="option selected">English</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <ul class="contact-now">
+                                <li><a href="#footer">Subscribe Now</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Events</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
-            </li>
-        </ul>
+            </div>
+        </div>
+        <div class="header-bottom w-100 pb-0 header-sticky">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+
+                    <div class="col-xl-2 col-lg-2 my-2">
+                        <div class="logo">
+                            <a href="/">
+                                <!-- <img src="data:image/webp;base64,UklGRhoCAABXRUJQVlA4TA0CAAAvg0AIEJdAkG1ThvmTXPAKgyAQSHFQW0wQQJJTDPubPMIJ0rGzF4GgZdt23Da6FwAJPqKryvxni4uGlPkf0f8JwF9sMuMHb/Mk6exWlbL+BKW9zzhtf0264itK4KIvf8gdSb6iOC7XvyOyf0P1XD7xPSd1TADsJJl/bfo1mdJl6HoGfE9UCZNtIZ0kg03kSDIY4NlnADd7A8yTvlJWeE57Y++autmHgRMHlgfloD6aOql9mcki1kA+0VzHWwWRVaG0bZ7jKE6OvVs6Dj6DSxyisPfQSeVt0xWAcb2rwvGpKli6KO6BqfoGA5obRL9jOGNmQQQzM+AUF4DmOofXZKA6EYGb8gJQ/BYzsxkAUUTILByAm72N7qcMAE5xAqc40N8bfEX/AELHBATRRknlbaUzcQBBmMCGG4/d4kBmHzEuyrbVBS+y8mv1ObiONYoyASfCS9zPmbhcd2A2CqZ3eJGU+4UmdJ7KyuVBi8cDp4gi8xWXCCPECQ8A//+TwCnImABYJFn2meANoPp3mGAclYm7+/efBJpXs3FfVfR2cvhUUSS9wDFwbQHFLbFtw6Wmn8KxlAaGFZSw4sq+Fiace0dZgld1DbC5q2Ef2jFw2b8D2a1EEbEDuM11zgxyG5AiSW/AW9DMd6YqZdn0mUEc+PIcKPN3FXPUER/GoW8fhqBCxZdfIuLbC+ms4usNuwEA"
+                                    alt=""> -->
+                                <img src="<%= setts['logo'] %>" alt="kids2school logo" />
+                                </a>
+                        </div>
+                    </div>
+                    <div class="col-xl-10 col-lg-10">
+                        <div class="menu-wrapper  d-flex align-items-center justify-content-end">
+
+                            <div class="main-menu d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a href="/">Home</a></li>
+                                        <li><a href="#about">About</a></li>
+                                        <li><a href="#causes">latest causes</a></li>
+                                        <li><a href="#events">social events </a></li>
+                                        <li><a href="#footer">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                            <div class="header-right-btn d-none d-lg-block ml-20">
+                                <a href="/register" class="btn sbtn header-btn">Join Us</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 p-0">
+                        <div class="mobile_menu w-100 d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</nav>
+</div>

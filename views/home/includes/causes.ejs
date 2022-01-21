@@ -1,0 +1,230 @@
+<% if (kss.goal !== null && kssp.goal !== null && kas.goal !== null && ktx.goal !== null ) { %>
+
+    <section id="causes">
+        <div class="our-cases-area section-padding30">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6 col-lg-7 col-md-10 col-sm-10">
+        
+                        <div class="section-tittle text-center mb-80">
+                            <span>Our Cases you can see</span>
+                            <h2>Explore our latest causes that we works </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cases mb-40">
+                            <div class="cases-img">
+                                <img src="/images/gallery/xcase1.png.pagespeed.ic.mD23lmG892.webp" alt=""
+                                    data-pagespeed-url-hash="1199409569"
+                                    onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                            </div>
+                            <div class="cases-caption">
+                                <h3><a href="#">Funds for Kids To School</a></h3>
+        
+                                <div class="single-skill mb-15">
+                                    <div class="bar-progress">
+                                        <div id="bar1" class="barfiller">
+                                            <% if (parseInt(kss.goal) !=0 && parseInt(kss.raised) !=0 ) { %>
+                                                <div class="tipWrap" style="display: inline;">
+                                                    <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                        <%= parseInt(((parseFloat(kss.goal) - parseFloat(kss.raised))/ parseFloat(kss.goal)) * 100) %>%
+                                                    </span>
+                                                </div>
+                                            
+                                                <span class="fill"
+                                                    data-percentage="<%= parseInt(((parseFloat(kss.goal) - parseFloat(kss.raised))/ parseFloat(kss.goal)) * 100) %>"
+                                                    style="background: rgb(9, 204, 127); width: <%= parseInt(((parseFloat(kss.goal) - parseFloat(kss.raised))/ parseFloat(kss.goal)) * 100) %>%; transition: width 1s ease-in-out 0s;">
+                                                </span>
+                                            <% } else { %>
+                                                <div class="tipWrap" style="display: inline;">
+                                                    <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                        0%
+                                                    </span>
+                                                </div>
+                                                <span class="fill" data-percentage="0"
+                                                    style="background: rgb(9, 204, 127); width: 0%; transition: width 1s ease-in-out 0s;">
+                                                </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="prices d-flex justify-content-between">
+                                    <p>Goal:<span> &#8358; <%= (kss.goal).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+                                    <% if (kss.raised> 0) { %>
+                                        <p>Raised:<span> &#8358; <%= (parseFloat(kss.goal) -
+                                                    parseFloat(kss.raised)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+                                    <% } else { %>
+                                            <p>Raised:<span>&#8358; 0</span></p>
+                                    <% } %>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cases mb-40">
+                            <div class="cases-img">
+                                <img src="/images/gallery/xcase2.png.pagespeed.ic.R0wMn3cvbV.webp" alt=""
+                                    data-pagespeed-url-hash="1493909490"
+                                    onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                            </div>
+                            <div class="cases-caption">
+                                <h3><a href="#">Funds For Kids To Sport</a></h3>
+        
+                                <div class="single-skill mb-15">
+                                    <div class="bar-progress">
+                                        <div id="bar1" class="barfiller">
+                                            <% if (parseInt(kssp.goal) !=0 && parseInt(kssp.raised) !=0 ) { %>
+                                                <div class="tipWrap" style="display: inline;">
+                                                    <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                        <%= parseInt(((parseFloat(kssp.goal) - parseFloat(kssp.raised))/ parseFloat(kssp.goal)) * 100) %>%
+                                                    </span>
+                                                </div>
+
+                                                <span class="fill"
+                                                    data-percentage="<%= parseInt(((parseFloat(kssp.goal) - parseFloat(kssp.raised))/ parseFloat(kssp.goal)) * 100) %>"
+                                                    style="background: rgb(9, 204, 127); width: <%= parseInt(((parseFloat(kssp.goal) - parseFloat(kssp.raised))/ parseFloat(kssp.goal)) * 100) %>%; transition: width 1s ease-in-out 0s;">
+                                                </span>
+                                            <% } else { %>
+                                                <div class="tipWrap" style="display: inline;">
+                                                    <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                        0%
+                                                    </span>
+                                                </div>
+                                                <span class="fill" data-percentage="0"
+                                                    style="background: rgb(9, 204, 127); width: 0%; transition: width 1s ease-in-out 0s;">
+                                                </span>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="prices d-flex justify-content-between">
+                                    <p>Goal:<span> &#8358; <%= (kssp.goal).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+                                    <% 
+                                        if (kssp.raised > 0) {
+                                    %>
+                                        <p>Raised:<span> &#8358; <%= (parseFloat(kssp.goal) -
+                                                parseFloat(kssp.raised)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+                                    <% } else { %>
+                                        <p>Raised:<span>&#8358; 0</span></p>
+                                    <% }  %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cases mb-40">
+                            <div class="cases-img">
+                                <img src="/images/gallery/xcase3.png.pagespeed.ic.M0jLingkRQ.webp" alt=""
+                                    data-pagespeed-url-hash="1788409411"
+                                    onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                            </div>
+                            <div class="cases-caption">
+                                <h3><a href="#">Funds for Kids To Art</a></h3>
+        
+                                <div class="single-skill mb-15">
+                                    <div class="bar-progress">
+                                        <div id="bar1" class="barfiller">
+                                            <% if (parseInt(kas.goal) !=0 && parseInt(kas.raised) !=0 ) { %>
+                                                <div class="tipWrap" style="display: inline;">
+                                                    <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                        <%= parseInt(((parseFloat(kas.goal) - parseFloat(kas.raised))/ parseFloat(kas.goal)) * 100) %>%
+                                                    </span>
+                                                </div>
+                                            
+                                                <span class="fill"
+                                                    data-percentage="<%= parseInt(((parseFloat(kas.goal) - parseFloat(kas.raised))/ parseFloat(kas.goal)) * 100) %>"
+                                                    style="background: rgb(9, 204, 127); width: <%= parseInt(((parseFloat(kas.goal) - parseFloat(kas.raised))/ parseFloat(kas.goal)) * 100) %>%; transition: width 1s ease-in-out 0s;">
+                                                </span>
+                                            <% } else { %>
+                                                <div class="tipWrap" style="display: inline;">
+                                                    <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                        0%
+                                                    </span>
+                                                </div>
+                                                <span class="fill" data-percentage="0"
+                                                    style="background: rgb(9, 204, 127); width: 0%; transition: width 1s ease-in-out 0s;">
+                                                </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="prices d-flex justify-content-between">
+                                    <p>Goal:<span> &#8358; <%= (kas.goal).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+
+                                    <% if (kss.raised> 0) { %>
+                                        <p>Raised:<span> &#8358; <%= (parseFloat(kas.goal) -
+                                                    parseFloat(kas.raised)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+                                    <% } else { %>
+                                        <p>Raised:<span>&#8358; 0</span></p>
+                                    <% } %>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cases mb-40">
+                            <div class="cases-img">
+                                <img src="/images/gallery/xcase2.png.pagespeed.ic.R0wMn3cvbV.webp" alt=""
+                                    data-pagespeed-url-hash="1493909490" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                            </div>
+                            <div class="cases-caption">
+                                <h3><a href="#">Funds for Kids to Tech</a></h3>
+                    
+                            <div class="single-skill mb-15">
+                                <div class="bar-progress">
+                                    <div id="bar1" class="barfiller">
+                                        <% if (parseInt(ktx.goal) !=0 && parseInt(ktx.raised) !=0 ) { %>
+                                            <div class="tipWrap" style="display: inline;">
+                                                <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                    <%= parseInt(((parseFloat(ktx.goal) - parseFloat(ktx.raised))/ parseFloat(ktx.goal)) * 100) %>%
+                                                </span>
+                                            </div>
+                                        
+                                            <span class="fill"
+                                                data-percentage="<%= parseInt(((parseFloat(ktx.goal) - parseFloat(ktx.raised))/ parseFloat(ktx.goal)) * 100) %>"
+                                                style="background: rgb(9, 204, 127); width: <%= parseInt(((parseFloat(ktx.goal) - parseFloat(ktx.raised))/ parseFloat(ktx.goal)) * 100) %>%; transition: width 1s ease-in-out 0s;">
+                                            </span>
+                                        <% } else { %>
+                                            <div class="tipWrap" style="display: inline;">
+                                                <span class="tip" style="left: 197px; transition: left 1s ease-in-out 0s;">
+                                                    0%
+                                                </span>
+                                            </div>
+                                            <span class="fill"
+                                                data-percentage="0"
+                                                style="background: rgb(9, 204, 127); width: 0%; transition: width 1s ease-in-out 0s;">
+                                            </span>
+                                        <% }  %>
+                                    </div>
+                                </div>
+                                </div>
+                                
+                                <div class="prices d-flex justify-content-between">
+                                    <p>Goal:<span> &#8358; <%= (ktx.goal).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+                                    <% if (kss.raised> 0) { %>
+                                        <p>Raised:<span> &#8358; <%= (parseFloat(ktx.goal) -
+                                                    parseFloat(ktx.raised)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %></span></p>
+                                    <% } else { %>
+                                            <p>Raised:<span>&#8358; 0</span></p>
+                                    <% } %>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<% } %>

@@ -1,23 +1,39 @@
 <% include includes/head %>
+<% include includes/preloader %>
+
     <header>
         <% include includes/navbar %>
     </header>
     <main>
-        <% include includes/hero %>
+        <% include includes/jumbotron %>
         <% include includes/aboutus %>
-        <% include includes/numbers %>
-        <% include includes/call-to-action %>
+
+        <% include includes/causes %>
         <% include includes/events %>
+        <% include includes/volunteer %>
         <% include includes/testimonial %>
-        <% include includes/blog %>
+        <% include includes/counter %>
+        <% include includes/modal %>
     </main>
     <footer id="footer">
         <% include includes/footer %>
     </footer>
+    <div id="back-top">
+        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+    </div>
 
-<!-- Personnal Js Script -->
-<script src="/js/personal/script_0.js"></script>
-
+    <!-- JS SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.min.js"
+        integrity="sha512-FmCXNJaXWw1fc3G8zO3WdwR2N23YTWDFDTM3uretxVIbZ7lvnjHkciW4zy6JGvnrgjkcNEk8UNtdGTLs2GExAw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"
+        integrity="sha512-Eak/29OTpb36LLo2r47IpVzPBLXnAMPAVypbSZiZ4Qkf8p/7S/XRG5xp7OKWPPYfJT6metI+IORkR5G8F900+g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/other/slick.min.js"></script>
+    <script src="/js/other/jquery.waypoints.min.js"></script>
+    <script src="/js/other/jquery.counterup.min.js"></script>
+    <script src="/js/other/jquery.barfiller.js"></script>
+    <script src="/js/personal/index.js"></script>
 </body>
 
 </html>

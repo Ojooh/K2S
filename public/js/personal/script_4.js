@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+sjQuery(document).ready(function ($) {
     var error = $(".error");
     var filter = $(".deep");
     var filterDOB = $(".filter-dob");

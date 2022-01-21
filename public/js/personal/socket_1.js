@@ -1,8 +1,8 @@
-
-if (window.origin == "http://192.168.10.129:3000") {
-    var socket = io('http://192.168.10.129:3000');
+// http://206.189.246.25:3000/admin/notifications
+if (window.origin == "http://localhost:3000" || window.origin == "http://127.0.0.1:3000") {
+    var socket = io('http://localhost:3000/');
 } else {
-    var socket = io('http://localhost:3000');
+    var socket = io(window.origin);
 }
 // var user_id = user_id;
 // console.log(user_id);

@@ -35,10 +35,9 @@ module.exports.getDash = async (req, res, next) => {
             var sidebar = { dash: "active", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "" };
             var count = { admins: admins[0].total, sponsors: sponsors[0].total, envoys: envoys[0].total, kids: kids[0].total, activeKids: activeKids[0].total, inactiveKids: inactiveKids[0].total, };
             var graph = { kts: kts[0].total, ktsp: ktsp[0].total, kta: kta[0].total, ktt: ktt[0].total };
-            console.log(graph)
             var chart = { kts_m: kts[0].male, kts_f: kts[0].female, ktsp_m: ktsp[0].male, ktsp_f: ktsp[0].female, kta_m: kta[0].male, kta_f: kta[0].female, ktt_m: ktt[0].male, ktt_f: ktt[0].female };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, count: count, graph: graph, chart, chart, noty: noty, contacts: contacts };
-            res.render('admin/Dashboard', context);
+            res.render('admin/dashboard', context);
         } else {
             res.redirect("/login");
         }

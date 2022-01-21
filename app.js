@@ -9,26 +9,26 @@ var bodyParser = require('body-parser');
 const DB = require('./controllers/db_controller');
 const moment = require('moment');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
-var logoutRouter = require('./routes/logout');
-var adminRouter = require('./routes/admin');
-var sponsorRouter = require('./routes/sponsor');
-var envoyRouter = require('./routes/envoy');
-var users = [];
-
+// startup server
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 
+// Router files
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
+var registerRouter = require('./routes/register');
+var logoutRouter = require('./routes/logout');
+var adminRouter = require('./routes/admin');
+var sponsorRouter = require('./routes/sponsor');
+var envoyRouter = require('./routes/envoy');
 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -44,7 +44,6 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(fileUpload());
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
@@ -52,6 +51,7 @@ app.use('/logout', logoutRouter);
 app.use('/admin', adminRouter);
 app.use('/sponsor', sponsorRouter);
 app.use('/envoy', envoyRouter);
+app.use('/register', registerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -75,12 +75,12 @@ app.use(function (err, req, res, next) {
 });
 
 
+
+var users = [];
 io.on("connection", function (socket) {
   console.log("User connected", socket.id);
 
-  // attach incoming listener for new user
   socket.on("user_connected", function (username) {
-    // save in array
     users[username] = socket.id;
     console.log(users);
     io.emit("user_connected", username);
@@ -88,10 +88,7 @@ io.on("connection", function (socket) {
 
   // listen from client
   socket.on("send_task", async (data) => {
-    // send event to receiver
     var socketId = users[data.receiver];
-    // console.log(users)
-    // console.log("here");
     var cat, msg = ""
 
     if (data.sender == data.receiver) {
@@ -106,17 +103,16 @@ io.on("connection", function (socket) {
 
 
     io.to(socketId).emit("new_task", datas);
-    console.log(data)
 
     //save to database
     let rt = "";
     let d_created = moment().format('YYYY-MM-DD  HH:mm:ss.000');
     if (data.ID && data.ID != "") {
-      let updatey = await DB.updateNotification(data.subject, data.desc, data.due, data.ID)
+      await DB.updateNotification(data.subject, data.desc, data.due, data.ID)
       rt = "Task Updated Succesfully";
       cat = "task_u";
     } else {
-      let insert = await DB.createNewNotification(data.sender, data.receiver, data.subject, data.desc, data.category, d_created, "", data.due);
+      await DB.createNewNotification(data.sender, data.receiver, data.subject, data.desc, data.category, d_created, "", data.due);
       rt = "Task Created Succesfully";
     }
 
@@ -126,22 +122,20 @@ io.on("connection", function (socket) {
       if (cat == "task_u") {
         msg = "You have " + (exist[0].count + 1).toString() + " Updated Task(s)";
       }
-      let update = await DB.updateNoty(data.receiver, msg, data.count + 1, cat);
+      await DB.updateNoty(data.receiver, msg, data.count + 1, cat);
     } else {
       if (cat == "task_u") {
         msg = "You have 1 Updated Task(s)";
       }
-      let insert_2 = await DB.addNoty(data.receiver, msg, cat, data.count + 1);
+      await DB.addNoty(data.receiver, msg, cat, data.count + 1);
     }
 
     var socketId_r = users[data.sender];
     io.to(socketId_r).emit("new_task_succeded", { "success": rt });
-    // console.log(rt)
   });
 
   // listen from client for message
   socket.on("send_message", async function (data) {
-    // send event to receiver
     var socketId = users[data.receiver];
     var gee = users[data.sender];
     var newy = { "sender": data.sender, "receiver": data.receiver, "msg": data.msg, "sender_name": data.send_name, "receiver_name": data.rec_name };
@@ -154,13 +148,13 @@ io.on("connection", function (socket) {
       chat.push(data);
 
       var chat = JSON.stringify(chat);
-      let update = await DB.updateChat(chat, exist[0].id);
+      await DB.updateChat(chat, exist[0].id);
 
     } else {
       var chat = [];
       chat.push(newy);
       var chat = JSON.stringify(chat);
-      await DB.createNewNotification(data.sender, data.receiver, "New Chat", chat, "chat", d_created, "", "");
+      await DB.createNewNotification(data.sender, data.receiver, "New Chat", chat, "chat", d_created);
       let lst_id = await DB.getLastChat();
       let new_id = lst_id[0].id;
       data.new_id = new_id
@@ -170,24 +164,20 @@ io.on("connection", function (socket) {
     let testin = await DB.notyExist(data.receiver, "chat");
     if (testin.length > 0) {
       let gst = "You have " + (testin[0].count + 1).toString() + " Unread Messages " + data.send_name;
-      let update_2 = await DB.updateNoty(data.receiver, gst, (testin[0].count + 1).toString(), "chat");
+      await DB.updateNoty(data.receiver, gst, (testin[0].count + 1).toString(), "chat");
     } else {
-      let insert_2 = await DB.addNoty(data.receiver, "You Have 1 unread message from " + data.send_name, "chat", 1);
+      await DB.addNoty(data.receiver, "You Have 1 unread message from " + data.send_name, "chat", 1);
     }
 
     io.to(socketId).emit("new_message", data);
     if (data.id == "" || data.id == undefined) {
       io.to(gee).emit("new_id", data.new_id);
-      console.log(data.id);
-      console.log(gee);
     }
 
   });
 
 
 });
-
-
 
 
 module.exports = { app: app, server: server };

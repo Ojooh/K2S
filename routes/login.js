@@ -1,11 +1,11 @@
 var express         = require('express');
 var router          = express.Router();
-var loginHandler    = require('../controllers/login_controller');
+var authHandler    = require('../controllers/auth_controller');
 
 /* GET login page. */
-router.get('/', loginHandler.loginPage);
+router.get('/', authHandler.loginPage);
 
 /* POST to login page. */
-router.post('/', loginHandler.logIn);
+router.post('/', authHandler.logIn);
 
 module.exports = router;

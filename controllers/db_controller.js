@@ -1,24 +1,81 @@
 const mysql = require('mysql');
+require('dotenv').config({ path: __dirname + '../../.env' });
+resolve = require('path').resolve()
+console.log(resolve)
 
-const con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'kts'
-});
 
-// const con = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'kids2sch_root',
-//     password: '~Patient123',
-//     database: 'kids2sch_kts2'
-// });
+let con;
+if (process.env.STATE == "Development") {
+    con = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'kts'
+    });
+} else {
+    con = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE
+    });
+}
+
 
 
 
 con.connect(function (err) {
     if (err) throw err;
 });
+
+
+
+//GET site settings			
+module.exports.getSiteSettings = () => {
+    const query = "SELECT * FROM settings";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+
+//GET goal stats			
+module.exports.goalStats = (category) => {
+    const query = "SELECT SUM(school_fees) as goal, SUM(remaining) AS raised FROM kids WHERE category = '" + category + "'";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
+//GET goal events			
+module.exports.getEvents = (category) => {
+    const query = "SELECT * FROM events WHERE is_active = 1";
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 
 //GET user by ID field			
 module.exports.getUserById = (id) => {
@@ -576,7 +633,11 @@ module.exports.updateUserStatus = (id, status) => {
 
 //UPDATE Task Status
 module.exports.updateTaskStatus = (id, status, d_done) => {
-    const query = "UPDATE notify SET `is_complete` = '" + status + "', date_done = '" + d_done + "' WHERE id = '" + id + "';";
+    if (d_done != '') {
+        const query = "UPDATE notify SET `is_complete` = '" + status + "', date_done = '" + d_done + "' WHERE id = '" + id + "';";
+    } else {
+        const query = "UPDATE notify SET `is_complete` = '" + status + "' WHERE id = '" + id + "';";
+    }
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
             if (err) {
@@ -893,9 +954,9 @@ module.exports.getEnvoyTasks = (id) => {
 };
 
 //INSERT new task
-module.exports.createNewNotification = (sender, receiver, topic, message, category, d_created, d_done, d_due) => {
-    const query = "INSERT INTO notify (`sender`, `receiver`, `message_topic`, `message`, `category`, `date_created`, `date_done`, `due_date`, `is_complete`) VALUES('" + sender + "', '" + receiver + "', '" + topic + "', '" + message + "', '" + category + "', '" + d_created + "', '" + d_done + "', '" + d_due + "', '0');";
-    //console.log(query);
+module.exports.createNewNotification = (sender, receiver, topic, message, category, d_created,) => {
+    const query = "INSERT INTO notify (`sender`, `receiver`, `message_topic`, `message`, `category`, `date_created`, `is_complete`) VALUES('" + sender + "', '" + receiver + "', '" + topic + "', '" + message + "', '" + category + "', '" + d_created + "', '0');";
+    console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
             if (err) {
@@ -1014,16 +1075,18 @@ module.exports.notyExist = (id, cat) => {
 
 //get chats
 module.exports.getContacts = (id) => {
-    const query = `SELECT * FROM 
-                    (SELECT notify.id, notify.receiver, notify.sender, 
-                    rec_users.user_id AS rec_user_id, rec_users.fname AS rec_fname, rec_users.lname AS rec_lname, rec_users.email AS rec_email, rec_users.profile_photo AS rec_pp, 
-                    send_users.user_id AS send_user_id, send_users.fname AS send_fname, send_users.lname AS send_lname, send_users.email AS send_email, send_users.profile_photo AS send_pp, 
-                    notify.message_topic, notify.message, notify.category, notify.date_created 
-                    FROM notify 
-                    INNER JOIN users rec_users ON notify.receiver = rec_users.user_id 
-                    INNER JOIN users send_users ON notify.sender = send_users.user_id) 
-                    AS contacts 
-                    WHERE category = "chat" AND (sender = '` + id + `' OR receiver = '` + id + `');`
+    // const query = `SELECT * FROM 
+    //                 (SELECT notify.id, notify.receiver, notify.sender, 
+    //                 rec_users.user_id AS rec_user_id, rec_users.fname AS rec_fname, rec_users.lname AS rec_lname, rec_users.email AS rec_email, rec_users.profile_photo AS rec_pp, 
+    //                 send_users.user_id AS send_user_id, send_users.fname AS send_fname, send_users.lname AS send_lname, send_users.email AS send_email, send_users.profile_photo AS send_pp, 
+    //                 notify.message_topic, notify.message, notify.category, notify.date_created 
+    //                 FROM notify 
+    //                 INNER JOIN users rec_users ON notify.receiver = rec_users.user_id 
+    //                 INNER JOIN users send_users ON notify.sender = send_users.user_id) 
+    //                 AS contacts 
+    //                 WHERE category = 'chat' AND (sender = '` + id + `' OR receiver = '` + id + `');`
+
+    const query = `SELECT * FROM (SELECT notify.id, notify.receiver, notify.sender, rec_users.user_id AS rec_user_id, rec_users.fname AS rec_fname, rec_users.lname AS rec_lname, rec_users.email AS rec_email, rec_users.profile_photo AS rec_pp, send_users.user_id AS send_user_id, send_users.fname AS send_fname, send_users.lname AS send_lname, send_users.email AS send_email, send_users.profile_photo AS send_pp, notify.message_topic, notify.message, notify.category AS type, notify.date_created FROM notify INNER JOIN users rec_users ON notify.receiver = rec_users.user_id INNER JOIN users send_users ON notify.sender = send_users.user_id) AS contacts WHERE (sender = '` + id + `' OR receiver = '` + id + `') AND type = 'chat';`
     console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
