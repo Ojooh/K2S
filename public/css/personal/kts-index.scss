@@ -82,7 +82,8 @@ button {
 }
 
 .sbtn {
-  background: #09cc7f;
+  // background: #09cc7f;
+  background: rgb(28, 154, 226);
   font-family: 'Muli', sans-serif;
   text-transform: capitalize;
   padding: 27px 44px;
@@ -114,7 +115,8 @@ button {
     top: 0;
     width: 101%;
     height: 101%;
-    background: #24ac75;
+    // background: #24ac75;
+    background: rgb(17, 84, 122);
     z-index: 1;
     border-radius: 5px;
     transition: transform 0.5s;
@@ -225,8 +227,8 @@ button {
 .w-padding2 {
   padding: 80px 50px;
 
-  @media (max-width: 575px) {
-    padding: 70px 20px;
+  @media (max-width: 992px) {
+    padding: 80px 5px;
   }
 }
 
@@ -247,7 +249,7 @@ button {
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 22px;
-    color: #09cc7f;
+    color: rgb(28, 154, 226);
     text-transform: capitalize;
     display: inline-block;
     letter-spacing: 0.05em;
@@ -483,7 +485,7 @@ button {
   width: 100% !important;
 
   &::before {
-    background: #09cc7f;
+    background: rgb(28, 154, 226);
     color: #fff !important;
   }
 }
@@ -530,7 +532,8 @@ button {
     position: relative;
     border-style: solid;
     border-width: 1px;
-    border-top-color: #09cc7f;
+    // border-top-color: #09cc7f;
+    background-color: rgb(28, 154, 226);
     border-bottom-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
@@ -606,7 +609,7 @@ button {
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 22px;
-    color: #09cc7f;
+    color: rgb(28, 154, 226);
     text-transform: capitalize;
     display: inline-block;
     letter-spacing: 0.05em;
@@ -729,7 +732,7 @@ button {
         }
 
         &:hover {
-          color: #09cc7f;
+          color: rgb(28, 154, 226);
           i {
             transform: rotateY(180deg);
             -webkit-transform: rotateY(180deg);
@@ -781,7 +784,7 @@ button {
     .header-info-right .select-this .nice-select .option:hover,
     .header-info-right .select-this .nice-select .option.focus,
     .header-info-right .select-this .nice-select .option.selected.focus {
-      background-color: #09cc7f;
+      background-color: rgb(28, 154, 226);
     }
   }
 
@@ -818,7 +821,7 @@ button {
 
           &:hover {
             a {
-              color: #09cc7f;
+              color: rgb(28, 154, 226);
             }
           }
 
@@ -850,7 +853,7 @@ button {
           opacity: 0;
           box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.05);
           padding: 17px 0;
-          border-top: 5px solid #09cc7f;
+          border-top: 5px solid rgb(28, 154, 226);
           -webkit-transition: 0.3s;
           -moz-transition: 0.3s;
           -o-transition: 0.3s;
@@ -865,7 +868,7 @@ button {
               font-size: 16px;
               color: #fdfdfd;
               &:hover {
-                color: #09cc7f;
+                color: rgb(28, 154, 226);
                 background: none;
                 padding-left: 13px !important;
               }
@@ -924,7 +927,7 @@ button {
       line-height: 1.2;
       font-weight: 300;
       margin-bottom: 39px;
-      color: #09cc7f;
+      color: rgb(28, 154, 226);
       margin-bottom: 37px;
       text-transform: uppercase;
       display: inline-block;
@@ -1017,7 +1020,7 @@ button {
       content: '';
       width: 100%;
       height: 0;
-      background: #09cc7f;
+      background: rgb(28, 154, 226);
       transition: 0.6s;
       bottom: 0;
       left: 0;
@@ -1029,7 +1032,7 @@ button {
       margin-bottom: 50px;
       width: 90px;
       height: 90px;
-      background: #09cc7f;
+      background: rgb(28, 154, 226);
       line-height: 90px;
       text-align: center;
       border-radius: 50%;
@@ -1087,7 +1090,7 @@ button {
 
     &.active {
       .cat-icon span {
-        color: #09cc7f;
+        color: rgb(28, 154, 226);
         background: #fff;
       }
 
@@ -1114,7 +1117,7 @@ button {
       }
 
       .cat-icon span {
-        color: #09cc7f;
+        color: rgb(28, 154, 226);
         background: #fff;
       }
 
@@ -1251,7 +1254,7 @@ button {
           }
 
           &:hover {
-            color: #09cc7f;
+            color: rgb(28, 154, 226);
           }
         }
       }
@@ -1329,7 +1332,7 @@ button {
       margin-top: -28px;
       padding: 2px 4px;
       font-size: 16px;
-      color: #09cc7f;
+      color: rgb(28, 154, 226);
       left: 0px;
       position: absolute;
       z-index: 2;
@@ -1393,8 +1396,11 @@ button {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+    @media (max-width: 992px) {
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+    }
+
     -webkit-align-items: center;
     -moz-align-items: center;
     -ms-align-items: center;
@@ -1402,11 +1408,16 @@ button {
   }
 
   .company-img {
+    @media (max-width: 992px) {
+      width: 100% !important;
+    }
+
     img {
       overflow: hidden;
       float: left;
       margin-right: 32px;
       z-index: 999;
+      width: 100%;
 
       @media only screen and (min-width: 576px) and (max-width: 767px) {
         margin-bottom: 20px;
@@ -1419,13 +1430,19 @@ button {
   }
 
   .job-tittle {
-    @media (max-width: 575px) {
+    @media (max-width: 992px) {
       padding: 14px;
+      text-align: center;
+      width: 100%;
+      margin-left: 0;
     }
 
-    @media only screen and (min-width: 576px) and (max-width: 767px) {
-      padding: 14px;
-    }
+    margin-left: 20px;
+
+    // @media only screen and (min-width: 576px) and (max-width: 767px) {
+    //   padding: 14px;
+    //   text-align: center;
+    // }
 
     a h4 {
       color: #454d72;
@@ -1438,7 +1455,7 @@ button {
       transition: 0.4s;
 
       &:hover {
-        color: #09cc7f;
+        color: rgb(28, 154, 226);
       }
     }
 
@@ -1543,7 +1560,7 @@ button {
         }
 
         &:hover {
-          color: #09cc7f;
+          color: rgb(28, 154, 226);
         }
       }
     }
@@ -1816,7 +1833,7 @@ button {
       }
 
       .slick-active button {
-        background: #09cc7f;
+        background: rgb(28, 154, 226);
       }
     }
   }
@@ -1908,7 +1925,7 @@ button {
         font-weight: 300;
 
         &:hover {
-          color: #09cc7f;
+          color: rgb(28, 154, 226);
           padding-left: 5px;
         }
       }
@@ -1958,14 +1975,14 @@ button {
         border: 0;
         cursor: pointer;
         padding: 13px 22px;
-        background: #09cc7f;
+        background: rgb(28, 154, 226);
         line-height: 1;
         border-radius: 0 3px 3px 0;
       }
     }
 
     .info.error {
-      color: #09cc7f;
+      color: rgb(28, 154, 226);
     }
   }
 
@@ -2000,11 +2017,11 @@ button {
       }
 
       i {
-        color: #09cc7f;
+        color: rgb(28, 154, 226);
       }
 
       a {
-        color: #09cc7f;
+        color: rgb(28, 154, 226);
         &:hover {
           color: #fff;
         }
@@ -2031,7 +2048,7 @@ button {
       }
 
       &:hover {
-        color: #09cc7f;
+        color: rgb(28, 154, 226);
         i {
           transform: rotateY(180deg);
           -webkit-transform: rotateY(180deg);
@@ -2052,7 +2069,7 @@ button {
 }
 
 #back-top {
-  background: #09cc7f;
+  background: rgb(28, 154, 226);
   height: 50px;
   width: 50px;
   right: 31px;
@@ -2083,11 +2100,19 @@ button {
 }
 
 .envoy-form {
+  fieldset {
+    &:first-of-type {
+      display: block;
+      width: 100%;
+    }
+    display: none;
+    width: 0;
+  }
   input {
     font-family: 'Open Sans', sans-serif;
     background: transparent;
     border: none;
-    font-size: 18px;
+    font-size: 12px;
     width: 100%;
 
     &:focus {
@@ -2101,7 +2126,7 @@ button {
       transition: ease-in-out 0.2s font-size;
     }
   }
-  .form-group {
+  .highlight {
     &::after,
     &::before {
       content: ' ';
@@ -2116,11 +2141,11 @@ button {
 
     &::before {
       width: 100%;
-      border-bottom: 3px solid #b39595;
+      border-bottom: 3px solid #a39c9c;
     }
 
     &::after {
-      border-bottom: 3px solid #08dd88;
+      border-bottom: 3px solid rgb(18, 82, 119);
     }
 
     &:focus-within::after {

@@ -9,7 +9,11 @@ jQuery(document).ready(function ($) {
     var menu = $('ul#navigation');
     var error = $(".error");
     var openMdl_3 = $(".mdl-envoy-form");
-    var modal = $(".modal");
+    var nextEnvoy = $("#envoyNext");
+
+    function validEnvoy(id) {
+        return [true, "Details are valid"]
+    }
 
     openMdl_3.on("click", function (e) {
         e.preventDefault();
@@ -20,13 +24,38 @@ jQuery(document).ready(function ($) {
         $("input").val("")
         $("select").val("")
         $("textarea").val("")
-        submitEnvoy.attr("data-url", "/admin/Envoys/add_envoy");
-        submitEnvoy.attr("data-type", "add");
-        profilePic.val("");
-        $("#frame").attr("src", '');
-        $(".filly").removeClass("deactivated");
-        $(".prev").addClass("deactivated");
     });
+
+    nextEnvoy.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        error.addClass("d-none");
+        var id = parseInt($(this).attr("data-id"));
+        var field = $("fieldset");
+        // var fieldWidth = $(field[id]).width();
+
+        let [state, msg] = validEnvoy(id);
+        console.log(state);
+
+        if (state) {
+            $(field[id]).animate({
+                width: 0,
+            });
+            $(field[id]).addClass("d-none")
+            $(field[id + 1]).addClass("d-block");
+            console.log($(field[id + 1]))
+
+            $(field[id + 1]).animate({
+                width: "100%"
+            });
+
+        } else {
+            error.removeClass("d-none");
+            error.html(msg);
+        }
+    })
+
+
 
 
     if (menu.length) {

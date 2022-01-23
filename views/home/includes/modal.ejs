@@ -18,13 +18,30 @@
                         <div class="col-12">
                             <form class="envoy-form">
                                 <div class="form-group col-md-12 my-4">
-                                    <label for="first_name">First Name</label>
-                                    <input type="text" class="form-control" id="first_name">
+                                    <div class="alert alert-dark error d-none" role="alert">
+                                        A simple dark alert—check it out!
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-12 my-4">
-                                    <label for="last_name">Last Name</label>
-                                    <input type="text" class="form-control" id="last_name" >
-                                </div>
+                                <fieldset>
+                                    <div class="form-group highlight col-md-12 my-4">
+                                        <label for="first_name">First Name</label>
+                                        <input type="text" class="form-control" id="first_name">
+                                    </div>
+                                    <div class="form-group highlight col-md-12 my-4">
+                                        <label for="last_name">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" >
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <div class="form-group highlight col-md-12 my-4">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email">
+                                    </div>
+                                    <div class="form-group highlight col-md-12 my-4">
+                                        <label for="phone">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone">
+                                    </div>
+                                </fieldset>
                             </form>
                         </div>
                         
@@ -37,10 +54,15 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="hero__btn w-100">
-                                <a href="#" class="btn sbtn hero-btn mb-10 w-100" data-animation="fadeInLeft" data-delay=".8s" tabindex="0"
+                            <div class="hero__btn w-100 d-flex">
+                                <a href="#" class="btn sbtn hero-btn d-none  mb-3 mr-2 w-100" data-animation="fadeInLeft" data-delay=".8s" tabindex="0"
                                     style="animation-delay: 0.8s;">
-                                    Next</a>
+                                    <i class="fas fa-long-arrow-alt-right"></i>
+                                    Back </a>
+
+                                <a href="#" data-id="0" id="envoyNext" class="btn sbtn hero-btn mb-3 ml-2 w-100" data-animation="fadeInLeft" data-delay=".8s" tabindex="0"
+                                    style="animation-delay: 0.8s;">
+                                    Next <i class="fas fa-long-arrow-alt-right"></i></a>
                             </div>
                         </div>
                     </div>
