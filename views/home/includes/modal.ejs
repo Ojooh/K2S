@@ -7,7 +7,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Envoy Form</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">Join Us</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -24,6 +24,14 @@
                                 </div>
                                 <fieldset>
                                     <div class="form-group highlight col-md-12 my-4">
+                                        <label for="type">Category</label>
+                                        <select class="form-control" id="category">
+                                            <option value=""></option>
+                                            <option value="Envoy">Envoy</option>
+                                            <option value="Sponsor">Sponsor</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group highlight col-md-12 my-4">
                                         <label for="first_name">First Name</label>
                                         <input type="text" class="form-control" id="first_name">
                                     </div>
@@ -33,6 +41,14 @@
                                     </div>
                                 </fieldset>
                                 <fieldset>
+                                    <div class="form-group highlight col-md-12 my-4">
+                                        <label for="gender">Gender</label>
+                                        <select class="form-control" id="gender">
+                                            <option value=""></option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
                                     <div class="form-group highlight col-md-12 my-4">
                                         <label for="email">Email</label>
                                         <input type="email" class="form-control" id="email">
@@ -55,9 +71,9 @@
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="hero__btn w-100 d-flex">
-                                <a href="#" class="btn sbtn hero-btn d-none  mb-3 mr-2 w-100" data-animation="fadeInLeft" data-delay=".8s" tabindex="0"
+                                <a href="#" id="envoyBack" class="btn sbtn hero-btn d-none  mb-3 mr-2 w-100" data-animation="fadeInLeft" data-delay=".8s" tabindex="0"
                                     style="animation-delay: 0.8s;">
-                                    <i class="fas fa-long-arrow-alt-right"></i>
+                                    <i class="fas fa-long-arrow-alt-left"></i>
                                     Back </a>
 
                                 <a href="#" data-id="0" id="envoyNext" class="btn sbtn hero-btn mb-3 ml-2 w-100" data-animation="fadeInLeft" data-delay=".8s" tabindex="0"

@@ -121,6 +121,21 @@ module.exports.generateUserType = (title) => {
     }
 };
 
+//Generate User Type
+module.exports.generateUserTitle = (title) => {
+    if (title == 'Super Admin') {
+        return "ADMS";
+    } else if (title == 'Administrator Editor') {
+        return "ADM";
+    } else if (title == 'KID') {
+        return "KDS"
+    } else if (title == 'Sponsor') {
+        return 'SPN';
+    } else if (title == 'Envoy') {
+        return 'ENV';
+    }
+};
+
 //Is Image
 module.exports.isImage = (file) => {
     if (file.mimetype == "image/jpeg" || file.mimetype == "image/png") {

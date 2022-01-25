@@ -1,0 +1,89 @@
+<% include includes/head %>
+<script>
+    Swal.fire({
+            title: 'Enter a New Password for your Account',
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            allowOutsideClick: false,
+            confirmButtonText: 'Next',
+            showLoaderOnConfirm: true,
+        }).then((result) => {
+            console.log(result)
+            if (result.value && result.value != "") {
+                Swal.fire({
+                    title: 'Enter Password again to confirm',
+                    input: 'password',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    allowOutsideClick: false,
+                    confirmButtonText: 'Next',
+                    showLoaderOnConfirm: true,
+                }).then((result2) => {
+                    console.log(result2)
+                    if (result2.value && result2.value != "" && result.value == result2.value) {
+                        let data = {"password" : result2.value} 
+                        $.ajax({
+                            url: window.location.href,
+                            type: 'POST',
+                            data: data,
+                            beforeSend: function () {
+                                Swal.fire({
+                                    title: 'Auto close alert!',
+                                    html: 'Please Hold on as details are uploaded, do not refresh.',
+                                    timer: 40000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false,
+                                });
+                            },
+                            success: function (data) {
+                                if (data.success) {
+
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: data.success,
+                                        text: "Click OK to Proceed",
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        location.replace(data.url);
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: data.error,
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    }).then(() => { location.reload(); })
+                                }
+
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Paasword Entered is Invalid',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then(() => { location.reload(); })
+                    }
+                });
+            }
+            else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Paasword Entered is Invalid',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then(() => { location.reload(); })
+            }
+            
+        })
+</script>
+
+
+
+<% include includes/foot %>

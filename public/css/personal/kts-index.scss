@@ -2108,7 +2108,8 @@ button {
     display: none;
     width: 0;
   }
-  input {
+  input,
+  select {
     font-family: 'Open Sans', sans-serif;
     background: transparent;
     border: none;

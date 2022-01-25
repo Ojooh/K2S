@@ -204,7 +204,7 @@ module.exports.getUserByUserId = (user_id) => {
 }
 
 //GET user by kid_id field
-module.exports.getUserByUserId = (user_id) => {
+module.exports.getKidByKidId = (user_id) => {
     const query = "SELECT * FROM kids WHERE kid_id = '" + user_id + "';";
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -539,6 +539,21 @@ module.exports.updateLastLogin = (id, last_login) => {
     });
 }
 
+module.exports.activateUser = (user_id, hash) => {
+    const query = "UPDATE users SET is_active = '1', password = '" + hash + "'WHERE user_id = '" + user_id + "';";
+
+    return new Promise((resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+                return reject(err);
+            } else {
+                resolve(result);
+            }
+
+        });
+    });
+};
+
 //GET Admins
 module.exports.getAdministrators = () => {
     const query = "SELECT * FROM users WHERE is_admin = 1;";
@@ -781,7 +796,8 @@ module.exports.getSponsors = () => {
 
 //INSERT new Sponsor Profile
 module.exports.insertSponsorProfile = (user_id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, proffession, profile_photo, is_active, password, is_sponsor) => {
-    const query = "INSERT INTO users (`user_id`, `fname`, `lname`, `dob`, `age`, `gender`, `country`, `state`, `email`, `telephone`, `user_type`, `title`, `proffession`, `profile_photo`, `is_active`, `password`, `is_sponsor`) VALUES ('" + user_id + "', '" + fname + "', '" + lname + "', '" + dob + "', '" + age + "', '" + gender + "', '" + country + "', '" + state + "', '" + email + "', '" + telephone + "', '" + user_type + "', '" + title + "', '" + proffession + "', '" + profile_photo + "', '" + is_active + "', '" + password + "', '" + is_sponsor + "');";
+    let pref = JSON.stringify({ "tab_grid": "active", "tab_list": "", "row_grid": "", "row_list": "deactivated" });
+    const query = "INSERT INTO users (`user_id`, `fname`, `lname`, `dob`, `age`, `gender`, `country`, `state`, `email`, `telephone`, `user_type`, `title`, `proffession`, `profile_photo`, `is_active`, `password`, `is_sponsor`, `preference`) VALUES ('" + user_id + "', '" + fname + "', '" + lname + "', '" + dob + "', '" + age + "', '" + gender + "', '" + country + "', '" + state + "', '" + email + "', '" + telephone + "', '" + user_type + "', '" + title + "', '" + proffession + "', '" + profile_photo + "', '" + is_active + "', '" + password + "', '" + is_sponsor + "', '" + pref + "');";
     //console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {
@@ -828,7 +844,9 @@ module.exports.getEnvoys = () => {
 
 //INSERT new Envoy Profile
 module.exports.insertEnvoyProfile = (user_id, fname, lname, dob, age, gender, country, state, email, telephone, user_type, title, proffession, profile_photo, is_active, password, is_envoy) => {
-    const query = "INSERT INTO users (`user_id`, `fname`, `lname`, `dob`, `age`, `gender`, `country`, `state`, `email`, `telephone`, `user_type`, `title`, `proffession`, `profile_photo`, `is_active`, `password`, `is_envoy`) VALUES ('" + user_id + "', '" + fname + "', '" + lname + "', '" + dob + "', '" + age + "', '" + gender + "', '" + country + "', '" + state + "', '" + email + "', '" + telephone + "', '" + user_type + "', '" + title + "', '" + proffession + "', '" + profile_photo + "', '" + is_active + "', '" + password + "', '" + is_envoy + "');";
+    let pref = JSON.stringify({ "tab_grid": "active", "tab_list": "", "row_grid": "", "row_list": "deactivated" });
+
+    const query = "INSERT INTO users (`user_id`, `fname`, `lname`, `dob`, `age`, `gender`, `country`, `state`, `email`, `telephone`, `user_type`, `title`, `proffession`, `profile_photo`, `is_active`, `password`, `is_envoy`, `preference`) VALUES ('" + user_id + "', '" + fname + "', '" + lname + "', '" + dob + "', '" + age + "', '" + gender + "', '" + country + "', '" + state + "', '" + email + "', '" + telephone + "', '" + user_type + "', '" + title + "', '" + proffession + "', '" + profile_photo + "', '" + is_active + "', '" + password + "', '" + is_envoy + "', '" + pref + "');";
     //console.log(query);
     return new Promise((resolve, reject) => {
         con.query(query, (err, result) => {

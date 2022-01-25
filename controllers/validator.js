@@ -173,3 +173,27 @@ module.exports.validKid = async (req, type) => {
     }
 }
 
+module.exports.validUser = async (req) => {
+    var exist = await helper.emailExist(req.body.email);
+
+    if (helper.isEmpty(req.body.fname) || !helper.validateName(req.body.fname)) {
+        return [null, false, { message: 'First Name Input is not Valid' }];
+    } else if (helper.isEmpty(req.body.fname) || !helper.validateName(req.body.fname)) {
+        return [null, false, { message: 'Last Name Input is not Valid' }];
+    } else if (helper.isEmpty(req.body.gender)) {
+        return [null, false, { message: 'Gender Input is not Valid' }];
+    }
+    else if (helper.isEmpty(req.body.email) || !helper.validateEmail(req.body.email)) {
+        return [null, false, { message: 'Email Input is not Valid' }];
+    } else if (exist) {
+        return [null, false, { message: 'Email Input already Exist In Database' }];
+    } else if (helper.isEmpty(req.body.phone) || helper.validateTel(req.body.phone) == false) {
+        return [null, false, { message: 'Phone Number Input is not Valid' }];
+    }
+    else {
+        var title = await helper.generateUserTitle(req.body.category);
+        var user_id = await helper.generateUserId(title, 5)
+        return [null, true, { message: 'New User Sucesfully Created', user_id: user_id, user_type: title }];
+    }
+}
+

@@ -2238,7 +2238,8 @@ button {
   width: 100%;
 }
 
-.envoy-form input {
+.envoy-form input,
+.envoy-form select {
   font-family: 'Open Sans', sans-serif;
   background: transparent;
   border: none;
@@ -2246,7 +2247,8 @@ button {
   width: 100%;
 }
 
-.envoy-form input:focus {
+.envoy-form input:focus,
+.envoy-form select:focus {
   outline: none !important;
   outline-offset: none;
   outline-color: none;

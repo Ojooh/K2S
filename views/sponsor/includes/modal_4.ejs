@@ -66,9 +66,11 @@
                                             <option value="" selected="selected">
                                                 Choose an Option
                                             </option>
+                                            <% if (wllt.length > 0) { %>
                                             <option value="wallet">
                                                 KTS-wallet &#8358;<%=  wllt[0].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "," ) %>
                                             </option>
+                                            <% } %>
                                             <option value="new_card">
                                                 Add New Card
                                             </option>

@@ -297,7 +297,13 @@ jQuery(document).ready(function ($) {
                         $("#gender").val(data.success.gender);
                         $("#country").val(data.success.country);
                         var cix = $("#country").val().split("-");
-                        var states = countries[cix[1]].states;
+                        // console.log(cix);
+                        if (cix.length > 0 && cix[1] !== undefined) {
+                            var states = countries[cix[1]].states;
+                        } else {
+                            var states = []
+                        }
+
                         $("#state").html("");
                         html_state = "<option value=''><!-----choose----></option>";
                         for (var u = 0; u < states.length; u++) {
