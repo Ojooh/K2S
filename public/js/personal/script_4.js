@@ -1,4 +1,4 @@
-sjQuery(document).ready(function ($) {
+jQuery(document).ready(function ($) {
     var error = $(".error");
     var filter = $(".deep");
     var filterDOB = $(".filter-dob");
@@ -546,9 +546,9 @@ sjQuery(document).ready(function ($) {
                     processData: false,
                     beforeSend: function () {
                         Swal.fire({
-                            title: 'Auto close alert!',
+                            title: 'Loading.....',
                             html: 'Please Hold on as details are uploaded, do not refresh.',
-                            timer: 40000,
+                            timer: 4000000,
                             timerProgressBar: true,
                             showConfirmButton: false,
                             allowOutsideClick: false,
@@ -629,9 +629,9 @@ sjQuery(document).ready(function ($) {
             data: data,
             beforeSend: function () {
                 Swal.fire({
-                    title: 'Auto close alert!',
+                    title: 'Loading.....',
                     html: 'Please Hold on as your details are uploaded, do not refresh.',
-                    timer: 40000,
+                    timer: 4000000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     allowOutsideClick: false,
@@ -700,9 +700,9 @@ sjQuery(document).ready(function ($) {
             data: data,
             beforeSend: function () {
                 Swal.fire({
-                    title: 'Auto close alert!',
+                    title: 'Loading.....',
                     html: 'Please Hold on as Details are being Fetched.',
-                    timer: 40000,
+                    timer: 4000000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     allowOutsideClick: false,
@@ -799,6 +799,14 @@ sjQuery(document).ready(function ($) {
                             $(".filly").addClass("deactivated");
                             $(".prev").removeClass("deactivated");
                         }
+                        if (data.success.bc) {
+                            $(".path").html(data.success.bc);
+                            $(".jev").removeClass("deactivated");
+                            // profilePic.val("");
+                            // $("#frame").attr("src", data.success.profile_photo);
+                            // $(".filly").addClass("deactivated");
+                            // $(".prev").removeClass("deactivated");
+                        }
                         nextFieldset.attr("data-url", "/admin/kids/edit_profile");
                         nextFieldset.attr("data-type", "edit");
                         nextFieldset.attr("data-id", ID);
@@ -843,9 +851,9 @@ sjQuery(document).ready(function ($) {
                     data: data,
                     beforeSend: function () {
                         Swal.fire({
-                            title: 'Auto close alert!',
+                            title: 'Loading.....',
                             html: 'Please Hold on as Details are being Fetched.',
-                            timer: 40000,
+                            timer: 4000000,
                             timerProgressBar: true,
                             showConfirmButton: false,
                             allowOutsideClick: false,
@@ -896,9 +904,9 @@ sjQuery(document).ready(function ($) {
             data: data,
             beforeSend: function () {
                 Swal.fire({
-                    title: 'Auto close alert!',
+                    title: 'Loading.....',
                     html: 'Please Hold on as Details are being Fetched.',
-                    timer: 40000,
+                    timer: 4000000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     allowOutsideClick: false,

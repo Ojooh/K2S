@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
 
         var data = { "pref": JSON.stringify(t) };
         var url = $(this).attr("data-url");
-        console.log(data);
+        console.log(url);
 
         $.ajax({
             url: url,

@@ -138,7 +138,7 @@ io.on("connection", function (socket) {
   socket.on("send_message", async function (data) {
     var socketId = users[data.receiver];
     var gee = users[data.sender];
-    var newy = { "sender": data.sender, "receiver": data.receiver, "msg": data.msg, "sender_name": data.send_name, "receiver_name": data.rec_name };
+    var newy = { "sender": data.sender, "receiver": data.receiver, "msg": data.msg, "send_name": data.send_name, "receiver_name": data.rec_name };
 
     let d_created = moment().format('YYYY-MM-DD  HH:mm:ss.000');
     let exist = [];

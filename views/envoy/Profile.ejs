@@ -45,6 +45,7 @@
                                                     <h2>
                                                         <%= (user.fname + " " + ((user.mname !=null)? user.mname : "" ) + " " + user.lname).toUpperCase() %>
                                                     </h2>
+                                                    <% if (user.country && user.country !== undefined && user.country !== "") { %>
                                                 
                                                     <h5 class="text-info my-3">
                                                         <%= (user.country.split("-")[0] + ", " + user.state).toUpperCase() %>
@@ -56,6 +57,7 @@
                                                     <h5 class="text-info pretty-date-only my-3">
                                                         <%= user.dob %>
                                                     </h5>
+                                            <% } %>
                                                 
                                                     <h5 class=" mt-4">
                                                         <a href="mailto:<%= user.email %>">

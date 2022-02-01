@@ -100,9 +100,9 @@ statuy.on("change", function (e) {
         data: data,
         beforeSend: function () {
             Swal.fire({
-                title: 'Auto close alert!',
+                title: 'Loading.....',
                 html: 'Please Hold on as your details are uploaded, do not refresh.',
-                timer: 40000,
+                timer: 4000000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 allowOutsideClick: false,
@@ -231,9 +231,9 @@ deleteTask.on("click", function (e) {
                 data: data,
                 beforeSend: function () {
                     Swal.fire({
-                        title: 'Auto close alert!',
+                        title: 'Loading.....',
                         html: 'Please Hold on as Details are being Fetched.',
-                        timer: 40000,
+                        timer: 4000000,
                         timerProgressBar: true,
                         showConfirmButton: false,
                         allowOutsideClick: false,
@@ -284,9 +284,9 @@ editTask.on("click", function (e) {
         data: data,
         beforeSend: function () {
             Swal.fire({
-                title: 'Auto close alert!',
+                title: 'Loading.....',
                 html: 'Please Hold on as Details are being Fetched.',
-                timer: 40000,
+                timer: 4000000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 allowOutsideClick: false,
@@ -302,7 +302,10 @@ editTask.on("click", function (e) {
                     console.log(data.success.due_date);
                     $(".card-modal-description").html("Edit " + data.success.message_topic + " Task");
                     $("#subject").val(data.success.message_topic);
-                    $("#due").val(data.success.due_date.split("Z")[0]);
+                    if (data.success.due_date !== null) {
+                        $("#due").val(data.success.due_date.split("Z")[0]);
+                    }
+
                     $("#description").val(data.success.message);
                     // $("#dob").val(data.success.dob.split("T")[0]);
                     submitTask.attr("data-type", "edit");
@@ -339,9 +342,9 @@ infoTask.on("click", function (e) {
         data: data,
         beforeSend: function () {
             Swal.fire({
-                title: 'Auto close alert!',
+                title: 'Loading.....',
                 html: 'Please Hold on as Details are being Fetched.',
-                timer: 40000,
+                timer: 4000000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 allowOutsideClick: false,
@@ -419,7 +422,7 @@ $(".box").on("click", function (e) {
                                     width="30" class="img1" />
                             </div>
                             <div class="pr-2 pl-1">
-                                <span class="name">` + convo[y].rec_name + `</span>
+                                <span class="name">` + convo[y].send_name + `</span>
                                 <p class="msg">` + convo[y].msg + `</p>
                             </div>
                         </div>`
@@ -464,7 +467,7 @@ startConvo.on("click", function (e) {
         type: 'GET',
         beforeSend: function () {
             Swal.fire({
-                title: 'Auto close alert!',
+                title: 'Loading.....',
                 html: 'Please Hold on as Details are being Fetched.',
                 timer: 400000,
                 timerProgressBar: true,
@@ -517,8 +520,8 @@ startConvo.on("click", function (e) {
                         var chatList = $(".chat-contacts");
                         var chats = $(".chat-convo");
                         chat_area.html("");
-                        html = `<div class="text-center my-3"><span class="between">No conversations yet</span></div>`;
-                        chat_area.html(html);
+                        // html = `<div class="text-center my-3"><span class="between">No conversations yet</span></div>`;
+                        // chat_area.html(html);
                         $(".name").html(name)
                         $("#send-message").attr("data-rec", result.value);
                         chatList.addClass("deactivated");

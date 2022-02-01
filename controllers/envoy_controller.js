@@ -27,7 +27,7 @@ module.exports.getDash = async (req, res, next) => {
             var graph = { kts: kts[0].total, ktsp: ktsp[0].total, kta: kta[0].total, ktt: ktt[0].total };
             var chart = { kts_m: kts[0].male, kts_f: kts[0].female, ktsp_m: ktsp[0].male, ktsp_f: ktsp[0].female, kta_m: kta[0].male, kta_f: kta[0].female, ktt_m: ktt[0].male, ktt_f: ktt[0].female };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, count: count, graph: graph, chart, chart, noty: noty, contacts: contacts };
-            res.render('envoy/Dashboard', context);
+            res.render('envoy/dashboard', context);
         } else {
             res.redirect("/login");
         }
@@ -241,6 +241,7 @@ module.exports.getNotify = async (req, res, next) => {
 
             var sidebar = { dash: "", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "active" };
             var context = { title: title, icon: icon, user: user[0], active: sidebar, tks: tasks, noty: noty, contacts: contacts.slice(0, 4) };
+            console.log("here");
             res.render('envoy/notifications', context);
             // res.send('respond with a resource.');
         } else {

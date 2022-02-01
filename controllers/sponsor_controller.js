@@ -31,6 +31,7 @@ module.exports.getDash = async (req, res, next) => {
             var Kids_d = await DB.getCountSponsorDonations(user[0].user_id);
             var count = { kids: Kids[0].total, kids_d: Kids_d[0].total }
             var sidebar = { dash: "active", usr: "", adm: "", kds: "", sps: "", env: "", ntf: "" };
+            console.log(wallet);
             var context = { title: title, icon: icon, user: user[0], active: sidebar, count, count, noty: noty, cards: cards, wllt: wallet, acts: activities, contacts: contacts };
             res.render('sponsor/dashboard', context);
         } else {
@@ -495,17 +496,26 @@ module.exports.getVerification = async (req, res, next) => {
             if (output.status) {
                 var wallet = await DB.getSPNWallet(user[0].user_id);
                 var crds = await DB.getSPNCards(user[0].user_id);
-                var quick = parseFloat(wallet[0].quick);
-                var donate = parseFloat(wallet[0].donate);
+                if (wallet.length > 0 && wallet[0] !== undefined) {
+                    var quick = parseFloat(wallet[0].quick);
+                    var donate = parseFloat(wallet[0].donate);
+                    var amount = parseFloat(wallet[0].amount);
+                    var set = "exist";
+                } else {
+                    var quick = 0;
+                    var donate = 0;
+                    var amount = 0;
+                    var set = "new";
+                }
                 var msg = output.message;
                 var auth = output.data.authorization.authorization_code;
 
                 if (wallety == "wallet") {
-                    var amount = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].amount);
-                    quick = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].quick);
+                    var amount = (parseFloat(output.data.amount) / 100) + amount;
+                    quick = (parseFloat(output.data.amount) / 100) + quick;
                 } else {
-                    var amount = parseFloat(wallet[0].amount);
-                    donate = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].donate);
+                    var amount = amount;
+                    donate = (parseFloat(output.data.amount) / 100) + donate;
                 }
 
                 var bank = output.data.authorization.bank;
@@ -560,7 +570,13 @@ module.exports.getVerification = async (req, res, next) => {
                         await DB.updateKidStatus(kid[0].id, '0');
                     }
                 } else {
-                    await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
+                    if (set == "new") {
+                        var name = user[0].fname + " " + user[0].lname;
+                        await DB.insertEwalletQ(amount, quick, donate, user[0].user_id, name);
+                    } else {
+                        await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
+                    }
+
                 }
                 res.json({ success: msg });
 
@@ -628,17 +644,27 @@ module.exports.chargeCard = async (req, res, next) => {
                     if (output.status) {
                         var wallet = await DB.getSPNWallet(user[0].user_id);
                         var crds = await DB.getSPNCards(user[0].user_id);
-                        var quick = parseFloat(wallet[0].quick);
-                        var donate = parseFloat(wallet[0].donate);
-                        var msg = output.message + "Sucessfully";
+                        if (wallet.length > 0 && wallet[0] !== undefined) {
+                            var quick = parseFloat(wallet[0].quick);
+                            var donate = parseFloat(wallet[0].donate);
+                            var amount = parseFloat(wallet[0].amount);
+                            var set = "exist";
+                        } else {
+                            var quick = 0;
+                            var donate = 0;
+                            var amount = 0;
+                            var set = "new";
+                        }
+
+                        var msg = output.message + " Sucessfully";
                         var auth = output.data.authorization.authorization_code;
 
                         if (wallety == "wallet") {
-                            var amount = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].amount);
-                            quick = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].quick);
+                            var amount = (parseFloat(output.data.amount) / 100) + amount;
+                            quick = (parseFloat(output.data.amount) / 100) + quick;
                         } else {
-                            var amount = parseFloat(wallet[0].amount);
-                            donate = (parseFloat(output.data.amount) / 100) + parseFloat(wallet[0].donate);
+                            var amount = amount;
+                            donate = (parseFloat(output.data.amount) / 100) + donate;
                         }
 
                         var bank = output.data.authorization.bank;
@@ -694,7 +720,12 @@ module.exports.chargeCard = async (req, res, next) => {
 
                             msg = "Donation Transaction Successful";
                         } else {
-                            await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
+                            if (set == "new") {
+                                var name = user[0].fname + " " + user[0].lname;
+                                await DB.insertEwalletQ(amount, quick, donate, user[0].user_id, name);
+                            } else {
+                                await DB.updateEwalletQ(amount, quick, donate, user[0].user_id);
+                            }
                         }
                         res.json({ success: msg });
 
@@ -910,7 +941,7 @@ module.exports.adoptKid = async (req, res, next) => {
 
         if ((user.length > 0 && user[0].is_active == '1') && (user[0].user_type == "SPN")) {
             await DB.adoptKid(ID, user[0].user_id);
-            await DB.updateSponsorKids(user[0].kids, user[0].user_id)
+            await DB.updateSponsorKids(user[0].kids + 1, user[0].user_id)
 
             res.json({ success: 'You Have Succesfully Adopted ' + edyyy[0].fname })
 

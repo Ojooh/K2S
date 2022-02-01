@@ -148,9 +148,9 @@ jQuery(document).ready(function ($) {
                     processData: false,
                     beforeSend: function () {
                         Swal.fire({
-                            title: 'Auto close alert!',
+                            title: 'Loading.....',
                             html: 'Please Hold on as your details are uploaded, do not refresh.',
-                            timer: 40000,
+                            timer: 4000000,
                             timerProgressBar: true,
                             showConfirmButton: false,
                             allowOutsideClick: false,
@@ -225,9 +225,9 @@ jQuery(document).ready(function ($) {
             data: data,
             beforeSend: function () {
                 Swal.fire({
-                    title: 'Auto close alert!',
+                    title: 'Loading.....',
                     html: 'Please Hold on as your details are uploaded, do not refresh.',
-                    timer: 40000,
+                    timer: 4000000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     allowOutsideClick: false,
@@ -272,9 +272,9 @@ jQuery(document).ready(function ($) {
             data: data,
             beforeSend: function () {
                 Swal.fire({
-                    title: 'Auto close alert!',
+                    title: 'Loading.....',
                     html: 'Please Hold on as Details are being Fetched.',
-                    timer: 40000,
+                    timer: 4000000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     allowOutsideClick: false,
@@ -373,9 +373,9 @@ jQuery(document).ready(function ($) {
                     data: data,
                     beforeSend: function () {
                         Swal.fire({
-                            title: 'Auto close alert!',
+                            title: 'Loading.....',
                             html: 'Please Hold on as Details are being Fetched.',
-                            timer: 40000,
+                            timer: 4000000,
                             timerProgressBar: true,
                             showConfirmButton: false,
                             allowOutsideClick: false,
@@ -426,9 +426,9 @@ jQuery(document).ready(function ($) {
             data: data,
             beforeSend: function () {
                 Swal.fire({
-                    title: 'Auto close alert!',
+                    title: 'Loading.....',
                     html: 'Please Hold on as Details are being Fetched.',
-                    timer: 40000,
+                    timer: 4000000,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     allowOutsideClick: false,

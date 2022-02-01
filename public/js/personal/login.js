@@ -41,9 +41,9 @@ jQuery(document).ready(function ($) {
                 type: "post",
                 beforeSend: function () {
                     Swal.fire({
-                        title: 'Auto close alert!',
+                        title: 'Loading.....',
                         html: 'Please Hold on as your details are being confirmed',
-                        timer: 40000,
+                        timer: 4000000,
                         timerProgressBar: true,
                         showConfirmButton: false,
                         allowOutsideClick: false,

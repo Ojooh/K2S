@@ -17,11 +17,11 @@
                                         </li>
                                         <li class="breadcrumb-item">
                                             <a href="/sponsor/kids">
-                                                <i class='fas fa-child'></i> My Kids
+                                                <i class='fas fa-child'></i> All Kids
                                             </a>
                                         </li>
                                         <li class="breadcrumb-item active" aria-current="page">
-                                            <i class='fas fa-child'></i> Kids
+                                            <i class='fas fa-child'></i> My Kids
                                         </li>
                                     </ol>
                                 </div>
@@ -41,11 +41,16 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <ul class="list-tab float-right">
+                                                    <li class="<%= tab.tab_grid %> grid list-tab-item" data-url="/Sponsor/Preference"><i class="fas fa-th"></i></li>
+                                                    <li class="<%= tab.tab_list %> list-tab-item listn" data-url="/Sponsor/Preference"><i class="fas fa-list-ul"></i>
+                                                    </li>
+                                                </ul>
+                                                <!-- <ul class="list-tab float-right">
                                                     <li class="<%= tab.tab_grid %> grid list-tab-item"><i
                                                             class="fas fa-th"></i></li>
                                                     <li class="<%= tab.tab_list %> list-tab-item listn"><i
                                                             class="fas fa-list-ul"></i></li>
-                                                </ul>
+                                                </ul> -->
                                             </div>
                                         </div>
                                     </div>
@@ -62,7 +67,7 @@
                             <!-- Grid View End-->
 
                             <!-- Kids Table -->
-                            <% include includes/KidTable %>
+                            <% include includes/kidTable %>
                             <!-- Kids Table End -->
 
                             <!-- Pagination-buttons -->
@@ -79,6 +84,7 @@
     <script>var user_id = "<%= user.user_id %>";</script>
     <script src="/js/personal/sidebar.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="/js/personal/display.js"></script>
     <script src="/js/personal/script_6.js"></script>
     <script src="/js/personal/helper.js"></script>
     <script src="/js/personal/socket_1.js"></script>

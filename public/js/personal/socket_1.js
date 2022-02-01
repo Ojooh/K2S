@@ -17,7 +17,7 @@ socket.on("new_task", function (data) {
 });
 
 socket.on("new_message", function (data) {
-    // console.log(data);
+    console.log(data);
     var html = $(".gratty").html();
     var chat_area = $(".gratty");
     if (data.sender == user_id) {
@@ -64,9 +64,9 @@ $(".gotty").on("click", function (e) {
         data: data,
         beforeSend: function () {
             Swal.fire({
-                title: 'Auto close alert!',
+                title: 'Loading.....',
                 html: 'Please Hold on as your details are uploaded, do not refresh.',
-                timer: 40000,
+                timer: 4000000,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 allowOutsideClick: false,

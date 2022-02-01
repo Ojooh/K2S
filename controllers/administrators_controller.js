@@ -1107,22 +1107,25 @@ module.exports.updateKidProfile = async (req, res, next) => {
 
                     if (req.files.pp) {
                         avatar_1 = req.files.pp;
-                        let [name_1, ext_1] = avatar_1.name.split(".");
+                        let ext_1 = avatar_1.name.split(".");
+                        ext_1 = ext_1[ext_1.length - 1];
                         let new_name_1 = uuidv4() + "." + ext_1;
                         dir_1 = "public/images/profile/kids/" + new_name_1;
                         db_path_1 = "/images/profile/kids/" + new_name_1;
                     } else {
-                        db_path_1 = "";
+                        db_path_1 = edittee[0].profile_photo;
                     }
 
                     if (req.files.bc) {
-                        avatar_2 = req.files.bc
-                        let [name_2, ext_2] = avatar_2.name.split(".");
+                        avatar_2 = req.files.bc;
+                        let ext_2 = avatar_2.name.split(".");
+                        ext_2 = ext_2[ext_2.length - 1]
+
                         let new_name_2 = uuidv4() + "." + ext_2;
                         dir_2 = "public/doc/bc/" + new_name_2;
                         db_path_2 = "/doc/bc/" + new_name_2;
                     } else {
-                        db_path_2 = "";
+                        db_path_2 = edittee[0].bc;
                     }
 
                     let datetime = moment().format('YYYY-MM-DD  HH:mm:ss.000');
